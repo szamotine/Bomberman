@@ -10,6 +10,7 @@
 
 using namespace std;
 
+//github edit test
 
 
 void map::red_bricks_generation() {
