@@ -322,8 +322,9 @@ void World::bomb_index(int player_number, double bomb_x_co, double bomb_y_co) {
 				//cout <<"/n" << i_index << "," << z;
 				
 
-			
+				cout << "\nbomb_count of player #" << player_number << " is: " << bomb_count[player_number] <<  endl;
 				bomb_count[player_number]++;
+				cout << "\nbomb_count of player #" << player_number << " is: " << bomb_count[player_number] << endl;
 				//total_bomb_count++;
 				
 
