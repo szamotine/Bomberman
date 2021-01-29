@@ -138,6 +138,7 @@
     <ClCompile Include="program.cpp" />
     <ClCompile Include="ran.cpp" />
     <ClCompile Include="red_brick.cpp" />
+    <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="2D_graphics_ver1.lib" />
