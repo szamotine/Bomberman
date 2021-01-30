@@ -922,6 +922,7 @@ void World::collision_map() {
 
 
 }
+
 // Reverses input command in case of collision
 void World::reverse_input(int i) {
 	int j;

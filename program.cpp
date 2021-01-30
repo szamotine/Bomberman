@@ -16,19 +16,24 @@
 
 using namespace std;
 
+static int init = 0; // initialization flag
+static double t; // clock time from start of program
+static double t0; // initial clock time
+// * tp is the previous clock time -- ie the clock time from 
+// the previous function call.
+// we want tp static so it's remembered between function calls
+static double tp;
 
+double T, fps;
+
+
+void FPS();
 
 
 int main(){
-	static int init = 0; // initialization flag
-	static double t; // clock time from start of program
-	static double t0; // initial clock time
-	// * tp is the previous clock time -- ie the clock time from 
-	// the previous function call.
-	// we want tp static so it's remembered between function calls
-	static double tp;
 
-	double T, fps;
+	
+
 
 	// initialize and setup the 2D graphics library
 	initialize_graphics();
@@ -68,34 +73,8 @@ int main(){
 
 		W1.draw(); 
 
-		// read clock time (resolution is 0.1 microseconds)
-		t = high_resolution_time() - t0; // time since the program started (s)
-
-		// calculate period / time interval of function -- ie time 
-		// to draw a frame 
-		T = t - tp; // current time - previous time
-
-		// save the previous time for next time in the function
-		// -- update tp *after* it has been used in the functio 
-		tp = t;
-
-		// calculate fps
-		fps = 1 / T;
-
-		//cout << "\n FPS is: " << fps;
-
-		int xt = 15;
-		int yt = 21;
-		double scale = 0.4;
-		text("FPS = ", xt, yt, scale);
-
-		xt += 80; // move text cursor right
-
-		text(fps, xt, yt, scale);
-
-
-
-
+		FPS();
+		
 		update(); // update the drawing
 
 
@@ -104,3 +83,31 @@ int main(){
 	return 0;
 }
 
+void FPS() 
+{
+	// read clock time (resolution is 0.1 microseconds)
+	t = high_resolution_time() - t0; // time since the program started (s)
+
+	// calculate period / time interval of function -- ie time 
+	// to draw a frame 
+	T = t - tp; // current time - previous time
+
+	// save the previous time for next time in the function
+	// -- update tp *after* it has been used in the functio 
+	tp = t;
+
+	// calculate fps
+	fps = 1 / T;
+
+	//cout << "\n FPS is: " << fps;
+
+	int xt = 15;
+	int yt = 21;
+	double scale = 0.4;
+	text("FPS = ", xt, yt, scale);
+
+	xt += 80; // move text cursor right
+
+	text(fps, xt, yt, scale);
+
+}
