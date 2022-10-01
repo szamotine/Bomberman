@@ -2,9 +2,7 @@
 #include <cstdio>
 #include <cmath>
 #include <Windows.h>
-
 #include "2D_graphics.h"
-
 #include "timer.h"
 #include "ran.h"
 #include "menu.h"
@@ -62,8 +60,6 @@ void menu::loading_screen() {
 	//Sleep(3000); 
 	
 }; 
-
-
 
 void menu::menu_selection() {
 
@@ -152,7 +148,6 @@ void menu::settings() {
 	}
 };
 
-
 void menu::local() {
 	
 	bool player_choice = false;
@@ -204,7 +199,6 @@ void menu::local() {
 		}
 	}
 };
-
 
 char menu::input() {
 	if (KEY('Q')) return 'Q';
