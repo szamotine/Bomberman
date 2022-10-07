@@ -5,21 +5,19 @@
 #include "2D_graphics.h"
 #include <time.h>
 #include <chrono>
-
-
 #include "timer.h"
 #include "ran.h"
 #include "player.h"
 
 using namespace std;
 
+//used for the start_picker function
 int start_pos[4] = { 0,0,0,0 };
-int n_objects = 0;
 
 
 // function to choose the start position of the player 
-//-------NEED TO WORK ON--------
 int player::start_picker() {
+	//-------NEED TO WORK ON--------
 
 	// seed for the random generator 
 	long int s = -7;
@@ -96,74 +94,67 @@ void player::draw_player() {
 
 	if (player_orientation == 270) {
 
-		draw_sprite(bottom_sprite_id, player_x_co, player_y_co, player_angle, player_spirte_scale);
+		draw_sprite(bottom_sprite_id, player_x_co, player_y_co, player_angle, player_sprite_scale);
 	}
 
 	if (player_orientation == 0) {
 
-		draw_sprite(right_sprite_id, player_x_co, player_y_co, player_angle, player_spirte_scale);
+		draw_sprite(right_sprite_id, player_x_co, player_y_co, player_angle, player_sprite_scale);
 	}
 
 	if (player_orientation == 90) {
 
-		draw_sprite(top_sprite_id, player_x_co, player_y_co, player_angle, player_spirte_scale);
+		draw_sprite(top_sprite_id, player_x_co, player_y_co, player_angle, player_sprite_scale);
 	}
 
 	if (player_orientation == 180) {
 
-		draw_sprite(left_sprite_id, player_x_co, player_y_co, player_angle, player_spirte_scale);
+		draw_sprite(left_sprite_id, player_x_co, player_y_co, player_angle, player_sprite_scale);
 	}
 	
 	
 };
 
 
-
-
-
-
 //constructor to initialize the player position and skin 
 player::player(int n_player) {
-	//cout << "\nConstructor to initialize the player";
-	//getchar();
 
-
-	//intialize with bottom_player to have the player facing us
-	//changes the color of the skin depending on the plauyer number
 	
-	//create_sprite("bomb.png", bomb);
+	//intialize with bottom_player to have the player facing us
+	//changes the color of the skin depending on the player number
+	
 	
 	if (n_player == 0 && n_objects == 0) {
-		create_sprite("player_bottom.png", bottom_sprite_id);
-		create_sprite("player_top.png", top_sprite_id);
-		create_sprite("player_left.png", left_sprite_id);
-		create_sprite("player_right.png", right_sprite_id);
+		create_sprite(PLAYER_BOTTOM, bottom_sprite_id);
+		create_sprite(PLAYER_TOP, top_sprite_id);
+		create_sprite(PLAYER_LEFT, left_sprite_id);
+		create_sprite(PLAYER_RIGHT, right_sprite_id);
 		player_x_co = start_x_co[0];
 		player_y_co = start_y_co[0];
 	}
 	else if (n_player == 1 && n_objects == 1) {
-		create_sprite("player_bottom_2.png", bottom_sprite_id);
-		create_sprite("player_top_2.png", top_sprite_id);
-		create_sprite("player_left_2.png", left_sprite_id);
-		create_sprite("player_right_2.png", right_sprite_id);
+		create_sprite(PLAYER2_BOTTOM, bottom_sprite_id);
+		create_sprite(PLAYER2_TOP, top_sprite_id);
+		create_sprite(PLAYER2_LEFT, left_sprite_id);
+		create_sprite(PLAYER2_RIGHT, right_sprite_id);
 		player_x_co = start_x_co[1];
 		player_y_co = start_y_co[1];
 		
 	}
 	else if (n_player == 2 && n_objects == 2) {
-		create_sprite("player_bottom_3.png", bottom_sprite_id);
-		create_sprite("player_top_3.png", top_sprite_id);
-		create_sprite("player_left_3.png", left_sprite_id);
-		create_sprite("player_right_3.png", right_sprite_id);
+		create_sprite(PLAYER3_BOTTOM, bottom_sprite_id);
+		create_sprite(PLAYER3_TOP, top_sprite_id);
+		create_sprite(PLAYER3_LEFT, left_sprite_id);
+		create_sprite(PLAYER3_RIGHT, right_sprite_id);
 		player_x_co = start_x_co[2];
 		player_y_co = start_y_co[2];
 		
 	}
 	else if (n_player == 3 && n_objects == 3) {
-		create_sprite("player_bottom_4.png", bottom_sprite_id);
-		create_sprite("player_top_4.png", top_sprite_id);
-		create_sprite("player_left_4.png", left_sprite_id);
-		create_sprite("player_right_4.png", right_sprite_id);
+		create_sprite(PLAYER4_BOTTOM, bottom_sprite_id);
+		create_sprite(PLAYER4_TOP, top_sprite_id);
+		create_sprite(PLAYER4_LEFT, left_sprite_id);
+		create_sprite(PLAYER4_RIGHT, right_sprite_id);
 		player_x_co = start_x_co[3];
 		player_y_co = start_y_co[3];
 		
@@ -172,12 +163,6 @@ player::player(int n_player) {
 		cout << "\nInvalid number of players. See error in player::player\n";
 		return; 
 	}
-
-
-	//cout <<"\n" << player_x_co << "     " << player_y_co<<"\n";
-	//draw_sprite(bottom_sprite_id, player_x_co, player_y_co, player_angle, player_spirte_scale);
-
-//	update();
 
 	player_orientation = 270; 
 

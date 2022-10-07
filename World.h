@@ -31,16 +31,16 @@ public:
 	// number of grey bricks for check pattern 
 	int n_grey_bricks;
 
-	// array of red brick objects;
+	// array of pointers to red brick objects;
 	red_brick* pointer_red_brick [N_max_red_bricks];
 
 	// number of red bricks for check pattern 
 	int n_red_bricks;
 
-	// single array of map objects
+	// single array of pointers to map objects
 	map* pointer_map;
 
-	//pointer to a red brick object
+	//pointer to a red brick objects
 	red_brick* pointer_rb;
 
 	// array of bomb objects
