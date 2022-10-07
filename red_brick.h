@@ -14,13 +14,15 @@ public:
 	int red_bricks_sprite_id;
 
 	// store the red bricks image name for ease of use 
-	char red_bricks[15] = "red_bricks.png";
+	char* red_bricks = "red_bricks.png";
 	
 	// pointers to store coordinates of red bricks
-	double *x_red_bricks, *y_red_bricks;
+	double* x_red_bricks;
+	double* y_red_bricks;
 
 	//stores the red bricks index
-	int i_index=0, j_index=0;
+	int i_index{};
+	int	j_index{};
 		
 	// bricks angle 
 	double bricks_angle = 0.0;

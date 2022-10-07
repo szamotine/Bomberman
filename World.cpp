@@ -91,8 +91,8 @@ void World::new_bomb(int player_number) {
 	double x_shift = 35.0 ;
 	double y_shift_down = 40.0;
 	double y_shift_up = 30.0;
-	double x = pointer_player[player_number]->player_x_co;
-	double y = pointer_player[player_number]->player_y_co;
+	double x = pointer_player[player_number]->get_x_co();
+	double y = pointer_player[player_number]->get_y_co();
 
 
 	// places bomb in front of player
@@ -620,9 +620,9 @@ World::World(int n_player, int map_type) {
 		player_y_co[i] = pointer_player[i]->get_y_co();
 		player_orientation[i] = pointer_player[i]->get_orientation();
 
-		pointer_player[i]->player_x_co = player_x_co[i];
-		pointer_player[i]->player_y_co = player_y_co[i];
-		pointer_player[i]->player_orientation = player_orientation[i];
+		pointer_player[i]->set_x_co(player_x_co[i]);
+		pointer_player[i]->set_y_co(player_y_co[i]);
+		pointer_player[i]->set_orientation(player_orientation[i]);
 		
 		//cout << player_x_co[i] <<" " <<player_y_co[i] << " " << player_orientation[i] << "\n";
 	}
@@ -659,22 +659,6 @@ World::World(int n_player, int map_type) {
 	}
 	
 
-	//cout << "check constructor 2";
-	/*
-	for (i = 0; i < n_player; i++) {
-		player_x_co[i] = pointer_player[i]->player_x_co;
-		player_y_co[i] = pointer_player[i]->player_y_co;
-		player_orientation[i] = 270;
-	}
-	cout << "check constructor 3";
-	*/
-
-	//Initializes coordinates of grey squares for checker board pattern
-	//for (i = 0; i < 7; i++) {
-	//	xc_grey[i] = 105 + 84 * i;
-	//	yc_grey[i] = 105 + 84 * i;
-
-	//}
 	for (i = 0; i < 7; i++) {
 		for (j = 0; j < 7; j++) {
 			xc_grey[grey_count] = 105 + 84 * i;
@@ -704,9 +688,6 @@ World::World(int n_player, int map_type) {
 		grey_count++;
 	}
 	
-
-	//cout << "\n grey count: " << grey_count;
-	//getchar();
 
 	xc_red = new double[164];
 	yc_red = new double[164];
@@ -846,8 +827,8 @@ void World::collision_map() {
 	// tests each players position vs index
 	for (i = 0; i < n_player; i++)
 	{
-		x = pointer_player[i]->player_x_co;
-		y = pointer_player[i]->player_y_co;
+		x = pointer_player[i]->get_x_co();
+		y = pointer_player[i]->get_y_co();
 	
 	
 	// corrects for player/square overlap of sprites
@@ -864,9 +845,7 @@ void World::collision_map() {
 			y -= y_shift_down;
 		}
 
-		//coordinate test
-		//if (i==0)cout << "\n player #" << i << " x coord is: " << player_x_co[i];
-		//if (i==0) cout << "\n player #" << i << " y coord is: " << player_y_co[i];
+
 
 		//player location index as double
 		is = (x - xmin) / dx;
@@ -876,20 +855,12 @@ void World::collision_map() {
 		i_index = (int)(is + 0.5);
 		j_index = (int)(js + 0.5);
 
-		//index test
-		//if (i==0) cout << "\n player #" << i << " i_index is: " << i_index;
-		//if (i==0) cout << "\n player #" << i << " j_index is: " << j_index;
+
 
 		
 		// Motion impeding response: If player index matches grey brick, input command is reversed for that player
 		if (Grey.e(i_index, j_index) == 1) {
 		
-			//cout << "\n grey brick collision detected";
-			//cout << "\n player #" << i << " x coord is: " << player_x_co[i];
-			//cout << "\n player #" << i << " y coord is: " << player_y_co[i];
-			//cout << "\n player #" << i << " i_index is: " << i_index;
-			//cout << "\n player #" << i << " j_index is: " << j_index;
-			//cout << "\n player #" << i << " orientation is: " << player_orientation[i];
 			reverse_input(i);
 		
 		}
@@ -929,7 +900,6 @@ void World::reverse_input(int i) {
 	int m = -3; // step size movement
 	// player input
 
-	//cout << "check input 1";
 
 	if ((KEY('D')) && (i == 0)) player_x_co[0] += m;
 	if ((KEY('D')) && (i == 0)) player_orientation[0] = 0.0;
