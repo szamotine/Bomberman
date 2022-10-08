@@ -1,9 +1,22 @@
-//This class has for purpose to: 
-//	-create the red brick skin 
-//	-store the red brick coordinates 
-//	
+
 
 class red_brick {
+
+private:
+
+	// store the red bricks image name for ease of use 
+	char* red_bricks = "red_bricks.png";
+
+	//Coordinates of the red brick object
+	double x_coordinate;
+	double y_coordinate;
+
+	//store image sprite id
+	int bricks_sprite_id;
+
+	//stores the red bricks index
+	int i_index{};
+	int	j_index{};
 
 public:
 
@@ -13,25 +26,22 @@ public:
 	// store the images sprite id
 	int red_bricks_sprite_id;
 
-	// store the red bricks image name for ease of use 
-	char* red_bricks = "red_bricks.png";
 	
 	// pointers to store coordinates of red bricks
 	double* x_red_bricks;
 	double* y_red_bricks;
 
-	//stores the red bricks index
-	int i_index{};
-	int	j_index{};
-		
 	// bricks angle 
-	double bricks_angle = 0.0;
+	static constexpr double brick_angle = 0.0;
 
 	// bricks_scale
-	double bricks_scale = 1.0;
+	static constexpr double brick_scale = 1.0;
 
 	//constructor to initialize red brick object
 	red_brick();
+
+	//Draws a red brick
+	void draw();
 
 	//deconstructor for red bricks
 	~red_brick();

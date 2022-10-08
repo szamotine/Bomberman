@@ -84,6 +84,11 @@ red_brick::~red_brick()
 
 red_brick::red_brick(double x, double y) 
 {
+	x_coordinate = x;
+	y_coordinate = y;
+
+	create_sprite(red_bricks, bricks_sprite_id);
+
 
 }
 
@@ -92,9 +97,14 @@ void red_brick::red_bricks_draw()
 	int i;
 
 	for (i = 0; i < n_red_bricks; i++) {
-		draw_sprite(red_bricks_sprite_id, x_red_bricks[i], y_red_bricks[i], bricks_angle, bricks_scale);
+		draw_sprite(red_bricks_sprite_id, x_red_bricks[i], y_red_bricks[i], brick_angle, brick_scale);
 
 	}
+
+}
+
+void red_brick::draw() {
+	draw_sprite(red_bricks_sprite_id, x_coordinate, y_coordinate, brick_angle, brick_scale);
 
 }
 

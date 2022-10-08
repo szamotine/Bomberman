@@ -3,8 +3,8 @@ class brick {
 private:
 
 	//coordinates
-	double x_coordinates;
-	double y_coordinates;
+	double x_coordinate;
+	double y_coordinate;
 
 	//store image sprite id
 	int bricks_sprite_id;

@@ -9,62 +9,13 @@
 #include "ran.h"
 #include "player.h"
 
+
 using namespace std;
 
 //used for the start_picker function
 int start_pos[4] = { 0,0,0,0 };
 
 
-// function to choose the start position of the player 
-int player::start_picker() {
-	//-------NEED TO WORK ON--------
-
-	// seed for the random generator 
-	long int s = -7;
-	//should give us a number between 0 and 1
-	double picker = ran(s);
-
-
-	// checking where picker is between 0 and 1
-	// either between 0 and 0.25, 0.25 and 0.5, 0.5 and 0.75 and 1
-	if (picker < 0.25) {
-		if (start_pos[0] == 0) {
-			start_pos[0] = 1; 
-			cout << picker;
-			return 0; 
-		}
-		picker += 0.25; 
-	}
-
-	if ((0.25 <= picker) && (picker < 0.5)) {
-		if (start_pos[1] == 0) {
-			start_pos[1] = 1;
-			cout << picker;
-			return 1;
-		}
-		picker += 0.25;
-	}
-
-	if ((0.5 <= picker) && (picker < 0.75)) {
-		if (start_pos[2] == 0) {
-			start_pos[2] = 1;
-			cout << picker;
-			return 2;
-		}
-		picker += 0.25;
-	}
-
-	if ((0.75 <= picker) && (picker < 1)) {
-		if (start_pos[3] == 0) {
-			start_pos[3] = 1;
-			cout << picker;
-			picker -= 0.75;
-			return 3;
-		}
-		
-	}
-
-};
 
 double player::get_x_co() {
 	return player_x_co;
