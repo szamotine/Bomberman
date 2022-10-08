@@ -12,6 +12,7 @@
 
 using namespace std;
 
+
 //constructor to initialize red brick object
 red_brick::red_brick() 
 {
@@ -93,7 +94,7 @@ red_brick::red_brick(double x, double y)
 }
 
 void red_brick::red_bricks_draw() 
-{
+{//to be removed
 	int i;
 
 	for (i = 0; i < n_red_bricks; i++) {
@@ -108,8 +109,4 @@ void red_brick::draw() {
 
 }
 
-void red_brick::red_bricks_initialization()
-{
-
-}
 

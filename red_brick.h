@@ -52,7 +52,4 @@ public:
 	//this function is called after the map generation and fills the gaps with red bricks
 	void red_bricks_draw();
 
-	void red_bricks_initialization();
-
-
 };
