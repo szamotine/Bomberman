@@ -12,8 +12,7 @@ grey_brick:: grey_brick(double x, double y)
 
 	x_coordinate = x;
 	y_coordinate = y;
-
-
+	
 	create_sprite(grey_bricks, bricks_sprite_id);
 	
 }

@@ -12,8 +12,27 @@
 
 using namespace std;
 
+red_brick::red_brick(double x, double y)
+{
+	x_coordinate = x;
+	y_coordinate = y;
 
-//constructor to initialize red brick object
+	create_sprite(red_bricks, bricks_sprite_id);
+
+}
+
+void red_brick::draw() {
+	draw_sprite(red_bricks_sprite_id, x_coordinate, y_coordinate, brick_angle, brick_scale);
+
+}
+
+red_brick::~red_brick()
+{
+	cout << "/nRed Brick deconstructor";
+}
+
+
+
 red_brick::red_brick() 
 {
 	cout << "\nConstructor to initialize the red bricks";
@@ -78,20 +97,9 @@ red_brick::red_brick()
 
 }
 
-red_brick::~red_brick() 
-{
-	cout << "/nRed Brick deconstructor";
-}
-
-red_brick::red_brick(double x, double y) 
-{
-	x_coordinate = x;
-	y_coordinate = y;
-
-	create_sprite(red_bricks, bricks_sprite_id);
 
 
-}
+
 
 void red_brick::red_bricks_draw() 
 {//to be removed
@@ -104,9 +112,6 @@ void red_brick::red_bricks_draw()
 
 }
 
-void red_brick::draw() {
-	draw_sprite(red_bricks_sprite_id, x_coordinate, y_coordinate, brick_angle, brick_scale);
 
-}
 
 
