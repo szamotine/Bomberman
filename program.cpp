@@ -4,15 +4,11 @@
 #include <cmath>
 #include <Windows.h>
 #include "2D_graphics.h"
-#include "bomb.h"
 #include "timer.h"
 #include "ran.h"
-#include "player.h"
-#include "map.h"
 #include "iMatrix.h"
-//#include "menu.h"
-#include "red_brick.h"
-#include "World.h"
+
+
 
 using namespace std;
 
@@ -30,24 +26,17 @@ double T, fps;
 void FPS();
 
 
-int main(){
-
-	
-
+int main()
+{
 
 	// initialize and setup the 2D graphics library
 	initialize_graphics();
 
 	clear();
 	
-	
-	
-	World W1(4,0);
-		
-
-
 	// graphics drawing / animation loop
 	while(1) {
+		
 		if (!init) 
 		{
 
@@ -65,15 +54,15 @@ int main(){
 
 		clear(); // clear the previous drawing
 
-		W1.input(); // moves player
+		//W1.input(); // moves player
 
-		W1.sim_step(); // checks for collisions with contour wall
+		//W1.sim_step(); // checks for collisions with contour wall
 
-		W1.collision_map(); // checks for collisions with grey/red bricks, bombs
+		//W1.collision_map(); // checks for collisions with grey/red bricks, bombs
 
-		W1.draw(); 
+		//W1.draw(); 
 
-		FPS();
+//		FPS();
 		
 		update(); // update the drawing
 
@@ -110,4 +99,24 @@ void FPS()
 
 	text(fps, xt, yt, scale);
 
+}
+
+void grid_overlay() 
+{
+	int x = 42;
+	int y = 21;
+
+	int x2 = 1;
+	int y2 = 63;
+
+
+	double scale = 0.4;
+
+	for (int i = 1; i < 16; i++)
+	{
+		text(i, x, y, scale);
+		text(i, x2, y2, scale);
+		x += 42;
+		y2 += 42;
+	}
 }
