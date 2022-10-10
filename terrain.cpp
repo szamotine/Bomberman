@@ -28,18 +28,24 @@ void terrain::initialize_grey_bricks() {
 	int n = 16;
 	int count = 0;
 
+
 	// create the top/bottom of the enclosed terrain
 	for (double i = 2; i <= n; i++) {
 
 		double x_coordinate = ((i * 42) - 21);
 		//grey_brick temp = grey_brick(((i * 42) - 21),21);
 		//grey_brick temp2 = grey_brick(((i * 42) - 21), 693);
-
+		
 		grey_brick_list.push_back(grey_brick(x_coordinate, 21));
 		grey_brick_list.push_back(grey_brick(x_coordinate, 693));
+
+
 		count += 2;
+		cout << "\nGrey Bricks Horizontal Count: " << count;
 		
 	}
+
+	
 
 	// create the side walls of the enclosed terrrain
 	for (double i = 1; i <= n+1; i++) {
@@ -50,13 +56,15 @@ void terrain::initialize_grey_bricks() {
 		grey_brick_list.push_back(grey_brick(21, y_coordinate));
 		grey_brick_list.push_back(grey_brick(693, y_coordinate));
 		count += 2;
+		cout << "\nGrey Bricks Vertical Count: " << count;
 	}
 
+	
 	// create the check pattern 
 	// we jump one element of the array so that we have a checkboard pattern
 	// to vary the height, we use the number of pixels as a reference and a small arithmetic calculation
-	n = 49;
-	for (int i = 3; i < n - 2; i = i + 2) {
+	
+	for (int i = 3; i < 16; i = i + 2) {
 		for (int j = 0; j < 7; j++) {
 			double x_coordinate = ((i * 42) - 21);
 			double y_coordinate = ((j * 84.0) + 105.0);
@@ -66,6 +74,7 @@ void terrain::initialize_grey_bricks() {
 			
 		}
 	}
+	cout << "\nGrey Bricks Checkerboard Count: " << count;
 
 
 
@@ -103,7 +112,7 @@ void terrain::draw_grey_bricks(){
 	if (grey_brick_list.size() > 0) {
 		for (grey_brick gb : grey_brick_list) {
 			
-			cout << "\nDrawing grey brick at x: " << gb.get_x_coordinate() << " y: " << gb.get_y_coordinate();
+			//cout << "\nDrawing grey brick at x: " << gb.get_x_coordinate() << " y: " << gb.get_y_coordinate();
 
 			draw_sprite
 			(
