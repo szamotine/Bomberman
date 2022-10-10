@@ -135,7 +135,9 @@
     <ClCompile Include="program.cpp" />
     <ClCompile Include="ran.cpp" />
     <ClCompile Include="red_brick.cpp" />
+    <ClCompile Include="terrain.cpp" />
     <ClCompile Include="timer.cpp" />
+    <ClCompile Include="world.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="2D_graphics_ver1.lib" />
@@ -144,7 +146,9 @@
     <ClInclude Include="grey_brick.h" />
     <ClInclude Include="iMatrix.h" />
     <ClInclude Include="red_brick.h" />
+    <ClInclude Include="terrain.h" />
     <ClInclude Include="timer.h" />
+    <ClInclude Include="world.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

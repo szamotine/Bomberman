@@ -2,10 +2,8 @@
 class red_brick
 {
 private:
-
 	double x_coordinate;
 	double y_coordinate;
-
 
 public:
 

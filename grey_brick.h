@@ -10,6 +10,7 @@ private:
 public:
 
 	grey_brick(double x, double y);
+	grey_brick(grey_brick& source);
 	~grey_brick();
 
 	double get_x_coordinate();

@@ -1,4 +1,4 @@
-
+#pragma once
 #include <iostream>
 #include <cstdio>
 #include <cmath>
@@ -7,6 +7,8 @@
 #include "timer.h"
 #include "ran.h"
 #include "iMatrix.h"
+#include "world.h"
+
 
 
 
@@ -24,6 +26,12 @@ double T, fps;
 
 
 void FPS();
+void grid_overlay();
+void initialize();
+
+
+world W1 = world();
+
 
 
 int main()
@@ -33,24 +41,22 @@ int main()
 	initialize_graphics();
 
 	clear();
+
+	W1.initialize_world();
+	W1.draw_world();
+	grid_overlay();
+
+	update();
+
+	/*
 	
 	// graphics drawing / animation loop
 	while(1) {
 		
 		if (!init) 
 		{
-
-			t0 = high_resolution_time(); // initial clock time (s)
-
-			// initialize previous time
-			t = high_resolution_time() - t0; // current time
-
-			tp = t; // initialize the previous clock time
-
-			init = 1;
-
-			//cout << "\nInitialization section complete";
-		} // end of initialization section
+			initialize();
+		}
 
 		clear(); // clear the previous drawing
 
@@ -68,6 +74,7 @@ int main()
 
 
 	}
+	*/
 	
 	return 0;
 }
@@ -119,4 +126,19 @@ void grid_overlay()
 		x += 42;
 		y2 += 42;
 	}
+}
+
+void initialize() {
+
+	t0 = high_resolution_time(); // initial clock time (s)
+
+	// initialize previous time
+	t = high_resolution_time() - t0; // current time
+
+	tp = t; // initialize the previous clock time
+
+	init = 1;
+
+	//cout << "\nInitialization section complete";
+
 }
