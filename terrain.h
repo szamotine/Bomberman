@@ -2,6 +2,7 @@
 #include <vector>
 #include "grey_brick.h"
 #include "red_brick.h"
+#include "player.h"
 using namespace std;
 
 class terrain
@@ -39,12 +40,9 @@ private:
 	// List of red bricks
 	vector<red_brick> red_brick_list;
 
-	//To be confirmed if needed:
-		// number of grey bricks for check pattern 
-		int n_grey_bricks;
+	//List of players
+	vector<player> player_list;
 
-		// number of red bricks for standard map
-		int n_red_bricks;
 
 public:
 
@@ -60,10 +58,11 @@ public:
 	void initialize_red_bricks();
 
 	void draw_grey_bricks();
+	void draw_red_bricks();
 
 	void draw_map();
 	void draw_terrain();
 	void draw_player();
-	void draw_red_bricks();
+	
 };
 
