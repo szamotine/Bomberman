@@ -1,29 +1,30 @@
-
-#include <iostream>
-
 #include "grey_brick.h"
-#include "2D_graphics.h"
-
+#include <iostream>
 using namespace std;
 
-
-grey_brick:: grey_brick(double x, double y)
-{
-
+grey_brick::grey_brick(double x, double y) {
 	x_coordinate = x;
 	y_coordinate = y;
-	
-	create_sprite(grey_bricks, bricks_sprite_id);
-	
+	/*
+	double x_index = ((x + 21) / 42) -1;
+	double y_index = ((y + 21) / 42) -1;
+	cout << "\nGrey Brick Constructed at x: " << x_index << ", y: " << y_index;
+	*/
 }
 
-void grey_brick:: draw() 
-{
-	draw_sprite(bricks_sprite_id, x_coordinate, y_coordinate, brick_angle, brick_scale);
-
+grey_brick::grey_brick(grey_brick& source) {
+	x_coordinate = source.get_x_coordinate();
+	y_coordinate = source.get_y_coordinate();
 }
 
 grey_brick::~grey_brick() {
+	//std::cout << "\nGrey Brick destructor";
+}
 
-	cout << "/nGrey Brick deconstructor";
+double grey_brick::get_x_coordinate() {
+	return x_coordinate;
+}
+
+double grey_brick::get_y_coordinate() {
+	return y_coordinate;
 }

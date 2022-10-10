@@ -130,31 +130,25 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="bomb.cpp" />
-    <ClCompile Include="brick.cpp" />
     <ClCompile Include="grey_brick.cpp" />
     <ClCompile Include="iMatrix.cpp" />
-    <ClCompile Include="map.cpp" />
-    <ClCompile Include="player.cpp" />
     <ClCompile Include="program.cpp" />
     <ClCompile Include="ran.cpp" />
     <ClCompile Include="red_brick.cpp" />
+    <ClCompile Include="terrain.cpp" />
     <ClCompile Include="timer.cpp" />
-    <ClCompile Include="World.cpp" />
+    <ClCompile Include="world.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="2D_graphics_ver1.lib" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="bomb.h" />
-    <ClInclude Include="brick.h" />
     <ClInclude Include="grey_brick.h" />
     <ClInclude Include="iMatrix.h" />
-    <ClInclude Include="map.h" />
-    <ClInclude Include="player.h" />
     <ClInclude Include="red_brick.h" />
+    <ClInclude Include="terrain.h" />
     <ClInclude Include="timer.h" />
-    <ClInclude Include="World.h" />
+    <ClInclude Include="world.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
