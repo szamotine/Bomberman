@@ -25,23 +25,55 @@ void terrain::initialize_red_bricks() {}
 void terrain::initialize_grey_bricks() {
 	//TODO : refactor commented code to produce checkerboard pattern with grey bricks
 
-	int n = 18;
-	//This can be removed, its a test to configure gb.list
-	for (double i = 1; i <= n; i++) {
+	int n = 16;
+	int count = 0;
 
-		grey_brick temp = grey_brick(((i * 42) - 21), ((i * 42) - 21));
-		grey_brick_list.push_back(grey_brick(temp));
+	// create the top/bottom of the enclosed terrain
+	for (double i = 2; i <= n; i++) {
+
+		double x_coordinate = ((i * 42) - 21);
+		//grey_brick temp = grey_brick(((i * 42) - 21),21);
+		//grey_brick temp2 = grey_brick(((i * 42) - 21), 693);
+
+		grey_brick_list.push_back(grey_brick(x_coordinate, 21));
+		grey_brick_list.push_back(grey_brick(x_coordinate, 693));
+		count += 2;
+		
 	}
+
+	// create the side walls of the enclosed terrrain
+	for (double i = 1; i <= n+1; i++) {
+		double y_coordinate = ((i * 42) - 21);
+		//grey_brick temp3 = grey_brick(21, ((i * 42) - 21));
+		//grey_brick temp4 = grey_brick(693, ((i * 42) - 21));
+
+		grey_brick_list.push_back(grey_brick(21, y_coordinate));
+		grey_brick_list.push_back(grey_brick(693, y_coordinate));
+		count += 2;
+	}
+
+	// create the check pattern 
+	// we jump one element of the array so that we have a checkboard pattern
+	// to vary the height, we use the number of pixels as a reference and a small arithmetic calculation
+	n = 49;
+	for (int i = 3; i < n - 2; i = i + 2) {
+		for (int j = 0; j < 7; j++) {
+			double x_coordinate = ((i * 42) - 21);
+			double y_coordinate = ((j * 84.0) + 105.0);
+			//grey_brick temp = grey_brick(((i * 42) - 21), ((j * 84.0) + 105.0));
+			grey_brick_list.push_back(grey_brick(x_coordinate, y_coordinate));
+			count += 1;
+			
+		}
+	}
+
+
+
+
 	/*
-	// draw the countour of the map 
-	// current iteration repeat all 4 corners
-	// would be better to replace with just the right amount of entities
-	for (int i = 1; i < n; i++) {
-		draw_sprite(grey_bricks_sprite_id, x_buffer[i], 21, bricks_angle, bricks_scale);
-		draw_sprite(grey_bricks_sprite_id, x_buffer[i], 693, bricks_angle, bricks_scale);
-		draw_sprite(grey_bricks_sprite_id, 21, y_buffer[i], bricks_angle, bricks_scale);
-		draw_sprite(grey_bricks_sprite_id, 693, y_buffer[i], bricks_angle, bricks_scale);
-	}
+	
+
+	
 
 	// the value 49 is found from the loop below
 	n_grey_bricks = 49;
@@ -62,13 +94,17 @@ void terrain::initialize_grey_bricks() {
 		}
 	}
 	*/
-
+	cout << "\nGrey Bricks Count: " << count;
 	cout << "\nGrey Bricks Initialized: " << grey_brick_list.size();
 }
 
 void terrain::draw_grey_bricks(){
+	
 	if (grey_brick_list.size() > 0) {
 		for (grey_brick gb : grey_brick_list) {
+			
+			cout << "\nDrawing grey brick at x: " << gb.get_x_coordinate() << " y: " << gb.get_y_coordinate();
+
 			draw_sprite
 			(
 				grey_brick_sprite_id,
@@ -82,9 +118,14 @@ void terrain::draw_grey_bricks(){
 }
 
 void terrain::draw_map() {
+	
+	draw_terrain();
 	draw_grey_bricks();
 }
 
+void terrain::draw_terrain(){
+	draw_sprite(background_sprite_id, x_background, y_background, q_background, scale_background);
+}
 void terrain::draw_player(){}
 
 void terrain::draw_red_bricks(){}

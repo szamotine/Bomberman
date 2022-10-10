@@ -62,6 +62,7 @@ public:
 	void draw_grey_bricks();
 
 	void draw_map();
+	void draw_terrain();
 	void draw_player();
 	void draw_red_bricks();
 };
