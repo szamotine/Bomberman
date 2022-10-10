@@ -132,6 +132,7 @@
   <ItemGroup>
     <ClCompile Include="grey_brick.cpp" />
     <ClCompile Include="iMatrix.cpp" />
+    <ClCompile Include="player.cpp" />
     <ClCompile Include="program.cpp" />
     <ClCompile Include="ran.cpp" />
     <ClCompile Include="red_brick.cpp" />
@@ -145,6 +146,7 @@
   <ItemGroup>
     <ClInclude Include="grey_brick.h" />
     <ClInclude Include="iMatrix.h" />
+    <ClInclude Include="player.h" />
     <ClInclude Include="red_brick.h" />
     <ClInclude Include="terrain.h" />
     <ClInclude Include="timer.h" />
