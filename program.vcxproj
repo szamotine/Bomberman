@@ -130,16 +130,20 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="grey_brick.cpp" />
     <ClCompile Include="iMatrix.cpp" />
     <ClCompile Include="program.cpp" />
     <ClCompile Include="ran.cpp" />
+    <ClCompile Include="red_brick.cpp" />
     <ClCompile Include="timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="2D_graphics_ver1.lib" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="grey_brick.h" />
     <ClInclude Include="iMatrix.h" />
+    <ClInclude Include="red_brick.h" />
     <ClInclude Include="timer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
