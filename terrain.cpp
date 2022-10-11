@@ -10,15 +10,18 @@ terrain::terrain() {
 	cout << "\nTerrain Constructed";
 }
 
-void terrain::initialize_terrain() {
+void terrain::initialize_terrain(int number) {
+	number_of_players = number;
 	create_sprite(background, background_sprite_id);
 	create_sprite(grey_bricks, grey_brick_sprite_id);
 	create_sprite(red_bricks, red_brick_sprite_id);
 
 	grey_brick_list = std::vector<grey_brick>();
 	red_brick_list = std::vector<red_brick>();
+	player_list = std::vector<player>();
 	initialize_grey_bricks();
 	initialize_red_bricks();
+	initialize_players(number_of_players);
 }
 
 void terrain::initialize_red_bricks() {
@@ -94,6 +97,17 @@ void terrain::initialize_grey_bricks() {
 
 }
 
+
+void terrain::initialize_players(int number_of_players)
+{
+	for (int i = 0; i < number_of_players; i++) {
+		
+		player_list.push_back(player(i));
+
+	}
+
+}
+
 void terrain::draw_grey_bricks(){
 	
 	if (grey_brick_list.size() > 0) {
@@ -133,15 +147,33 @@ void terrain::draw_red_bricks()
 
 }
 
-
-void terrain::draw_map() {
-	
-	draw_terrain();
-	draw_grey_bricks();
-	draw_red_bricks();
-}
-
 void terrain::draw_terrain(){
 	draw_sprite(background_sprite_id, x_background, y_background, q_background, scale_background);
 }
-void terrain::draw_player(){}
+
+void terrain::draw_players(){
+
+	if (player_list.size() > 0) {
+		for (player p : player_list) {
+
+
+			draw_sprite
+			(
+				p.get_sprite_id(),
+				p.get_x_coordinate(),
+				p.get_y_coordinate(),
+				p.get_angle(),
+				p.get_scale()
+			);
+		}
+	}
+
+}
+
+void terrain::draw_map() {
+
+	draw_terrain();
+	draw_grey_bricks();
+	draw_red_bricks();
+	draw_players();
+}

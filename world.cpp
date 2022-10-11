@@ -16,7 +16,7 @@ world::~world() {
 }
 void world:: initialize_world() {
 
-	pointer_terrain->initialize_terrain();
+	pointer_terrain->initialize_terrain(4);
 
 }
 void world::draw_world() {

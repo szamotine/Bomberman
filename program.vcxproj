@@ -144,6 +144,7 @@
     <Library Include="2D_graphics_ver1.lib" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Bomberman\2D_graphics.h" />
     <ClInclude Include="grey_brick.h" />
     <ClInclude Include="iMatrix.h" />
     <ClInclude Include="player.h" />
