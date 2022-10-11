@@ -62,7 +62,8 @@ int main()
 		//W1.draw(); 
 
 //		FPS();
-		W1.player_input();
+		W1.player1_input();
+		W1.check_bomb_timer();
 		W1.draw_world();
 		grid_overlay();
 		update(); // update the drawing

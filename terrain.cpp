@@ -1,3 +1,4 @@
+#include "timer.h"
 #include "terrain.h"
 #include <iostream>
 #include "2D_graphics.h"
@@ -15,6 +16,7 @@ void terrain::initialize_terrain(int number) {
 	create_sprite(background, background_sprite_id);
 	create_sprite(grey_bricks, grey_brick_sprite_id);
 	create_sprite(red_bricks, red_brick_sprite_id);
+	create_sprite(bomb_file, bomb_sprite_id);
 
 	grey_brick_list = std::vector<grey_brick>();
 	red_brick_list = std::vector<red_brick>();
@@ -104,9 +106,7 @@ void terrain::initialize_players(int number_of_players)
 	for (int i = 0; i < number_of_players; i++) {
 		
 		player_list.push_back(player(i));
-
 	}
-
 }
 
 void terrain::draw_grey_bricks(){
@@ -172,6 +172,8 @@ void terrain::draw_players(){
 }
 
 void terrain::draw_bombs() {
+
+	
 	if (bomb_list.size() > 0) {
 		for (bomb b : bomb_list) {
 
@@ -194,8 +196,14 @@ void terrain::draw_map() {
 	draw_grey_bricks();
 	draw_red_bricks();
 	draw_players();
+	draw_bombs();
 }
 
 void terrain::create_bomb(double x, double y) {
-	bomb_list.push_back(bomb(x,y));
+	bomb_list.push_back(bomb(x,y,high_resolution_time()));
+	//cout << "\nBomb list size: " << bomb_list.size();
+}
+
+void terrain::remove_bomb(int index) {
+	bomb_list.erase(bomb_list.begin() +index);
 }
