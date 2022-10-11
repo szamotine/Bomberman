@@ -130,6 +130,7 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="bomb.cpp" />
     <ClCompile Include="grey_brick.cpp" />
     <ClCompile Include="iMatrix.cpp" />
     <ClCompile Include="player.cpp" />
@@ -145,6 +146,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Bomberman\2D_graphics.h" />
+    <ClInclude Include="bomb.h" />
     <ClInclude Include="grey_brick.h" />
     <ClInclude Include="iMatrix.h" />
     <ClInclude Include="player.h" />
