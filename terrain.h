@@ -77,6 +77,8 @@ public:
 	void draw_players();
 	void draw_bombs();
 	void draw_map();
+
+	void create_bomb(double x, double y);
 	
 };
 

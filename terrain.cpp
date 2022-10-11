@@ -195,3 +195,7 @@ void terrain::draw_map() {
 	draw_red_bricks();
 	draw_players();
 }
+
+void terrain::create_bomb(double x, double y) {
+	bomb_list.push_back(bomb(x,y));
+}
