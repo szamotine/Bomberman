@@ -48,18 +48,14 @@ private:
 
 	// List of grey bricks
 	vector<grey_brick> grey_brick_list;
-	// List of red bricks
-	vector<red_brick> red_brick_list;
-	
-
-	vector<bomb> bomb_list;
-
 	int number_of_players;
 
 public:
-
+	// List of red bricks
+	vector<red_brick> red_brick_list;
 	//List of players
 	vector<player> player_list;
+	vector<bomb> bomb_list;
 
 
 	terrain();
@@ -80,6 +76,7 @@ public:
 	void draw_map();
 
 	void create_bomb(double x, double y);
+	void remove_bomb(int index);
 	
 };
 

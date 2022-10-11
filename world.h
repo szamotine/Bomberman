@@ -8,8 +8,10 @@ class world
 private:
 	//pointer to terrain object
 	terrain* pointer_terrain;
-	vector<player>* pointer_terrain_list;
+	
 	player* pointer_player;
+
+	bomb* pointer_bomb;
 	
 
 public:
@@ -19,7 +21,10 @@ public:
 	void initialize_world();
 	void draw_world();
 
-	void player_input();
+	void player1_input();
 
+	void check_bomb_time(player* p);
+	void check_bomb_timer();
+	void new_bomb_coordinates(player* p);
 };
 

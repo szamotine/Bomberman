@@ -48,6 +48,10 @@ private:
 	//sprite ids array -> {right, top, left, bottom}
 	int* sprite_id;
 
+	// delay bomb drop
+	double bomb_time;
+	bool bomb_flag;
+
 public:
 
 	player(int player_number);
@@ -59,11 +63,16 @@ public:
 	double get_angle();
 	double get_scale();
 	int get_sprite_id();
+	bool get_bomb_flag();
+
+	double get_bomb_time();
 
 	void set_x_coordinate(double value);
 	void set_y_coordinate(double value);
 	void set_orientation(double value);
 	void set_scale(double value);
+	void set_bomb_time(double value);
+	void set_bomb_flag(bool flag);
 
 	void initialize_sprites(int player_number);
 
