@@ -36,26 +36,19 @@ world W1 = world();
 
 int main()
 {
-
-	// initialize and setup the 2D graphics library
-	initialize_graphics();
-
-	clear();
-
-	W1.initialize_world();
-	W1.draw_world();
-	grid_overlay();
-
-	update();
-
-	/*
-	
+		
 	// graphics drawing / animation loop
 	while(1) {
 		
 		if (!init) 
 		{
 			initialize();
+			// initialize and setup the 2D graphics library
+			initialize_graphics();
+
+			clear();
+
+			W1.initialize_world();
 		}
 
 		clear(); // clear the previous drawing
@@ -69,12 +62,14 @@ int main()
 		//W1.draw(); 
 
 //		FPS();
-		
+		W1.player_input();
+		W1.draw_world();
+		grid_overlay();
 		update(); // update the drawing
 
 
 	}
-	*/
+	
 	
 	return 0;
 }

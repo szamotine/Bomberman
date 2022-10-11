@@ -50,8 +50,7 @@ private:
 	vector<grey_brick> grey_brick_list;
 	// List of red bricks
 	vector<red_brick> red_brick_list;
-	//List of players
-	vector<player> player_list;
+	
 
 	vector<bomb> bomb_list;
 
@@ -59,6 +58,8 @@ private:
 
 public:
 
+	//List of players
+	vector<player> player_list;
 
 
 	terrain();

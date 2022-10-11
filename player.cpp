@@ -100,3 +100,10 @@ void player::initialize_sprites(int player_number) {
 
 }
 
+void player::move_player_x(double value) {
+	x_coordinate += value;
+}
+void player::move_player_y(double value) {
+	y_coordinate += value;
+}
+

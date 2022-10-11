@@ -67,5 +67,8 @@ public:
 
 	void initialize_sprites(int player_number);
 
+	void move_player_x(double value);
+	void move_player_y(double value);
+
 };
 
