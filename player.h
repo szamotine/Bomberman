@@ -45,12 +45,8 @@ private:
 	double player_angle = 0;
 	double player_sprite_scale = 0.67;
 	
-
 	//sprite ids array -> {right, top, left, bottom}
 	int* sprite_id;
-
-
-
 
 public:
 
