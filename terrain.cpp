@@ -19,6 +19,7 @@ void terrain::initialize_terrain(int number) {
 	grey_brick_list = std::vector<grey_brick>();
 	red_brick_list = std::vector<red_brick>();
 	player_list = std::vector<player>();
+	bomb_list = std::vector<bomb>();
 	initialize_grey_bricks();
 	initialize_red_bricks();
 	initialize_players(number_of_players);
@@ -168,6 +169,23 @@ void terrain::draw_players(){
 		}
 	}
 
+}
+
+void terrain::draw_bombs() {
+	if (bomb_list.size() > 0) {
+		for (bomb b : bomb_list) {
+
+
+			draw_sprite
+			(
+				bomb_sprite_id,
+				b.get_x_coordinate(),
+				b.get_y_coordinate(),
+				bomb_angle,
+				bomb_scale
+			);
+		}
+	}
 }
 
 void terrain::draw_map() {
