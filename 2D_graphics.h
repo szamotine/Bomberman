@@ -31,14 +31,14 @@ void triangle(double x[], double y[], double R[], double G[], double B[]);
 // R[3], G[3], B[3] - colour values for each coordinate of 
 // the triangle (0.0 <= R[i] <= 1.0, etc.)
 
-void text(char str[], double xp, double yp, double scale = 1.0);
+void text(char str[], double xp, double yp, double scale);// = 1.0);
 // draw text at pixel location (xp,yp)
 // str - array of characters (C-string) holding the text 
 // xp - x pixel location of text
 // yp - y pixel location of text
 // scale (default = 1.0)
 
-void text(double value, double xp, double yp, double scale = 1.0);
+void text(double value, double xp, double yp, double scale); // = 1.0);
 // draw text at pixel location (xp,yp)
 // value - number to print to the screen
 // xp - x pixel location of text
