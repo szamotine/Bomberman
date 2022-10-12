@@ -8,7 +8,7 @@
 #include "ran.h"
 #include "iMatrix.h"
 #include "world.h"
-#include "red_brick_logic.h"
+#include "brick_logic.h"
 
 
 
@@ -33,7 +33,7 @@ void initialize();
 
 
 world W1 = world();
-red_brick_logic RBL = red_brick_logic(W1);
+brick_logic RBL = brick_logic(W1);
 
 
 

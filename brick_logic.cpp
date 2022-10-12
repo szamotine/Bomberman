@@ -1,19 +1,19 @@
 #pragma once
 #include <iostream>
-#include "red_brick_logic.h"
+#include "brick_logic.h"
 #include "iMatrix.h"
 
-red_brick_logic::~red_brick_logic() {
+brick_logic::~brick_logic() {
 
 }
-red_brick_logic::red_brick_logic(world w) {
+brick_logic::brick_logic(world w) {
 	world_pointer = &w;
 	terrain_pointer = world_pointer->pointer_terrain;
 	collision_pointer = world_pointer->collision_matrix;
 
 }
 
-int red_brick_logic::calculate_index(double coordinate) {
+int brick_logic::calculate_index(double coordinate) {
 	double xmin = 21, dx = 42;
 
 	double d_index = (coordinate - xmin) / dx;
@@ -21,7 +21,7 @@ int red_brick_logic::calculate_index(double coordinate) {
 	return index;
 }
 
-void red_brick_logic::red_brick_collision_matrix_init() {
+void brick_logic::red_brick_collision_matrix_init() {
 
 	//To be run once at initialization
 	int i_index, j_index;
@@ -55,15 +55,40 @@ void red_brick_logic::red_brick_collision_matrix_init() {
 		//collision_pointer->print();
 }
 
-bool red_brick_logic::check_player_collision() {
-	//TODO: add offset in coordiantes for player sprite size + orientation
+int brick_logic::check_player_collision() {
+	
 	int i_index;
 	int j_index;
 
+	// offset used based on player sprite size
+	int x_shift = 5;
+	int y_shift_down = 22;
+	int y_shift_up = 20;
+
+	
 	for (int i = 0; i < terrain_pointer->player_list.size(); i++) {
+		
 		player_pointer = &terrain_pointer->player_list[i];
-		i_index = calculate_index(player_pointer->get_x_coordinate());
-		j_index = calculate_index(player_pointer->get_y_coordinate());
+		double x = player_pointer->get_x_coordinate();
+		double y = player_pointer->get_y_coordinate();
+		double orientation = player_pointer->get_orientation();
+
+		if (orientation == 0.0) {
+			x += x_shift;
+		}
+		if (orientation == 90.0) {
+			y += y_shift_up;
+		}
+		if (orientation == 180.0) {
+			x -= x_shift;
+		}
+		if (orientation == 270.0) {
+			y -= y_shift_down;
+		}
+
+
+		i_index = calculate_index(x);
+		j_index = calculate_index(y);
 		//cout << "\nchecking index: " << i_index << "," << j_index;
 		//cout << "\ncollision matrix value at index: " << collision_pointer->e(i_index, j_index);
 
@@ -78,7 +103,8 @@ bool red_brick_logic::check_player_collision() {
 			return true;
 		}
 
-		return false;
 	}
+
+	return false;
 }
 
