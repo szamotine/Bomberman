@@ -1,11 +1,16 @@
+#pragma once
 #include "world.h"
 #include <iostream>
 #include <Windows.h>
 #include "timer.h"
 
+
+
 using namespace std;
 world::world() {
 	pointer_terrain = new terrain();
+	
+	collision_matrix = new iMatrix(area, area);
 
 	if (pointer_terrain == NULL) {
 		cout << "Error: pointer_terrain allocation";
@@ -17,9 +22,7 @@ world::~world() {
 }
 void world::initialize_world() {
 
-	pointer_terrain->initialize_terrain(1);
-
-
+	pointer_terrain->initialize_terrain(number_of_players);
 }
 void world::draw_world() {
 	pointer_terrain->draw_map();

@@ -1,18 +1,22 @@
-
+#pragma once
 #include <iostream>
 #include <cmath>
 #include <fstream>
-
 #include "iMatrix.h"
 
 using namespace std;
 
-iMatrix::iMatrix(int N, int M)
+iMatrix::iMatrix() {
+
+}
+
+iMatrix::iMatrix(int Nvalue, int Mvalue)
 {
 	int i, j;
 
-	this->N = N;
-	this->M = M;
+	this->N = Nvalue;
+	this->M = Mvalue;
+
 
 	// add an extra row and col for optional i=0 and j=0
 	p = new int [(N+1)*(M+1)];
@@ -53,10 +57,11 @@ void iMatrix::print()
 	int i, j;
 
 	for(i=1;i<=N;i++) {
+		cout << "\n" << i << ":\t";
 		for(j=1;j<=M;j++) {
 			cout << e(i,j) << " ";
 		}
-		cout << "\n";
+		//cout << "\n";
 	}
 
 }

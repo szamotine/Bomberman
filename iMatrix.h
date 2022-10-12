@@ -1,15 +1,20 @@
-
+#pragma once
 // int version of dMatrix class with extra row and col for 
 // optional i=0 and j=0
 
 class iMatrix {
 
-public:
+private:
 
 	int N;
 	int M;
+
+public:
+
+	
 	int *p;
 
+	iMatrix();
 	iMatrix(int N, int M); 
 	
 	int & e(int i, int j);
