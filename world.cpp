@@ -13,7 +13,7 @@ world::world() {
 	
 	collision_matrix = new iMatrix(area, area);
 
-	pointer_brick_logic = new game_logic(pointer_terrain, collision_matrix);
+	pointer_game_logic = new game_logic(pointer_terrain, collision_matrix);
 
 	if (pointer_terrain == NULL) {
 		cout << "Error: pointer_terrain allocation";
@@ -30,7 +30,7 @@ world::~world() {
 void world::initialize_world() {
 
 	pointer_terrain->initialize_terrain(number_of_players);
-	pointer_brick_logic->collision_matrix_init();
+	pointer_game_logic->collision_matrix_init();
 
 }
 void world::draw_world() {
@@ -38,78 +38,12 @@ void world::draw_world() {
 }
 
 void world::run() {
-	pointer_brick_logic->player_input();
+	pointer_game_logic->player_input();
+	pointer_game_logic->check_bomb_timer();
 	draw_world();
 }
 
 /*
-void world::player1_input() {
-	int m = 3;
-
-	// pointer to player 1 of terrain player_list
-	pointer_player = & pointer_terrain->player_list[0];
-	check_bomb_time(pointer_player);
-	
-	if (KEY('D')) {
-		pointer_player->move_player_x(m);
-		pointer_player->set_orientation(0.0);
-	}
-	if (KEY('A')) {
-		pointer_player->move_player_x(-m);
-		pointer_player->set_orientation(180.0);
-	}
-	if (KEY('W')) {
-		pointer_player->move_player_y(m);
-		pointer_player->set_orientation(90.0);
-	}
-	if (KEY('S')) {
-		pointer_player->move_player_y(-m);
-		pointer_player->set_orientation(360.0);
-	}
-
-	if (KEY('X')) {
-		
-		if (pointer_player->get_bomb_flag()) {
-			pointer_player->set_bomb_time(high_resolution_time());
-			new_bomb_coordinates(pointer_player);
-			//cout << "\nBomb dropped for player 1";
-		}
-		
-	}
-
-	// player 2
-	if(pointer_terrain->player_list.size() > 1)	pointer_player = &pointer_terrain->player_list[1];
-	check_bomb_time(pointer_player);
-
-	if (KEY('L')) {
-		pointer_player->move_player_x(m);
-		pointer_player->set_orientation(0.0);
-	}
-	if (KEY('J')) {
-		pointer_player->move_player_x(-m);
-		pointer_player->set_orientation(180.0);
-	}
-	if (KEY('I')) {
-		pointer_player->move_player_y(m);
-		pointer_player->set_orientation(90.0);
-	}
-	if (KEY('K')) {
-		pointer_player->move_player_y(-m);
-		pointer_player->set_orientation(270.0);
-	}
-
-	if (KEY('M')) {
-		 
-		if (pointer_player -> get_bomb_flag()) {
-			pointer_player->set_bomb_time(high_resolution_time());
-			new_bomb_coordinates(pointer_player);
-			//cout << "\nBomb dropped for player 2";
-		}
-	}
-
-}
-*/
-
 void world::check_bomb_time(player* p) {
 	
 	double current_time = high_resolution_time();
@@ -120,6 +54,7 @@ void world::check_bomb_time(player* p) {
 	
 
 }
+
 void world::new_bomb_coordinates(player* p) {
 	double x_shift = 35.0;
 	double y_shift_down = 40.0;
@@ -147,7 +82,9 @@ void world::new_bomb_coordinates(player* p) {
 	pointer_terrain->create_bomb(x, y);
 	p->set_bomb_flag(false);
 }
+*/
 
+/*
 void world::check_bomb_timer() {
 
 	
@@ -168,3 +105,4 @@ void world::check_bomb_timer() {
 	}
 
 }
+*/

@@ -13,10 +13,14 @@ private:
 //	world* world_pointer;
 	player* player_pointer{};
 	iMatrix* collision_pointer{};
+	bomb* bomb_pointer{};
 
 	// collision matrix value that indicates destructable red square
 	int collision_destructible = 2;
 	int collision_indestructible = 1;
+	
+	// freq used to store current time
+	double current_time{};
 
 
 public:
@@ -32,5 +36,9 @@ public:
 
 	void player_input();
 
+	void check_bomb_flag(player* p);
+	void check_bomb_timer();
+	void new_bomb(player* p);
+	bool check_bomb_collison(player* p);
 
 };
