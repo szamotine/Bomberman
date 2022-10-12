@@ -1,15 +1,16 @@
 #pragma once
-#include "world.h"
+//#include "world.h"
 #include "iMatrix.h"
+#include "terrain.h"
 
-class brick_logic 
+class game_logic 
 {
 private:
 
 	red_brick* rb_pointer{};
 	grey_brick* gb_pointer{};
 	terrain* terrain_pointer{};
-	world* world_pointer;
+//	world* world_pointer;
 	player* player_pointer{};
 	iMatrix* collision_pointer{};
 
@@ -20,15 +21,16 @@ private:
 
 public:
 
-	~brick_logic();
-	brick_logic(world w);
+	~game_logic();
+	game_logic(terrain* pointer_terrain, iMatrix* collision_matrix);
 
 	int calculate_index(double value);
 
-	void red_brick_remove();
-	void red_brick_collision_matrix_init();
+	void collision_matrix_init();
 
-	int check_player_collision();
+	bool check_player_collision(player* player);
+
+	void player_input();
 
 
 };

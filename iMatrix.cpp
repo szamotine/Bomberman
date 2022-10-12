@@ -6,9 +6,6 @@
 
 using namespace std;
 
-iMatrix::iMatrix() {
-
-}
 
 iMatrix::iMatrix(int Nvalue, int Mvalue)
 {

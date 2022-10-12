@@ -8,7 +8,7 @@
 #include "ran.h"
 #include "iMatrix.h"
 #include "world.h"
-#include "brick_logic.h"
+
 
 
 
@@ -33,7 +33,7 @@ void initialize();
 
 
 world W1 = world();
-brick_logic RBL = brick_logic(W1);
+//game_logic BL = game_logic(W1);
 
 
 
@@ -53,24 +53,17 @@ int main()
 			clear();
 
 			W1.initialize_world();
-			RBL.red_brick_collision_matrix_init();
+			//BL.collision_matrix_init();
 		}
 
 		clear(); // clear the previous drawing
 
-		//W1.input(); // moves player
-
-		//W1.sim_step(); // checks for collisions with contour wall
-
-		//W1.collision_map(); // checks for collisions with grey/red bricks, bombs
-
-		//W1.draw(); 
-
 //		FPS();
-		W1.player1_input();
-		RBL.check_player_collision();
-		W1.check_bomb_timer();
-		W1.draw_world();
+		//W1.player1_input();
+		//BL.check_player_collision();
+		//W1.check_bomb_timer();
+		//W1.draw_world();
+		W1.run();
 		grid_overlay();
 		update(); // update the drawing
 

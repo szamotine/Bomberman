@@ -3,6 +3,8 @@
 #include "2D_graphics.h"
 #include<vector>
 #include "iMatrix.h"
+#include "game_logic.h"
+
 
 
 
@@ -11,10 +13,13 @@ class world
 private:
 	
 	// pointers to objects
-	player* pointer_player;
-	bomb* pointer_bomb;
+	player* pointer_player{};
+	bomb* pointer_bomb{};
+	game_logic* pointer_brick_logic{};
 
-	//playable area in terrain: currently 15x15 area
+	
+
+	//collision matrix grid size, based on play area: currently 15x15 area
 	int area = 17;
 
 	//number of players: currently hardcoded
@@ -33,7 +38,9 @@ public:
 	void initialize_world();
 	void draw_world();
 
-	void player1_input();
+	void run();
+
+	//void player1_input();
 
 	void check_bomb_time(player* p);
 	void check_bomb_timer();
