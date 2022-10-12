@@ -10,10 +10,17 @@ using namespace std;
 world::world() {
 	pointer_terrain = new terrain();
 	
+	
 	collision_matrix = new iMatrix(area, area);
+
+	pointer_brick_logic = new game_logic(pointer_terrain, collision_matrix);
 
 	if (pointer_terrain == NULL) {
 		cout << "Error: pointer_terrain allocation";
+	}
+
+	if (collision_matrix == NULL) {
+		cout << "Error: collision_matrix allocation";
 	}
 	
 }
@@ -23,11 +30,19 @@ world::~world() {
 void world::initialize_world() {
 
 	pointer_terrain->initialize_terrain(number_of_players);
+	pointer_brick_logic->collision_matrix_init();
+
 }
 void world::draw_world() {
 	pointer_terrain->draw_map();
 }
 
+void world::run() {
+	pointer_brick_logic->player_input();
+	draw_world();
+}
+
+/*
 void world::player1_input() {
 	int m = 3;
 
@@ -93,6 +108,7 @@ void world::player1_input() {
 	}
 
 }
+*/
 
 void world::check_bomb_time(player* p) {
 	
@@ -138,7 +154,7 @@ void world::check_bomb_timer() {
 	double current_time;
 	double duration;
 
-	for (int i = 0; i < pointer_terrain->bomb_list.size(); i++) {
+	for (int i = 0; unsigned(i) < pointer_terrain->bomb_list.size(); i++) {
 		pointer_bomb = &pointer_terrain->bomb_list[i];
 		current_time = high_resolution_time();
 		duration = current_time - pointer_bomb->get_time();

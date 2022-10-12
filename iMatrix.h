@@ -14,7 +14,7 @@ public:
 	
 	int *p;
 
-	iMatrix();
+
 	iMatrix(int N, int M); 
 	
 	int & e(int i, int j);
