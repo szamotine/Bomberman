@@ -6,15 +6,16 @@
 class world
 {
 private:
-	//pointer to terrain object
-	terrain* pointer_terrain;
 	
+	// pointers to objects
 	player* pointer_player;
-
 	bomb* pointer_bomb;
 	
 
 public:
+
+	//pointer to terrain object
+	terrain* pointer_terrain;
 
 	world();
 	~world();

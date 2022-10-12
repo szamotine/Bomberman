@@ -137,6 +137,7 @@
     <ClCompile Include="program.cpp" />
     <ClCompile Include="ran.cpp" />
     <ClCompile Include="red_brick.cpp" />
+    <ClCompile Include="red_brick_logic.cpp" />
     <ClCompile Include="terrain.cpp" />
     <ClCompile Include="timer.cpp" />
     <ClCompile Include="world.cpp" />
@@ -151,6 +152,7 @@
     <ClInclude Include="iMatrix.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="red_brick.h" />
+    <ClInclude Include="red_brick_logic.h" />
     <ClInclude Include="terrain.h" />
     <ClInclude Include="timer.h" />
     <ClInclude Include="world.h" />

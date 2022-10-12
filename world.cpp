@@ -17,7 +17,8 @@ world::~world() {
 }
 void world::initialize_world() {
 
-	pointer_terrain->initialize_terrain(4);
+	pointer_terrain->initialize_terrain(1);
+
 
 }
 void world::draw_world() {
@@ -53,13 +54,13 @@ void world::player1_input() {
 		if (pointer_player->get_bomb_flag()) {
 			pointer_player->set_bomb_time(high_resolution_time());
 			new_bomb_coordinates(pointer_player);
-			cout << "\nBomb dropped for player 1";
+			//cout << "\nBomb dropped for player 1";
 		}
 		
 	}
 
 	// player 2
-	pointer_player = &pointer_terrain->player_list[1];
+	if(pointer_terrain->player_list.size() > 1)	pointer_player = &pointer_terrain->player_list[1];
 	check_bomb_time(pointer_player);
 
 	if (KEY('L')) {
@@ -84,7 +85,7 @@ void world::player1_input() {
 		if (pointer_player -> get_bomb_flag()) {
 			pointer_player->set_bomb_time(high_resolution_time());
 			new_bomb_coordinates(pointer_player);
-			cout << "\nBomb dropped for player 2";
+			//cout << "\nBomb dropped for player 2";
 		}
 	}
 
@@ -130,7 +131,7 @@ void world::new_bomb_coordinates(player* p) {
 
 void world::check_bomb_timer() {
 
-	pointer_player = &pointer_terrain->player_list[0];
+	
 	double current_time;
 	double duration;
 

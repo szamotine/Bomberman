@@ -77,6 +77,7 @@ public:
 
 	void create_bomb(double x, double y);
 	void remove_bomb(int index);
+	void remove_red_brick(int index);
 	
 };
 

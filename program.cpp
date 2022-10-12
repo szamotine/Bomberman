@@ -8,6 +8,7 @@
 #include "ran.h"
 #include "iMatrix.h"
 #include "world.h"
+#include "red_brick_logic.h"
 
 
 
@@ -30,7 +31,9 @@ void grid_overlay();
 void initialize();
 
 
+
 world W1 = world();
+red_brick_logic RBL = red_brick_logic(W1);
 
 
 

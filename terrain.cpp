@@ -24,7 +24,7 @@ void terrain::initialize_terrain(int number) {
 	bomb_list = std::vector<bomb>();
 	initialize_grey_bricks();
 	initialize_red_bricks();
-	initialize_players(number_of_players);
+	initialize_players(number);
 }
 
 void terrain::initialize_red_bricks() {
@@ -206,4 +206,8 @@ void terrain::create_bomb(double x, double y) {
 
 void terrain::remove_bomb(int index) {
 	bomb_list.erase(bomb_list.begin() +index);
+}
+
+void terrain::remove_red_brick(int index) {
+	red_brick_list.erase(red_brick_list.begin() + index);
 }
