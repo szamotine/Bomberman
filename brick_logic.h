@@ -2,7 +2,7 @@
 #include "world.h"
 #include "iMatrix.h"
 
-class red_brick_logic 
+class brick_logic 
 {
 private:
 
@@ -20,15 +20,15 @@ private:
 
 public:
 
-	~red_brick_logic();
-	red_brick_logic(world w);
+	~brick_logic();
+	brick_logic(world w);
 
 	int calculate_index(double value);
 
 	void red_brick_remove();
 	void red_brick_collision_matrix_init();
 
-	bool check_player_collision();
+	int check_player_collision();
 
 
 };
