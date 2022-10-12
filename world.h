@@ -15,7 +15,7 @@ private:
 	// pointers to objects
 	player* pointer_player{};
 	bomb* pointer_bomb{};
-	game_logic* pointer_brick_logic{};
+	game_logic* pointer_game_logic{};
 
 	
 
@@ -24,6 +24,8 @@ private:
 
 	//number of players: currently hardcoded
 	int number_of_players = 1;
+
+	
 	
 
 public:

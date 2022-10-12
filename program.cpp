@@ -47,22 +47,15 @@ int main()
 		if (!init) 
 		{
 			initialize();
-			// initialize and setup the 2D graphics library
-			initialize_graphics();
-
-			clear();
-
-			W1.initialize_world();
+			
+			
 			//BL.collision_matrix_init();
 		}
 
 		clear(); // clear the previous drawing
 
 //		FPS();
-		//W1.player1_input();
-		//BL.check_player_collision();
-		//W1.check_bomb_timer();
-		//W1.draw_world();
+
 		W1.run();
 		grid_overlay();
 		update(); // update the drawing
@@ -132,8 +125,16 @@ void initialize() {
 
 	tp = t; // initialize the previous clock time
 
+	
+
+	// initialize and setup the 2D graphics library
+	initialize_graphics();
+
+	clear();
+
+	W1.initialize_world();
 	init = 1;
 
-	//cout << "\nInitialization section complete";
+	cout << "\nInitialization section complete";
 
 }

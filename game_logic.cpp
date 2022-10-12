@@ -3,6 +3,7 @@
 #include "game_logic.h"
 #include "2D_graphics.h"
 #include <Windows.h>
+#include "timer.h"
 
 
 
@@ -112,8 +113,7 @@ void game_logic::player_input()
 
 	// pointer to player 1 of terrain player_list
 	player_pointer = &terrain_pointer->player_list[0];
-	//check_bomb_time(pointer_player);
-
+	check_bomb_flag(player_pointer);
 	if (KEY('D')) {
 		player_pointer->set_orientation(0.0);
 		if (!check_player_collision(player_pointer)) {
@@ -143,11 +143,12 @@ void game_logic::player_input()
 
 	if (KEY('X')) {
 
-		if (player_pointer->get_bomb_flag()) {
-			//pointer_player->set_bomb_time(high_resolution_time());
-			//new_bomb_coordinates(player_pointer);
-			//cout << "\nBomb dropped for player 1";
+		if (player_pointer->get_bomb_flag() && check_bomb_collison(player_pointer)) {
+			
+			new_bomb(player_pointer);
+			cout << "\nBomb dropped for player 1";
 		}
+		player_pointer->set_bomb_time(high_resolution_time());
 
 	}
 
@@ -155,7 +156,7 @@ void game_logic::player_input()
 	if (terrain_pointer->player_list.size() > 1) {
 		player_pointer = &terrain_pointer->player_list[1];
 	}
-	//check_bomb_time(player_pointer);
+	check_bomb_flag(player_pointer);
 
 	if (KEY('L')) {
 		player_pointer->move_player_x(m);
@@ -177,11 +178,106 @@ void game_logic::player_input()
 	if (KEY('M')) {
 
 		if (player_pointer->get_bomb_flag()) {
-			//player_pointer->set_bomb_time(high_resolution_time());
-			//new_bomb_coordinates(player_pointer);
-			//cout << "\nBomb dropped for player 2";
+			player_pointer->set_bomb_time(high_resolution_time());
+			new_bomb(player_pointer);		
+			cout << "\nBomb dropped for player 2";
 		}
 	}
+}
 
+void game_logic::check_bomb_flag(player* p) {
+
+	current_time = high_resolution_time();
+
+	if (current_time - p->get_bomb_time() > 0.5) {
+		p->set_bomb_flag(true);
+	}
+}
+
+void game_logic::check_bomb_timer()
+{
+	if (terrain_pointer->bomb_list.size() > 0) {
+		double duration;
+		for (int i = 0; i < terrain_pointer->bomb_list.size(); i++) {
+			bomb_pointer = &terrain_pointer->bomb_list[i];
+			current_time = high_resolution_time();
+			duration = current_time - bomb_pointer->get_time();
+
+			if (duration > 3) {
+				cout << "\nBomb explode!";
+				terrain_pointer->remove_bomb(i);
+			}
+		}
+	}
+}
+
+void game_logic::new_bomb(player* p) {
+
+	double x_shift = 35.0;
+	double y_shift_down = 40.0;
+	double y_shift_up = 30.0;
+
+	// Get Player coordinates
+	double x = p->get_x_coordinate();
+	double y = p->get_y_coordinate();
+
+	// adjust for bomb sprite size
+
+	if (p->get_orientation() == 0.0) {
+		x += x_shift;
+	}
+	if (p->get_orientation() == 90.0) {
+		y += y_shift_up;
+	}
+	if (p->get_orientation() == 180.0) {
+		x -= x_shift;
+	}
+	if (p->get_orientation() == 270.0) {
+		y -= y_shift_down;
+	}
+
+	terrain_pointer->create_bomb(x, y);
+	p->set_bomb_flag(false);
+}
+
+bool game_logic::check_bomb_collison(player* p) {
+
+	int i_index;
+	int j_index;
+
+	// offset used based on player sprite size
+	int x_shift = 50;
+	int y_shift_down = 52;
+	int y_shift_up = 40;
+
+
+	double x = p->get_x_coordinate();
+	double y = p->get_y_coordinate();
+	double orientation = p->get_orientation();
+
+	if (orientation == 0.0) {
+		x += x_shift;
+	}
+	if (orientation == 90.0) {
+		y += y_shift_up;
+	}
+	if (orientation == 180.0) {
+		x -= x_shift;
+	}
+	if (orientation == 270.0) {
+		y -= y_shift_down;
+	}
+
+
+	i_index = calculate_index(x);
+	j_index = calculate_index(y);
+
+	if (collision_pointer->e(i_index, j_index) == 0) {
+		return true;
+	}
+
+	cout << "\nCannot place bomb at index: " << i_index << "," << j_index;
+
+	return false;
 }
 
