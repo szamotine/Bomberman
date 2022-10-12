@@ -46,11 +46,12 @@ private:
 	int red_brick_sprite_id;
 	int bomb_sprite_id;
 
-	// List of grey bricks
-	vector<grey_brick> grey_brick_list;
+	
 	int number_of_players;
 
 public:
+	// List of grey bricks
+	vector<grey_brick> grey_brick_list;
 	// List of red bricks
 	vector<red_brick> red_brick_list;
 	//List of players

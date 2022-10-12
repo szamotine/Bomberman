@@ -37,6 +37,7 @@ red_brick_logic RBL = red_brick_logic(W1);
 
 
 
+
 int main()
 {
 		
@@ -52,6 +53,7 @@ int main()
 			clear();
 
 			W1.initialize_world();
+			RBL.red_brick_collision_matrix_init();
 		}
 
 		clear(); // clear the previous drawing
@@ -66,6 +68,7 @@ int main()
 
 //		FPS();
 		W1.player1_input();
+		RBL.check_player_collision();
 		W1.check_bomb_timer();
 		W1.draw_world();
 		grid_overlay();
