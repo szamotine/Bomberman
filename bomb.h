@@ -10,6 +10,7 @@ private:
 	bool bomb_removal_flag;
 
 
+
 public:
 
 	~bomb();
@@ -18,9 +19,11 @@ public:
 	void set_x_coordinate(double value);
 	void set_y_coordinate(double value);
 	void set_time(double value);
+	void set_bomb_removal_flag();
 	
 
 	double get_x_coordinate();
 	double get_y_coordinate();
 	double get_time();
+	bool get_bomb_removal_flag();
 };
