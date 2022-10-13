@@ -40,10 +40,11 @@ int main()
 
 		clear(); // clear the previous drawing
 
-//		FPS();
+		
 
 		W1.run();
 		grid_overlay();
+		FPS();
 		update(); // update the drawing
 
 
@@ -72,7 +73,7 @@ void FPS()
 	//cout << "\n FPS is: " << fps;
 
 	int xt = 15;
-	int yt = 21;
+	int yt = 750;
 	double scale = 0.4;
 	text("FPS = ", xt, yt, scale);
 
