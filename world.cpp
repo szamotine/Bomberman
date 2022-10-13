@@ -40,6 +40,7 @@ void world::draw_world() {
 void world::run() {
 	pointer_game_logic->player_input();
 	pointer_game_logic->check_bomb_timer();
+	pointer_game_logic->remove_flagged_bricks();
 	draw_world();
 }
 

@@ -5,13 +5,11 @@
 #include <Windows.h>
 #include "timer.h"
 
-
-
 game_logic::~game_logic() {
 
 }
 game_logic::game_logic(terrain* pointer_terrain, iMatrix* collision_matrix) {
-	//world_pointer = &w;
+	
 	terrain_pointer = pointer_terrain;
 	collision_pointer = collision_matrix;
 
@@ -47,6 +45,11 @@ void game_logic::collision_matrix_init() {
 		j_index = calculate_index(rb_pointer->get_y_coordinate());
 		rb_pointer->set_i_index(i_index);
 		rb_pointer->set_j_index(j_index);
+
+		if (i_index == 14 && j_index == 13) {
+			cout << "\n\n\n Found it: i= " << i;
+		}
+
 		//cout << "\nRB(world) i_index= " << i_index;
 		//cout << "\nRB(world) j_index= " << j_index;	
 		collision_pointer->e(i_index, j_index) = collision_destructible;
@@ -308,73 +311,88 @@ bool game_logic::check_bomb_collison(player* p) {
 
 void game_logic::explode_bomb(bomb* b) {
 
-	//TODO : refine logic
+	//TODO : refine logic, currently misses red bricsk
 
 	int x;
 	int y;
 
-	int i_index = calculate_index(b->get_x_coordinate());
-	int j_index = calculate_index(b->get_y_coordinate());
+	int bomb_i_index = calculate_index(b->get_x_coordinate());
+	int bomb_j_index = calculate_index(b->get_y_coordinate());
 
-	cout << "\nExploding bomb at index: " << i_index << "," << j_index;
+	cout << "\nExploding bomb at index: " << bomb_i_index << "," << bomb_j_index;
 
-	for (int i = 0; unsigned(i) < terrain_pointer->red_brick_list.size(); ++i) {
+	//
+	for (int i = 0; unsigned(i) < terrain_pointer->red_brick_list.size(); i++) {
 		rb_pointer = &terrain_pointer->red_brick_list[i];
 		
 		x = rb_pointer->get_i_index();
 		y = rb_pointer->get_j_index();
 
-		cout << "\nComparing rb_index: " << x << "," << y;
+		
+		//cout << "\nEvaluating now at:  " << x << "," << y << "\ti=" << i;
+		//cout << "\nComparing rb_index at: " << x << "," << y;
 		
 		// remove bomb 1 to left and right
-
-
-			/*
-			bomb: 15, 13
-			miss: 14, 13
-			*/
-
-		
-		if ((x == i_index + 1 || x == i_index -1) && j_index == y) {
-			cout << "\nMatch found at index:  " << x << "," << y;
-			remove_red_brick(i, x, y);
+		if ((x == bomb_i_index + 1 || x == bomb_i_index -1) && bomb_j_index == y) {
+			//cout << "\nMatch found at index:  " << x << "," << y;
+			//remove_red_brick(i, x, y);
+			rb_pointer->set_flag_false();
 		}
 
 		// remove bomb 1 to above and below
-		if ((y == j_index + 1 || y == j_index -1) && i_index == x) {
-			cout << "\nMatch found at index:  " << x << "," << y;
-			remove_red_brick(i, x, y);
+		if ((y == bomb_j_index + 1 || y == bomb_j_index -1) && bomb_i_index == x) {
+			//cout << "\nMatch found at index:  " << x << "," << y;
+			//remove_red_brick(i, x, y);
+			rb_pointer->set_flag_false();
 		}
 
-		if ( x == i_index && (y == j_index + 2) && collision_pointer->e(i_index, j_index + 1) != collision_indestructible) {
-			cout << "\nMatch found at index:  " << x << "," << y;
-			remove_red_brick(i, x, y);
-
-		}
-
-		if (x == i_index && (y == j_index - 2) && collision_pointer->e(i_index, j_index - 1) != collision_indestructible) {
-			cout << "\nMatch found at index:  " << x << "," << y;
-			remove_red_brick(i, x, y);
+		if ( x == bomb_i_index && (y == bomb_j_index + 2) && collision_pointer->e(bomb_i_index, bomb_j_index + 1) != collision_indestructible) {
+			//cout << "\nMatch found at index:  " << x << "," << y;
+			//remove_red_brick(i, x, y);
+			rb_pointer->set_flag_false();
 
 		}
 
-
-		if (x == i_index + 2 && y == j_index && collision_pointer->e(i_index + 1, j_index) != collision_indestructible) {
-			cout << "\nMatch found at index:  " << x << "," << y;
-			remove_red_brick(i, x, y);
+		if (x == bomb_i_index && (y == bomb_j_index - 2) && collision_pointer->e(bomb_i_index, bomb_j_index - 1) != collision_indestructible) {
+			//cout << "\nMatch found at index:  " << x << "," << y;
+			//remove_red_brick(i, x, y);
+			rb_pointer->set_flag_false();
 
 		}
 
-		if (x == i_index - 2 && y == j_index && collision_pointer->e(i_index - 1, j_index) != collision_indestructible) {
-			cout << "\nMatch found at index:  " << x << "," << y;
-			remove_red_brick(i, x, y);
+
+		if (x == bomb_i_index + 2 && y == bomb_j_index && collision_pointer->e(bomb_i_index + 1, bomb_j_index) != collision_indestructible) {
+			//cout << "\nMatch found at index:  " << x << "," << y;
+			//remove_red_brick(i, x, y);
+			rb_pointer->set_flag_false();
+
+		}
+
+		if (x == bomb_i_index - 2 && y == bomb_j_index && collision_pointer->e(bomb_i_index - 1, bomb_j_index) != collision_indestructible) {
+			//cout << "\nMatch found at index:  " << x << "," << y;
+			//remove_red_brick(i, x, y);
+			rb_pointer->set_flag_false();
 
 		}
 
 	}
 
 }
+
+void game_logic::remove_flagged_bricks() {
+
+	for (vector<red_brick>::iterator i = terrain_pointer->red_brick_list.begin(); i != terrain_pointer->red_brick_list.end(); ++i) {
+		if (i->get_flag()) {
+			i = terrain_pointer->red_brick_list.erase(i);
+		}
+		
+	}
+
+}
+
 void game_logic::remove_red_brick(int i, int i_index, int j_index) {
+	
+	
 	terrain_pointer->red_brick_list.erase(terrain_pointer->red_brick_list.begin() + i);
 	collision_pointer->e(i_index, j_index) = 0;
 }

@@ -44,5 +44,6 @@ public:
 	void explode_bomb(bomb* bomb);
 
 	void remove_red_brick(int i, int i_index, int j_index);
+	void remove_flagged_bricks();
 
 };

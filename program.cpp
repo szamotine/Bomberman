@@ -9,10 +9,6 @@
 #include "iMatrix.h"
 #include "world.h"
 
-
-
-
-
 using namespace std;
 
 static int init = 0; // initialization flag
@@ -22,7 +18,6 @@ static double t0; // initial clock time
 // the previous function call.
 // we want tp static so it's remembered between function calls
 static double tp;
-
 double T, fps;
 
 
@@ -30,13 +25,7 @@ void FPS();
 void grid_overlay();
 void initialize();
 
-
-
 world W1 = world();
-
-
-
-
 
 int main()
 {
