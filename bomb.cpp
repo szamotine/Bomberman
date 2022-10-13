@@ -28,6 +28,10 @@ void bomb::set_y_coordinate(double value) {
 void bomb::set_time(double value) {
 	time = value;
 }
+void bomb::set_bomb_removal_flag()
+{
+	bomb_removal_flag = true;
+}
 double bomb::get_x_coordinate() {
 	return x_coordinate;
 }
@@ -37,4 +41,9 @@ double bomb::get_y_coordinate() {
 
 double bomb::get_time() {
 	return time;
+}
+
+bool bomb::get_bomb_removal_flag()
+{
+	return bomb_removal_flag;
 }

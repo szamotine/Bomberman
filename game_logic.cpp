@@ -153,7 +153,7 @@ void game_logic::player_input()
 	}
 
 	if (KEY('X')) {
-		cout << "\nBomb called for player 2";
+		cout << "\nBomb called for player 1";
 		if (player_pointer->get_bomb_flag() && check_bomb_collison(player_pointer)) {
 			
 			new_bomb(player_pointer);
@@ -366,6 +366,24 @@ void game_logic::explode_bomb(bomb* b) {
 
 void game_logic::remove_flagged_bricks() {
 
+	for (int i = 0; i < terrain_pointer->red_brick_list.size(); i++) 
+	{
+		rb_pointer = &terrain_pointer->red_brick_list[i];
+		
+		if (rb_pointer->get_flag()) 
+		{
+
+			int i_index = rb_pointer->get_i_index();
+			int j_index = rb_pointer->get_j_index();
+			collision_pointer->e(i_index, j_index) = 0;
+			terrain_pointer->red_brick_list.erase(terrain_pointer->red_brick_list.begin() + i);
+		}
+
+		
+		
+	}
+	
+	/*
 	for (vector<red_brick>::iterator i = terrain_pointer->red_brick_list.begin(); i != terrain_pointer->red_brick_list.end(); ++i) {
 		if (i->get_flag()) {
 			int i_index = i->get_i_index();
@@ -374,6 +392,7 @@ void game_logic::remove_flagged_bricks() {
 			i = terrain_pointer->red_brick_list.erase(i);
 		}
 	}
+	*/
 }
 
 void game_logic::remove_red_brick(int i, int i_index, int j_index) {
