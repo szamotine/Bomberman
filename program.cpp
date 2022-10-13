@@ -33,7 +33,7 @@ void initialize();
 
 
 world W1 = world();
-//game_logic BL = game_logic(W1);
+
 
 
 
@@ -47,9 +47,6 @@ int main()
 		if (!init) 
 		{
 			initialize();
-			
-			
-			//BL.collision_matrix_init();
 		}
 
 		clear(); // clear the previous drawing

@@ -22,3 +22,23 @@ double red_brick::get_x_coordinate() {
 double red_brick::get_y_coordinate() {
 	return y_coordinate;
 }
+
+int red_brick::get_i_index()
+{
+	return i_index;
+}
+
+int red_brick::get_j_index()
+{
+	return j_index;
+}
+
+void red_brick::set_i_index(int value)
+{
+	i_index = value;
+}
+
+void red_brick::set_j_index(int value)
+{
+	j_index = value;
+}

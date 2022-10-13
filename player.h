@@ -32,7 +32,7 @@ static char* PLAYER_4_SPRITE_NAMES[4] = { PLAYER4_RIGHT, PLAYER4_TOP,PLAYER4_LEF
 // declare and store the 4 possible start position in array 
 // they correspond to each corner of the map 
 static constexpr double start_x_co[4] = { 63.0,651.0,63.0,651.0 };
-static constexpr double  start_y_co[4] = { 63.0,63.0,651.0,651.0 };
+static constexpr double  start_y_co[4] = { 63.0,651.0,651.0,63.0 };
 
 
 class player

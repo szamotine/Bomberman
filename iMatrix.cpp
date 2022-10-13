@@ -67,12 +67,17 @@ void iMatrix::print()
 void iMatrix::print0()
 {
 	int i, j;
+	cout << "\n \t";
+	for (i = 0; i <= N; i++) {
+		cout << i << " ";
+	}
 
-	for(i=0;i<=N;i++) {
+	for(i=N;i>=0;i--) {
+		cout << "\n" << i << ":\t";
 		for(j=0;j<=M;j++) {
 			cout << e(i,j) << " ";
 		}
-		cout << "\n";
+		//cout << "\n";
 	}
 
 }

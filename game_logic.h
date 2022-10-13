@@ -29,6 +29,7 @@ public:
 	game_logic(terrain* pointer_terrain, iMatrix* collision_matrix);
 
 	int calculate_index(double value);
+	double calculate_coordinate(int index);
 
 	void collision_matrix_init();
 
@@ -40,5 +41,8 @@ public:
 	void check_bomb_timer();
 	void new_bomb(player* p);
 	bool check_bomb_collison(player* p);
+	void explode_bomb(bomb* bomb);
+
+	void remove_red_brick(int i, int i_index, int j_index);
 
 };
