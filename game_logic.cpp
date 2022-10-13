@@ -46,12 +46,6 @@ void game_logic::collision_matrix_init() {
 		rb_pointer->set_i_index(i_index);
 		rb_pointer->set_j_index(j_index);
 
-		if (i_index == 14 && j_index == 13) {
-			cout << "\n\n\n Found it: i= " << i;
-		}
-
-		//cout << "\nRB(world) i_index= " << i_index;
-		//cout << "\nRB(world) j_index= " << j_index;	
 		collision_pointer->e(i_index, j_index) = collision_destructible;
 	}
 
@@ -135,9 +129,7 @@ void game_logic::player_input()
 		player_pointer->set_orientation(180.0);
 		if (!check_player_collision(player_pointer)) {
 			player_pointer->move_player_x(-m);
-		}
-		
-		
+		}		
 	}
 	if (KEY('W')) {
 		player_pointer->set_orientation(90.0);
@@ -160,8 +152,6 @@ void game_logic::player_input()
 			player_pointer->set_bomb_time(high_resolution_time());
 			cout << "\nBomb dropped for player 1";
 		}
-		
-
 	}
 
 	// player 2
@@ -203,7 +193,6 @@ void game_logic::player_input()
 				cout << "\nBomb dropped for player 2";
 				player_pointer->set_bomb_time(high_resolution_time());
 			}
-			
 		}
 	}
 	
@@ -315,7 +304,6 @@ bool game_logic::check_bomb_collison(player* p) {
 
 void game_logic::explode_bomb(bomb* b) {
 
-
 	int x;
 	int y;
 
@@ -324,7 +312,7 @@ void game_logic::explode_bomb(bomb* b) {
 
 	cout << "\nExploding bomb at index: " << bomb_i_index << "," << bomb_j_index;
 
-	//int count = 0;
+	
 	for (vector<red_brick>::iterator i = terrain_pointer->red_brick_list.begin(); i != terrain_pointer->red_brick_list.end(); ++i) {
 
 		x = i->get_i_index();
@@ -357,46 +345,26 @@ void game_logic::explode_bomb(bomb* b) {
 		if (x == bomb_i_index - 2 && y == bomb_j_index && collision_pointer->e(bomb_i_index - 1, bomb_j_index) != collision_indestructible) {
 			i->set_flag_false();
 		}
-
-		//count++;
-		
 	}
-	//cout << "\n count: " << count;
 }
 
 void game_logic::remove_flagged_bricks() {
 
-	for (int i = 0; i < terrain_pointer->red_brick_list.size(); i++) 
+	for (int i = 0; unsigned(i) < terrain_pointer->red_brick_list.size(); i++) 
 	{
 		rb_pointer = &terrain_pointer->red_brick_list[i];
 		
 		if (rb_pointer->get_flag()) 
 		{
-
 			int i_index = rb_pointer->get_i_index();
 			int j_index = rb_pointer->get_j_index();
 			collision_pointer->e(i_index, j_index) = 0;
 			terrain_pointer->red_brick_list.erase(terrain_pointer->red_brick_list.begin() + i);
-		}
-
-		
-		
+		}	
 	}
-	
-	/*
-	for (vector<red_brick>::iterator i = terrain_pointer->red_brick_list.begin(); i != terrain_pointer->red_brick_list.end(); ++i) {
-		if (i->get_flag()) {
-			int i_index = i->get_i_index();
-			int j_index = i->get_j_index();
-			collision_pointer->e(i_index, j_index) = 0;
-			i = terrain_pointer->red_brick_list.erase(i);
-		}
-	}
-	*/
 }
 
 void game_logic::remove_red_brick(int i, int i_index, int j_index) {
-	
 	
 	terrain_pointer->red_brick_list.erase(terrain_pointer->red_brick_list.begin() + i);
 	collision_pointer->e(i_index, j_index) = 0;
