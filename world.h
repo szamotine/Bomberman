@@ -23,7 +23,7 @@ private:
 	int area = 17;
 
 	//number of players: currently hardcoded
-	int number_of_players = 1;
+	int number_of_players = 2;
 
 	
 	
