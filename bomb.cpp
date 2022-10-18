@@ -32,6 +32,11 @@ void bomb::set_bomb_removal_flag()
 {
 	bomb_removal_flag = true;
 }
+void bomb::set_bomb_indices(int i_index, int j_index)
+{
+	this->i_index = i_index;
+	this->j_index = j_index;
+}
 double bomb::get_x_coordinate() {
 	return x_coordinate;
 }
@@ -47,3 +52,14 @@ bool bomb::get_bomb_removal_flag()
 {
 	return bomb_removal_flag;
 }
+
+int bomb::get_bomb_i_index()
+{
+	return i_index;
+}
+
+int bomb::get_bomb_j_index()
+{
+	return j_index;
+}
+

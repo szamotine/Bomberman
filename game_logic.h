@@ -23,6 +23,12 @@ private:
 	// freq used to store current time
 	double current_time{};
 
+	//player orientations
+	static constexpr double RIGHT = 0.0;
+	static constexpr double UP = 90.0;
+	static constexpr double LEFT = 180.0;
+	static constexpr double DOWN = 270.0;
+
 	
 
 
