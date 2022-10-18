@@ -9,6 +9,9 @@ private:
 	double time;
 	bool bomb_removal_flag;
 
+	int i_index{}, j_index{};
+	
+
 
 
 public:
@@ -20,10 +23,13 @@ public:
 	void set_y_coordinate(double value);
 	void set_time(double value);
 	void set_bomb_removal_flag();
+	void set_bomb_indices(int i_index, int j_index);
 	
 
 	double get_x_coordinate();
 	double get_y_coordinate();
 	double get_time();
 	bool get_bomb_removal_flag();
+	int get_bomb_i_index();
+	int get_bomb_j_index();
 };

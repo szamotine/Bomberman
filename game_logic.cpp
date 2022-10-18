@@ -66,6 +66,7 @@ void game_logic::collision_matrix_init() {
 
 bool game_logic::check_player_collision(player* p) {
 	
+	// index used to check collision matrix
 	int i_index;
 	int j_index;
 
@@ -73,72 +74,82 @@ bool game_logic::check_player_collision(player* p) {
 	int x_shift = 15;
 	int y_shift_down = 22;
 	int y_shift_up = 20;
+	
+	// temporary placeholders for player coordinates
+	double x, y, orientation;
+
 		
+	x = p->get_x_coordinate();
+	y = p->get_y_coordinate();
+	orientation = p->get_orientation();
+
+	if (orientation == RIGHT) {
+		x += x_shift;
+	}
+	if (orientation == UP) {
+		y += y_shift_up;
+	}
+	if (orientation == LEFT) {
+		x -= x_shift;
+	}
+	if (orientation == DOWN) {
+		y -= y_shift_down;
+	}
+
+	i_index = calculate_index(x);
+	j_index = calculate_index(y);
+	
 		
-		double x = p->get_x_coordinate();
-		double y = p->get_y_coordinate();
-		double orientation = p->get_orientation();
-
-		if (orientation == 0.0) {
-			x += x_shift;
-		}
-		if (orientation == 90.0) {
-			y += y_shift_up;
-		}
-		if (orientation == 180.0) {
-			x -= x_shift;
-		}
-		if (orientation == 270.0) {
-			y -= y_shift_down;
-		}
-
-
-		i_index = calculate_index(x);
-		j_index = calculate_index(y);
-		//cout << "\nchecking index: " << i_index << "," << j_index;
-		//cout << "\ncollision matrix value at index: " << collision_pointer->e(i_index, j_index);
-
-		//checking for grey brick collision
-		if (collision_pointer->e(i_index, j_index) == collision_indestructible) {
-			//cout << "\nPlayer / Grey Brick collision detected at index: " << i_index << "," << j_index;
-			return true;
-		}
-		// checking for red brick collision
-		if (collision_pointer->e(i_index, j_index) == collision_destructible) {
-			//cout << "\nPlayer / Red Brick collision detected at index: " << i_index << "," << j_index;
-			return true;
-		}
+	//checking for grey brick collision
+	if (collision_pointer->e(i_index, j_index) == collision_indestructible) {
+		//cout << "\nPlayer / Grey Brick collision detected at index: " << i_index << "," << j_index;
+		return true;
+	}
+	// checking for red brick collision
+	if (collision_pointer->e(i_index, j_index) == collision_destructible) {
+		//cout << "\nPlayer / Red Brick collision detected at index: " << i_index << "," << j_index;
+		return true;
+	}
+	if (collision_pointer->e(i_index, j_index) == collision_bomb) {
+		//cout << "\nPlayer / Bomb collision detected at index: " << i_index << "," << j_index;
+		return true;
+	}
 
 	return false;
 }
 
 void game_logic::player_input()
 {
+	// movement step size for fluid looking motion
 	int m = 3;
 
 	// pointer to player 1 of terrain player_list
 	player_pointer = &terrain_pointer->player_list[0];
+
+	//checks if player bomb flag can be reset to allow bomb placement
 	check_bomb_flag(player_pointer);
+
+	//input keys for movement
 	if (KEY('D')) {
-		player_pointer->set_orientation(0.0);
+		player_pointer->set_orientation(RIGHT);
 		if (!check_player_collision(player_pointer)) {
 			player_pointer->move_player_x(m);
 		}
 	}
 	if (KEY('A')) {
-		player_pointer->set_orientation(180.0);
+		player_pointer->set_orientation(LEFT);
 		if (!check_player_collision(player_pointer)) {
 			player_pointer->move_player_x(-m);
 		}		
 	}
 	if (KEY('W')) {
-		player_pointer->set_orientation(90.0);
+		player_pointer->set_orientation(UP);
 		if (!check_player_collision(player_pointer)) {
 			player_pointer->move_player_y(m);
 		}
 	}
 	if (KEY('S')) {
-		player_pointer->set_orientation(270.0);
+		player_pointer->set_orientation(DOWN);
 		if (!check_player_collision(player_pointer)) {
 			player_pointer->move_player_y(-m);
 		}
@@ -149,7 +160,7 @@ void game_logic::player_input()
 		if (player_pointer->get_bomb_flag() && check_bomb_collison(player_pointer)) {
 			
 			new_bomb(player_pointer);
-			player_pointer->set_bomb_time(high_resolution_time());
+			
 			cout << "\nBomb dropped for player 1";
 		}
 	}
@@ -161,25 +172,25 @@ void game_logic::player_input()
 		check_bomb_flag(player_pointer);
 
 		if (KEY('L')) {
-			player_pointer->set_orientation(0.0);
+			player_pointer->set_orientation(RIGHT);
 			if (!check_player_collision(player_pointer)) {
 				player_pointer->move_player_x(m);
 			}
 		}
 		if (KEY('J')) {
-			player_pointer->set_orientation(180.0);
+			player_pointer->set_orientation(LEFT);
 			if (!check_player_collision(player_pointer)) {
 				player_pointer->move_player_x(-m);
 			}
 		}
 		if (KEY('I')) {
-			player_pointer->set_orientation(90.0);
+			player_pointer->set_orientation(UP);
 			if (!check_player_collision(player_pointer)) {
 				player_pointer->move_player_y(m);
 			}
 		}
 		if (KEY('K')) {
-			player_pointer->set_orientation(270.0);
+			player_pointer->set_orientation(DOWN);
 			if (!check_player_collision(player_pointer)) {
 				player_pointer->move_player_y(-m);
 			}
@@ -191,7 +202,7 @@ void game_logic::player_input()
 
 				new_bomb(player_pointer);
 				cout << "\nBomb dropped for player 2";
-				player_pointer->set_bomb_time(high_resolution_time());
+				//player_pointer->set_bomb_time(high_resolution_time());
 			}
 		}
 	}
@@ -227,39 +238,40 @@ void game_logic::check_bomb_timer()
 
 void game_logic::new_bomb(player* p) {
 
-	/*
-	double x_shift = 35.0;
-	double y_shift_down = 40.0;
-	double y_shift_up = 30.0;
-
-	// Get Player coordinates
-	double x = p->get_x_coordinate();
-	double y = p->get_y_coordinate();
-	*/
+	//get player index
 	int i_index = calculate_index(p->get_x_coordinate());
 	int j_index = calculate_index(p->get_y_coordinate());
 
-	// adjust location for direction
+	// adjust bomb drop location for direction that player is facing
 
 	double orientation = p->get_orientation();
 
-	if (orientation == 0.0) {
+	if (orientation == RIGHT) {
 		i_index++;
 	}
-	if (orientation == 90.0) {
+	if (orientation == UP) {
 		j_index++;
 	}
-	if (orientation == 180.0) {
+	if (orientation == LEFT) {
 		i_index--;
 	}
-	if (orientation == 270.0) {
+	if (orientation == DOWN) {
 		j_index--;
 	}
 
+	//calculate coordinates of bomb location
 	double x = calculate_coordinate(i_index);
 	double y = calculate_coordinate(j_index);
+
+	//create bomb object
 	terrain_pointer->create_bomb(x, y);
+	
+	//configure player to ensure 1 bomb placement per time delay
 	p->set_bomb_flag(false);
+	p->set_bomb_time(high_resolution_time());
+
+	collision_pointer->e(i_index, j_index) = collision_bomb;
+
 }
 
 bool game_logic::check_bomb_collison(player* p) {
@@ -279,16 +291,16 @@ bool game_logic::check_bomb_collison(player* p) {
 	*/
 	double orientation = p->get_orientation();
 
-	if (orientation == 0.0) {
+	if (orientation == RIGHT) {
 		i_index ++;
 	}
-	if (orientation == 90.0) {
+	if (orientation == UP) {
 		j_index ++;
 	}
-	if (orientation == 180.0) {
+	if (orientation == LEFT) {
 		i_index--;
 	}
-	if (orientation == 270.0) {
+	if (orientation == RIGHT) {
 		j_index--;
 	}
 
@@ -307,10 +319,12 @@ void game_logic::explode_bomb(bomb* b) {
 	int x;
 	int y;
 
-	int bomb_i_index = calculate_index(b->get_x_coordinate());
-	int bomb_j_index = calculate_index(b->get_y_coordinate());
+	int bomb_i_index =calculate_index(b->get_x_coordinate()); // b->get_bomb_i_index();
+
+	int bomb_j_index = calculate_index(b->get_y_coordinate()); //b->get_bomb_j_index();
 
 	cout << "\nExploding bomb at index: " << bomb_i_index << "," << bomb_j_index;
+	collision_pointer->e(bomb_i_index, bomb_j_index) = 0;
 
 	
 	for (vector<red_brick>::iterator i = terrain_pointer->red_brick_list.begin(); i != terrain_pointer->red_brick_list.end(); ++i) {
@@ -362,10 +376,4 @@ void game_logic::remove_flagged_bricks() {
 			terrain_pointer->red_brick_list.erase(terrain_pointer->red_brick_list.begin() + i);
 		}	
 	}
-}
-
-void game_logic::remove_red_brick(int i, int i_index, int j_index) {
-	
-	terrain_pointer->red_brick_list.erase(terrain_pointer->red_brick_list.begin() + i);
-	collision_pointer->e(i_index, j_index) = 0;
 }
