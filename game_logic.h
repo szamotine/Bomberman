@@ -16,11 +16,14 @@ private:
 	bomb* bomb_pointer{};
 
 	// collision matrix value that indicates destructable red square
-	int collision_destructible = 2;
 	int collision_indestructible = 1;
-	
+	int collision_destructible = 2;
+	int collision_bomb = 3;
+
 	// freq used to store current time
 	double current_time{};
+
+	
 
 
 public:
@@ -43,7 +46,7 @@ public:
 	bool check_bomb_collison(player* p);
 	void explode_bomb(bomb* bomb);
 
-	void remove_red_brick(int i, int i_index, int j_index);
 	void remove_flagged_bricks();
 
 };
+

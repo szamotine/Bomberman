@@ -108,6 +108,10 @@ bool game_logic::check_player_collision(player* p) {
 			//cout << "\nPlayer / Red Brick collision detected at index: " << i_index << "," << j_index;
 			return true;
 		}
+		if (collision_pointer->e(i_index, j_index) == collision_bomb) {
+			cout << "\nPlayer / Bomb collision detected at index: " << i_index << "," << j_index;
+			return true;
+		}
 
 	return false;
 }
@@ -149,7 +153,7 @@ void game_logic::player_input()
 		if (player_pointer->get_bomb_flag() && check_bomb_collison(player_pointer)) {
 			
 			new_bomb(player_pointer);
-			player_pointer->set_bomb_time(high_resolution_time());
+			
 			cout << "\nBomb dropped for player 1";
 		}
 	}
@@ -191,7 +195,7 @@ void game_logic::player_input()
 
 				new_bomb(player_pointer);
 				cout << "\nBomb dropped for player 2";
-				player_pointer->set_bomb_time(high_resolution_time());
+				//player_pointer->set_bomb_time(high_resolution_time());
 			}
 		}
 	}
@@ -227,19 +231,11 @@ void game_logic::check_bomb_timer()
 
 void game_logic::new_bomb(player* p) {
 
-	/*
-	double x_shift = 35.0;
-	double y_shift_down = 40.0;
-	double y_shift_up = 30.0;
-
-	// Get Player coordinates
-	double x = p->get_x_coordinate();
-	double y = p->get_y_coordinate();
-	*/
+	//get player index
 	int i_index = calculate_index(p->get_x_coordinate());
 	int j_index = calculate_index(p->get_y_coordinate());
 
-	// adjust location for direction
+	// adjust bomb drop location for direction that player is facing
 
 	double orientation = p->get_orientation();
 
@@ -256,10 +252,19 @@ void game_logic::new_bomb(player* p) {
 		j_index--;
 	}
 
+	//calculate coordinates of bomb location
 	double x = calculate_coordinate(i_index);
 	double y = calculate_coordinate(j_index);
+
+	//create bomb object
 	terrain_pointer->create_bomb(x, y);
+	
+	//configure player to ensure 1 bomb placement per time delay
 	p->set_bomb_flag(false);
+	p->set_bomb_time(high_resolution_time());
+
+	collision_pointer->e(i_index, j_index) = collision_bomb;
+
 }
 
 bool game_logic::check_bomb_collison(player* p) {
@@ -311,6 +316,7 @@ void game_logic::explode_bomb(bomb* b) {
 	int bomb_j_index = calculate_index(b->get_y_coordinate());
 
 	cout << "\nExploding bomb at index: " << bomb_i_index << "," << bomb_j_index;
+	collision_pointer->e(bomb_i_index, bomb_j_index) = 0;
 
 	
 	for (vector<red_brick>::iterator i = terrain_pointer->red_brick_list.begin(); i != terrain_pointer->red_brick_list.end(); ++i) {
@@ -362,10 +368,4 @@ void game_logic::remove_flagged_bricks() {
 			terrain_pointer->red_brick_list.erase(terrain_pointer->red_brick_list.begin() + i);
 		}	
 	}
-}
-
-void game_logic::remove_red_brick(int i, int i_index, int j_index) {
-	
-	terrain_pointer->red_brick_list.erase(terrain_pointer->red_brick_list.begin() + i);
-	collision_pointer->e(i_index, j_index) = 0;
 }
