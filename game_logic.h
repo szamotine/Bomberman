@@ -15,9 +15,18 @@ private:
 	iMatrix* collision_pointer{};
 	bomb* bomb_pointer{};
 
-	// collision matrix value that indicates destructable red square
-	int collision_indestructible = 1;
-	int collision_destructible = 2;
+	// collision matrix values
+
+	enum Collision_Type
+	{
+		None,
+		Indestructible,
+		Destructible,
+		Bomb
+	};
+
+	int collision_indestructible = 1; //grey bricks
+	int collision_destructible = 2; // red bricks
 	int collision_bomb = 3;
 
 	// freq used to store current time
@@ -46,7 +55,7 @@ public:
 
 	void player_input();
 
-	void check_bomb_flag(player* p);
+	void check_bomb_flag_time(player* p);
 	void check_bomb_timer();
 	void new_bomb(player* p);
 	bool check_bomb_collison(player* p);
