@@ -28,9 +28,12 @@ void terrain::initialize_terrain(int number) {
 }
 
 void terrain::initialize_red_bricks() {
-	
+	//create red bricks, add them to red_brick_list
+
+	// coordinates for red bricks
 	double x;
 	double y;
+
 	for (double i = 1; i <= 9; i++) {
 
 		x = (147 + (i * 42));
@@ -41,7 +44,6 @@ void terrain::initialize_red_bricks() {
 
 		red_brick_list.push_back(red_brick(63, y));
 		red_brick_list.push_back(red_brick(651, y));
-
 	}
 	 
 	for (double i = 0; i < 6; i++) {
@@ -49,20 +51,15 @@ void terrain::initialize_red_bricks() {
 			x = (105 + k * 42);
 			y = (147 + i * 84);
 			red_brick_list.push_back(red_brick(x, y));
-
 		}
 	}
 	for (double i = 0; i < 7; i++) {
 		for (double k = 0; k < 6; k++) {
 			x = (147 + k * 84);
 			y = (105 + i * 84);
-
 			red_brick_list.push_back(red_brick(x, y));
-			
 		}
 	}
-
-
 }
 
 void terrain::initialize_grey_bricks() {
@@ -75,7 +72,6 @@ void terrain::initialize_grey_bricks() {
 		
 		grey_brick_list.push_back(grey_brick(x_coordinate, 21));
 		grey_brick_list.push_back(grey_brick(x_coordinate, 693));
-		
 	}
 	
 	// create the side walls of the enclosed terrrain
@@ -87,12 +83,10 @@ void terrain::initialize_grey_bricks() {
 	}
 		
 	// create the check pattern 
-	
 	for (int i = 3; i < 16; i = i + 2) {
 		for (int j = 0; j < 7; j++) {
 			double x_coordinate = ((i * 42) - 21);
 			double y_coordinate = ((j * 84.0) + 105.0);
-			//grey_brick temp = grey_brick(((i * 42) - 21), ((j * 84.0) + 105.0));
 			grey_brick_list.push_back(grey_brick(x_coordinate, y_coordinate));
 		
 		}

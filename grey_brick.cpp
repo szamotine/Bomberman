@@ -5,11 +5,6 @@ using namespace std;
 grey_brick::grey_brick(double x, double y) {
 	x_coordinate = x;
 	y_coordinate = y;
-	/*
-	double x_index = ((x + 21) / 42) -1;
-	double y_index = ((y + 21) / 42) -1;
-	cout << "\nGrey Brick Constructed at x: " << x_index << ", y: " << y_index;
-	*/
 }
 
 grey_brick::grey_brick(grey_brick& source) {
