@@ -25,9 +25,9 @@ private:
 		Bomb
 	};
 
-	int collision_indestructible = 1; //grey bricks
-	int collision_destructible = 2; // red bricks
-	int collision_bomb = 3;
+	//int collision_indestructible = 1; //grey bricks
+	//int collision_destructible = 2; // red bricks
+	//int collision_bomb = 3;
 
 	// freq used to store current time
 	double current_time{};

@@ -16,6 +16,7 @@ game_logic::game_logic(terrain* pointer_terrain, iMatrix* collision_matrix) {
 }
 
 int game_logic::calculate_index(double coordinate) {
+	
 	double xmin = 21, dx = 42;
 
 	double d_index = (coordinate - xmin) / dx;
@@ -24,18 +25,24 @@ int game_logic::calculate_index(double coordinate) {
 }
 
 double game_logic::calculate_coordinate(int index) {
+	//xmin represents offset from left side of the frame
+	//dx is the length of the side of each square area used for the 
 	double xmin = 21, dx = 42;
 	int coordinate = (int)(index * dx + xmin);
 	return coordinate;
 }
 
 void game_logic::collision_matrix_init() {
-
 	//To be run once at initialization
+
+	// holders for index values of object locations
 	int i_index, j_index;
 
+	// number of bricks
+	int n;
+	
 	// number of red bricks
-	int n = terrain_pointer->red_brick_list.size();
+	n = terrain_pointer->red_brick_list.size();
 
 	//sets values in collision matrix for each red brick
 	for (int i = 0; i < n; i++)
@@ -47,9 +54,9 @@ void game_logic::collision_matrix_init() {
 		rb_pointer->set_j_index(j_index);
 
 		collision_pointer->e(i_index, j_index) = Collision_Type::Destructible;
-		
 	}
 
+	// number of grey bricks
 	n = terrain_pointer->grey_brick_list.size();
 
 	//sets values in collision matrix for each grey brick
@@ -58,12 +65,10 @@ void game_logic::collision_matrix_init() {
 		gb_pointer = &terrain_pointer->grey_brick_list[i];
 		i_index = calculate_index(gb_pointer->get_x_coordinate());
 		j_index = calculate_index(gb_pointer->get_y_coordinate());
-		//cout << "\nRB(world) i_index= " << i_index;
-		//cout << "\nRB(world) j_index= " << j_index;	
+
 		collision_pointer->e(i_index, j_index) = Collision_Type::Indestructible;
-		cout << "\nGrey brick collision matrix at i: " << i_index << ", j: " << j_index;
 	}
-		collision_pointer->print0();
+		//collision_pointer->print0();
 }
 
 bool game_logic::check_player_collision(player* p) {
@@ -159,12 +164,10 @@ void game_logic::player_input()
 	}
 
 	if (KEY('X')) {
-		cout << "\nBomb called for player 1";
-		if (player_pointer->get_bomb_flag() && check_bomb_collison(player_pointer)) {
-			
+		
+		if (player_pointer->get_bomb_flag() && check_bomb_collison(player_pointer)) 
+		{
 			new_bomb(player_pointer);
-			
-			cout << "\nBomb dropped for player 1";
 		}
 	}
 
@@ -205,12 +208,9 @@ void game_logic::player_input()
 		}
 
 		if (KEY('M')) {
-			cout << "\nBomb called for player 2";
+			
 			if (player_pointer->get_bomb_flag() && check_bomb_collison(player_pointer)) {
-
 				new_bomb(player_pointer);
-				cout << "\nBomb dropped for player 2";
-				//player_pointer->set_bomb_time(high_resolution_time());
 			}
 		}
 	}
@@ -278,7 +278,7 @@ void game_logic::new_bomb(player* p) {
 	p->set_bomb_flag(false);
 	p->set_bomb_time(high_resolution_time());
 
-	collision_pointer->e(i_index, j_index) = collision_bomb;
+	collision_pointer->e(i_index, j_index) = Collision_Type::Bomb;
 
 }
 
@@ -287,7 +287,7 @@ bool game_logic::check_bomb_collison(player* p) {
 	int i_index = calculate_index(p->get_x_coordinate());
 	int j_index = calculate_index(p->get_y_coordinate());
 
-	cout << "\nPlayer at index: " << i_index << "," << j_index;
+	//cout << "\nPlayer at index: " << i_index << "," << j_index;
 
 	double orientation = p->get_orientation();
 
@@ -311,7 +311,7 @@ bool game_logic::check_bomb_collison(player* p) {
 	}
 	else
 	{
-		cout << "\nCannot place bomb at index: " << i_index << "," << j_index;
+		//cout << "\nCannot place bomb at index: " << i_index << "," << j_index;
 
 		return false;
 	}
@@ -328,8 +328,6 @@ void game_logic::explode_bomb(bomb* b) {
 	// bomb coordinate index
 	int bomb_i_index =calculate_index(b->get_x_coordinate()); 
 	int bomb_j_index = calculate_index(b->get_y_coordinate());
-
-	cout << "\nExploding bomb at index: " << bomb_i_index << "," << bomb_j_index;
 
 	//remove bomb index from collision matrix
 	collision_pointer->e(bomb_i_index, bomb_j_index) = 0;
@@ -351,22 +349,22 @@ void game_logic::explode_bomb(bomb* b) {
 		}
 
 		// mark red brick for removal: 2 squares above the bomb if there are no indestructibles in the way
-		if (x == bomb_i_index && (y == bomb_j_index + 2) && collision_pointer->e(bomb_i_index, bomb_j_index + 1) != collision_indestructible) {
+		if (x == bomb_i_index && (y == bomb_j_index + 2) && collision_pointer->e(bomb_i_index, bomb_j_index + 1) != Collision_Type::Indestructible) {
 			i->set_flag_false();
 		}
 
 		// mark red brick for removal: 2 squares below the bomb if there are no indestructibles in the way
-		if (x == bomb_i_index && (y == bomb_j_index - 2) && collision_pointer->e(bomb_i_index, bomb_j_index - 1) != collision_indestructible) {
+		if (x == bomb_i_index && (y == bomb_j_index - 2) && collision_pointer->e(bomb_i_index, bomb_j_index - 1) != Collision_Type::Indestructible) {
 			i->set_flag_false();
 		}
 
 		// mark red brick for removal: 2 squares to the right of the bomb if there are no indestructibles in the way
-		if (x == bomb_i_index + 2 && y == bomb_j_index && collision_pointer->e(bomb_i_index + 1, bomb_j_index) != collision_indestructible) {
+		if (x == bomb_i_index + 2 && y == bomb_j_index && collision_pointer->e(bomb_i_index + 1, bomb_j_index) != Collision_Type::Indestructible) {
 			i->set_flag_false();
 		}
 
 		// mark red brick for removal: 2 squares to the left of the bomb if there are no indestructibles in the way
-		if (x == bomb_i_index - 2 && y == bomb_j_index && collision_pointer->e(bomb_i_index - 1, bomb_j_index) != collision_indestructible) {
+		if (x == bomb_i_index - 2 && y == bomb_j_index && collision_pointer->e(bomb_i_index - 1, bomb_j_index) != Collision_Type::Indestructible) {
 			i->set_flag_false();
 		}
 	}
