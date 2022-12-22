@@ -12,11 +12,10 @@ bomb::bomb(double x, double y, double t) {
 	y_coordinate = y;
 	time = t;
 	bomb_removal_flag = false;
-	/*
-	int x_index = (int)((x + 21) / 42) - 1;
-	int y_index = (int)((y + 21) / 42) - 1;
-	std::cout << "\nBomb Constructed at x: " << x_index << ", y: " << y_index;
-	*/
+	set_bomb_indices(x, y);
+	
+	//std::cout << "\nBomb Constructed at i: " << i_index << ", j: " << j_index;
+	
 }
 
 void bomb::set_x_coordinate(double value) {
@@ -32,10 +31,10 @@ void bomb::set_bomb_removal_flag()
 {
 	bomb_removal_flag = true;
 }
-void bomb::set_bomb_indices(int i_index, int j_index)
+void bomb::set_bomb_indices(double x, double y)
 {
-	this->i_index = i_index;
-	this->j_index = j_index;
+	this->i_index = calculate_index(x);
+	this->j_index = calculate_index(y);
 }
 double bomb::get_x_coordinate() {
 	return x_coordinate;
@@ -63,3 +62,11 @@ int bomb::get_bomb_j_index()
 	return j_index;
 }
 
+int bomb::calculate_index(double coordinate)
+{
+	double xmin = 21, dx = 42;
+
+	double d_index = (coordinate - xmin) / dx;
+	int index = (int)(d_index + 0.5);
+	return index;
+}

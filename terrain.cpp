@@ -88,7 +88,6 @@ void terrain::initialize_grey_bricks() {
 			double x_coordinate = ((i * 42) - 21);
 			double y_coordinate = ((j * 84.0) + 105.0);
 			grey_brick_list.push_back(grey_brick(x_coordinate, y_coordinate));
-		
 		}
 	}
 
@@ -195,7 +194,6 @@ void terrain::draw_map() {
 
 void terrain::create_bomb(double x, double y) {
 	bomb_list.push_back(bomb(x,y,high_resolution_time()));
-	//cout << "\nBomb list size: " << bomb_list.size();
 }
 
 void terrain::remove_bomb(int index) {

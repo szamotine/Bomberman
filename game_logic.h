@@ -61,7 +61,15 @@ public:
 	bool check_bomb_collison(player* p);
 	void explode_bomb(bomb* bomb);
 
+	void chain_bomb_explosion(bomb* b);
+
+	void check_bomb_bomb_interaction(int i, int j);
+
+	void flag_chain_bomb(int i, int j);
+
 	void remove_flagged_bricks();
+
+	void remove_flagged_bombs();
 
 };
 
