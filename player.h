@@ -51,6 +51,8 @@ private:
 	// delay bomb drop
 	double bomb_time;
 	bool bomb_flag;
+	bool removal_flag;
+	int player_number;
 
 public:
 
@@ -64,7 +66,7 @@ public:
 	double get_scale();
 	int get_sprite_id();
 	bool get_bomb_flag();
-
+	bool get_player_removal_flag();
 	double get_bomb_time();
 
 	void set_x_coordinate(double value);
@@ -73,6 +75,7 @@ public:
 	void set_scale(double value);
 	void set_bomb_time(double value);
 	void set_bomb_flag(bool flag);
+	void set_removal_flag();
 
 	void initialize_sprites(int player_number);
 

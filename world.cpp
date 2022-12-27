@@ -39,6 +39,7 @@ void world::run() {
 	pointer_game_logic->check_bomb_timer();
 	pointer_game_logic->remove_flagged_bricks();
 	pointer_game_logic->remove_flagged_bombs();
+	pointer_game_logic->remove_flagged_players();
 	pointer_terrain->draw_map();
 }
 

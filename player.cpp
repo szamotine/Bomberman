@@ -10,8 +10,8 @@ player::player(int player_number)
 	bomb_time = 0.0;
 	bomb_flag = true;
 	initialize_sprites(player_number);
-	
-	
+	removal_flag = false;
+	this->player_number = player_number;
 }
 
 player::~player()
@@ -69,6 +69,11 @@ bool player::get_bomb_flag() {
 	return bomb_flag;
 }
 
+bool player::get_player_removal_flag()
+{
+	return removal_flag;
+}
+
 void player::set_x_coordinate(double value)
 {
 	x_coordinate = value;
@@ -95,6 +100,11 @@ void player::set_bomb_time(double value) {
 
 void player::set_bomb_flag(bool flag) {
 	bomb_flag = flag;
+}
+
+void player::set_removal_flag()
+{
+	removal_flag = true;
 }
 
 

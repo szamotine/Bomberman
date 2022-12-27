@@ -28,13 +28,24 @@ void terrain::initialize_terrain(int number) {
 }
 
 void terrain::initialize_red_bricks() {
-	//create red bricks, add them to red_brick_list
+	// create red brick pattern
+	
+	initialize_red_bricks_outer_perimeter();
+	initialize_red_bricks_horizontal_lines();
+	initialize_red_bricks_horizontal_lines_between_grey_bricks();
+
+}
+
+void terrain::initialize_red_bricks_outer_perimeter()
+{
 
 	// coordinates for red bricks
 	double x;
 	double y;
 
-	for (double i = 1; i <= 9; i++) {
+	//creates pattern on outer perimeter to confine players to corners
+	for (double i = 1; i <= 9; i++)
+	{
 
 		x = (147 + (i * 42));
 		y = x;
@@ -45,21 +56,46 @@ void terrain::initialize_red_bricks() {
 		red_brick_list.push_back(red_brick(63, y));
 		red_brick_list.push_back(red_brick(651, y));
 	}
-	 
-	for (double i = 0; i < 6; i++) {
-		for (double k = 0; k < 13; k++) {
+
+}
+
+void terrain::initialize_red_bricks_horizontal_lines()
+{
+	// coordinates for red bricks
+	double x;
+	double y;
+
+
+	for (double i = 0; i < 6; i++)
+	{
+		for (double k = 0; k < 13; k++)
+		{
 			x = (105 + k * 42);
 			y = (147 + i * 84);
 			red_brick_list.push_back(red_brick(x, y));
 		}
 	}
-	for (double i = 0; i < 7; i++) {
-		for (double k = 0; k < 6; k++) {
+
+}
+
+void terrain::initialize_red_bricks_horizontal_lines_between_grey_bricks()
+{
+	// coordinates for red bricks
+	double x;
+	double y;
+
+
+
+	for (double i = 0; i < 7; i++)
+	{
+		for (double k = 0; k < 6; k++)
+		{
 			x = (147 + k * 84);
 			y = (105 + i * 84);
 			red_brick_list.push_back(red_brick(x, y));
 		}
 	}
+
 }
 
 void terrain::initialize_grey_bricks() {
@@ -82,7 +118,7 @@ void terrain::initialize_grey_bricks() {
 		grey_brick_list.push_back(grey_brick(693, y_coordinate));
 	}
 		
-	// create the check pattern 
+	// create the checkerboard pattern 
 	for (int i = 3; i < 16; i = i + 2) {
 		for (int j = 0; j < 7; j++) {
 			double x_coordinate = ((i * 42) - 21);
@@ -90,14 +126,13 @@ void terrain::initialize_grey_bricks() {
 			grey_brick_list.push_back(grey_brick(x_coordinate, y_coordinate));
 		}
 	}
-
 }
 
 
 void terrain::initialize_players(int number_of_players)
 {
-	for (int i = 0; i < number_of_players; i++) {
-		
+	for (int i = 0; i < number_of_players; i++) 
+	{	
 		player_list.push_back(player(i));
 	}
 }
@@ -105,10 +140,8 @@ void terrain::initialize_players(int number_of_players)
 void terrain::draw_grey_bricks(){
 	
 	if (grey_brick_list.size() > 0) {
-		for (grey_brick gb : grey_brick_list) {
-			
-			//cout << "\nDrawing grey brick at x: " << gb.get_x_coordinate() << " y: " << gb.get_y_coordinate();
-
+		for (grey_brick gb : grey_brick_list) 
+		{
 			draw_sprite
 			(
 				grey_brick_sprite_id,
@@ -124,10 +157,8 @@ void terrain::draw_grey_bricks(){
 void terrain::draw_red_bricks()
 {
 	if (red_brick_list.size() > 0) {
-		for (red_brick rb : red_brick_list) {
-
-			//cout << "\nDrawing grey brick at x: " << gb.get_x_coordinate() << " y: " << gb.get_y_coordinate();
-
+		for (red_brick rb : red_brick_list) 
+		{
 			draw_sprite
 			(
 				red_brick_sprite_id,
@@ -138,7 +169,6 @@ void terrain::draw_red_bricks()
 			);
 		}
 	}
-
 }
 
 void terrain::draw_terrain(){
@@ -148,9 +178,8 @@ void terrain::draw_terrain(){
 void terrain::draw_players(){
 
 	if (player_list.size() > 0) {
-		for (player p : player_list) {
-
-
+		for (player p : player_list) 
+		{
 			draw_sprite
 			(
 				p.get_sprite_id(),
@@ -161,16 +190,11 @@ void terrain::draw_players(){
 			);
 		}
 	}
-
 }
 
 void terrain::draw_bombs() {
-
-	
 	if (bomb_list.size() > 0) {
 		for (bomb b : bomb_list) {
-
-
 			draw_sprite
 			(
 				bomb_sprite_id,
@@ -202,4 +226,8 @@ void terrain::remove_bomb(int index) {
 
 void terrain::remove_red_brick(int index) {
 	red_brick_list.erase(red_brick_list.begin() + index);
+}
+void terrain::remove_player(int index)
+{
+	player_list.erase(player_list.begin() + index);
 }
