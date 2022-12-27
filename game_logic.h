@@ -46,10 +46,9 @@ public:
 	~game_logic();
 	game_logic(terrain* pointer_terrain, iMatrix* collision_matrix);
 
-	int calculate_index(double value);
-	double calculate_coordinate(int index);
-
 	void collision_matrix_init();
+	void collision_matrix_init_red_bricks();
+	void collision_matrix_init_grey_bricks();
 
 	bool check_player_movement(player* player);
 
@@ -81,6 +80,7 @@ public:
 	void bomb_flag_red_bricks(int bomb_i_index, int bomb_j_index);
 	void set_matrix_to_empty_space(int i, int j);
 	void set_matrix_to_bomb(int i, int j);
+	
 
 };
 

@@ -2,6 +2,7 @@
 #include <iostream>
 
 #include "bomb.h"
+#include "calculator.h"
 
 bomb::~bomb() {
 	
@@ -33,8 +34,8 @@ void bomb::set_bomb_removal_flag()
 }
 void bomb::set_bomb_indices(double x, double y)
 {
-	this->i_index = calculate_index(x);
-	this->j_index = calculate_index(y);
+	this->i_index = calculator::calculate_index(x);
+	this->j_index = calculator::calculate_index(x);
 }
 double bomb::get_x_coordinate() {
 	return x_coordinate;
@@ -60,13 +61,4 @@ int bomb::get_bomb_i_index()
 int bomb::get_bomb_j_index()
 {
 	return j_index;
-}
-
-int bomb::calculate_index(double coordinate)
-{
-	double xmin = 21, dx = 42;
-
-	double d_index = (coordinate - xmin) / dx;
-	int index = (int)(d_index + 0.5);
-	return index;
 }

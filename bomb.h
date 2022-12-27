@@ -5,15 +5,10 @@ class bomb
 private:
 	double x_coordinate;
 	double y_coordinate;
-
 	double time;
 	bool bomb_removal_flag;
-
-	int i_index{}, j_index{};
+	int i_index, j_index;
 	
-
-
-
 public:
 
 	~bomb();
@@ -31,5 +26,4 @@ public:
 	bool get_bomb_removal_flag();
 	int get_bomb_i_index();
 	int get_bomb_j_index();
-	int calculate_index(double coordinate);
 };

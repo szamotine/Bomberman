@@ -4,6 +4,7 @@
 #include "2D_graphics.h"
 #include <Windows.h>
 #include "timer.h"
+#include "calculator.h"
 
 #pragma region Constructors
 
@@ -163,9 +164,8 @@ bool game_logic::check_player_movement(player* p)
 		y -= y_shift_down;
 	}
 
-	i_index = calculate_index(x);
-	j_index = calculate_index(y);
-
+	i_index = calculator::calculate_index(x);
+	j_index = calculator::calculate_index(y);
 
 	if (check_matrix_for_empty_space(i_index, j_index))
 	{
@@ -179,8 +179,8 @@ void game_logic::new_bomb(player* p)
 {
 
 	//get player index
-	int i_index = calculate_index(p->get_x_coordinate());
-	int j_index = calculate_index(p->get_y_coordinate());
+	int i_index = calculator::calculate_index(p->get_x_coordinate());
+	int j_index = calculator::calculate_index(p->get_y_coordinate());
 
 	// adjust bomb drop location for direction that player is facing
 
@@ -204,8 +204,8 @@ void game_logic::new_bomb(player* p)
 	}
 
 	//calculate coordinates of bomb location
-	double x = calculate_coordinate(i_index);
-	double y = calculate_coordinate(j_index);
+	double x = calculator::calculate_coordinate(i_index);
+	double y = calculator::calculate_coordinate(j_index);
 
 	//create bomb object
 	terrain_pointer->create_bomb(x, y);
@@ -221,8 +221,8 @@ void game_logic::new_bomb(player* p)
 
 bool game_logic::check_bomb_collison(player* p)
 {
-	int i_index = calculate_index(p->get_x_coordinate());
-	int j_index = calculate_index(p->get_y_coordinate());
+	int i_index = calculator::calculate_index(p->get_x_coordinate());
+	int j_index = calculator::calculate_index(p->get_y_coordinate());
 
 	double orientation = p->get_orientation();
 
@@ -272,8 +272,8 @@ void game_logic::explode_bomb(bomb* b)
 	*/
 	
 	// bomb coordinate index
-	int bomb_i_index = calculate_index(b->get_x_coordinate());
-	int bomb_j_index = calculate_index(b->get_y_coordinate());
+	int bomb_i_index = calculator::calculate_index(b->get_x_coordinate());
+	int bomb_j_index = calculator::calculate_index(b->get_y_coordinate());
 
 	// bomb - red brick interactions
 	bomb_flag_red_bricks(bomb_i_index, bomb_j_index);
@@ -397,8 +397,8 @@ void game_logic::check_player_bomb_interaction(bomb* b)
 		for (int i = 0; (unsigned)i < terrain_pointer->player_list.size(); i++)
 		{
 			player_pointer = &terrain_pointer->player_list[i];
-			player_i = calculate_index(player_pointer->get_x_coordinate());
-			player_j = calculate_index(player_pointer->get_y_coordinate());
+			player_i = calculator::calculate_index(player_pointer->get_x_coordinate());
+			player_j = calculator::calculate_index(player_pointer->get_y_coordinate());
 
 			if (check_player_bomb_proximity(player_i, player_j))
 			{
@@ -442,40 +442,49 @@ void game_logic::collision_matrix_init()
 {
 	//To be run once at initialization
 
+	collision_matrix_init_red_bricks();
+	collision_matrix_init_grey_bricks();
+	//collision_pointer->print0();
+}
+
+void game_logic::collision_matrix_init_red_bricks()
+{
 	// holders for index values of object locations
 	int i_index, j_index;
 
-	// number of bricks
-	int n;
-
-	// number of red bricks
-	n = terrain_pointer->red_brick_list.size();
-
 	//sets values in collision matrix for each red brick
-	for (int i = 0; i < n; i++)
+	for (int i = 0; (unsigned)i < terrain_pointer->red_brick_list.size(); i++)
 	{
+		// red brick pointer
 		rb_pointer = &terrain_pointer->red_brick_list[i];
-		i_index = calculate_index(rb_pointer->get_x_coordinate());
-		j_index = calculate_index(rb_pointer->get_y_coordinate());
+		// calculate matrix indices from coordinates
+		i_index = calculator::calculate_index(rb_pointer->get_x_coordinate());
+		j_index = calculator::calculate_index(rb_pointer->get_y_coordinate());
+		// set red brick indices
 		rb_pointer->set_i_index(i_index);
 		rb_pointer->set_j_index(j_index);
-
+		// set collision matrix to contain red brick location
 		collision_pointer->e(i_index, j_index) = Collision_Type::Destructible;
 	}
 
-	// number of grey bricks
-	n = terrain_pointer->grey_brick_list.size();
+}
+void game_logic::collision_matrix_init_grey_bricks()
+{
+	// holders for index values of object locations
+	int i_index, j_index;
 
-	//sets values in collision matrix for each grey brick
-	for (int i = 0; i < n; i++)
+
+	// sets values in collision matrix for each grey brick
+	for (int i = 0; (unsigned)i < terrain_pointer->grey_brick_list.size(); i++)
 	{
+		// grey brick pointer
 		gb_pointer = &terrain_pointer->grey_brick_list[i];
-		i_index = calculate_index(gb_pointer->get_x_coordinate());
-		j_index = calculate_index(gb_pointer->get_y_coordinate());
-
+		// calculate matrix indices from coordinates
+		i_index = calculator::calculate_index(gb_pointer->get_x_coordinate());
+		j_index = calculator::calculate_index(gb_pointer->get_y_coordinate());
+		// set collision matrix to contain grey brick location
 		collision_pointer->e(i_index, j_index) = Collision_Type::Indestructible;
 	}
-	//collision_pointer->print0();
 }
 
 bool game_logic::check_matrix_for_bomb(int i, int j)
@@ -581,29 +590,6 @@ void game_logic::remove_flagged_players()
 			}
 		}
 	}
-}
-
-#pragma endregion
-
-#pragma region Tools
-
-int game_logic::calculate_index(double coordinate)
-{
-
-	double xmin = 21, dx = 42;
-
-	double d_index = (coordinate - xmin) / dx;
-	int index = (int)(d_index + 0.5);
-	return index;
-}
-
-double game_logic::calculate_coordinate(int index)
-{
-	//xmin represents offset from left side of the frame
-	//dx is the length of the side of each square area used for the 
-	double xmin = 21, dx = 42;
-	int coordinate = (int)(index * dx + xmin);
-	return coordinate;
 }
 
 #pragma endregion
