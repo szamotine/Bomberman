@@ -3,13 +3,19 @@
 #include <iostream>
 #include "2D_graphics.h"
 
-terrain::~terrain() {
-	cout << "\nTerrain Destructed";
+#pragma region Constructors
+terrain::~terrain() 
+{
+
 }
 
-terrain::terrain() {
-	cout << "\nTerrain Constructed";
+terrain::terrain()
+{
+	
 }
+#pragma endregion
+
+#pragma region Initialization/Creation functions
 
 void terrain::initialize_terrain(int number) {
 	number_of_players = number;
@@ -28,8 +34,8 @@ void terrain::initialize_terrain(int number) {
 }
 
 void terrain::initialize_red_bricks() {
-	// create red brick pattern
 	
+	// create red brick pattern
 	initialize_red_bricks_outer_perimeter();
 	initialize_red_bricks_horizontal_lines();
 	initialize_red_bricks_horizontal_lines_between_grey_bricks();
@@ -38,7 +44,6 @@ void terrain::initialize_red_bricks() {
 
 void terrain::initialize_red_bricks_outer_perimeter()
 {
-
 	// coordinates for red bricks
 	double x;
 	double y;
@@ -46,7 +51,6 @@ void terrain::initialize_red_bricks_outer_perimeter()
 	//creates pattern on outer perimeter to confine players to corners
 	for (double i = 1; i <= 9; i++)
 	{
-
 		x = (147 + (i * 42));
 		y = x;
 
@@ -56,7 +60,6 @@ void terrain::initialize_red_bricks_outer_perimeter()
 		red_brick_list.push_back(red_brick(63, y));
 		red_brick_list.push_back(red_brick(651, y));
 	}
-
 }
 
 void terrain::initialize_red_bricks_horizontal_lines()
@@ -64,7 +67,6 @@ void terrain::initialize_red_bricks_horizontal_lines()
 	// coordinates for red bricks
 	double x;
 	double y;
-
 
 	for (double i = 0; i < 6; i++)
 	{
@@ -75,7 +77,6 @@ void terrain::initialize_red_bricks_horizontal_lines()
 			red_brick_list.push_back(red_brick(x, y));
 		}
 	}
-
 }
 
 void terrain::initialize_red_bricks_horizontal_lines_between_grey_bricks()
@@ -83,8 +84,6 @@ void terrain::initialize_red_bricks_horizontal_lines_between_grey_bricks()
 	// coordinates for red bricks
 	double x;
 	double y;
-
-
 
 	for (double i = 0; i < 7; i++)
 	{
@@ -95,7 +94,6 @@ void terrain::initialize_red_bricks_horizontal_lines_between_grey_bricks()
 			red_brick_list.push_back(red_brick(x, y));
 		}
 	}
-
 }
 
 void terrain::initialize_grey_bricks() {
@@ -128,7 +126,6 @@ void terrain::initialize_grey_bricks() {
 	}
 }
 
-
 void terrain::initialize_players(int number_of_players)
 {
 	for (int i = 0; i < number_of_players; i++) 
@@ -136,6 +133,15 @@ void terrain::initialize_players(int number_of_players)
 		player_list.push_back(player(i));
 	}
 }
+
+void terrain::create_bomb(double x, double y)
+{
+	bomb_list.push_back(bomb(x, y, high_resolution_time()));
+}
+
+#pragma endregion
+
+#pragma region Draw functions
 
 void terrain::draw_grey_bricks(){
 	
@@ -216,9 +222,9 @@ void terrain::draw_map() {
 	draw_bombs();
 }
 
-void terrain::create_bomb(double x, double y) {
-	bomb_list.push_back(bomb(x,y,high_resolution_time()));
-}
+#pragma endregion
+
+#pragma region Remove functions
 
 void terrain::remove_bomb(int index) {
 	bomb_list.erase(bomb_list.begin() +index);
@@ -231,3 +237,5 @@ void terrain::remove_player(int index)
 {
 	player_list.erase(player_list.begin() + index);
 }
+
+#pragma endregion
