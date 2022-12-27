@@ -67,6 +67,9 @@ public:
 	void initialize_player_coordinates();
 	void initialize_grey_bricks();
 	void initialize_red_bricks();
+	void initialize_red_bricks_outer_perimeter();
+	void initialize_red_bricks_horizontal_lines();
+	void initialize_red_bricks_horizontal_lines_between_grey_bricks();
 	void initialize_players(int number_of_players);
 
 	void draw_grey_bricks();
@@ -79,6 +82,7 @@ public:
 	void create_bomb(double x, double y);
 	void remove_bomb(int index);
 	void remove_red_brick(int index);
+	void remove_player(int index);
 	
 };
 

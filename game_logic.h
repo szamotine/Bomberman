@@ -51,7 +51,7 @@ public:
 
 	void collision_matrix_init();
 
-	bool check_player_collision(player* player);
+	bool check_player_movement(player* player);
 
 	void player_input();
 
@@ -61,15 +61,26 @@ public:
 	bool check_bomb_collison(player* p);
 	void explode_bomb(bomb* bomb);
 
-	void chain_bomb_explosion(bomb* b);
-
-	void check_bomb_bomb_interaction(int i, int j);
+	void check_exploding_bomb_proximity(bomb* b);
 
 	void flag_chain_bomb(int i, int j);
 
 	void remove_flagged_bricks();
 
 	void remove_flagged_bombs();
+
+	void remove_flagged_players();
+
+	void check_player_bomb_interaction(bomb* b);
+
+	bool check_player_bomb_proximity(int i, int j);
+
+	bool check_matrix_for_bomb(int i, int j);
+	bool check_matrix_for_empty_space(int i, int j);
+
+	void bomb_flag_red_bricks(int bomb_i_index, int bomb_j_index);
+	void set_matrix_to_empty_space(int i, int j);
+	void set_matrix_to_bomb(int i, int j);
 
 };
 
