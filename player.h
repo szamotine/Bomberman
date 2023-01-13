@@ -27,13 +27,10 @@ static char* PLAYER_3_SPRITE_NAMES[4] = { PLAYER3_RIGHT, PLAYER3_TOP,PLAYER3_LEF
 static char* PLAYER_4_SPRITE_NAMES[4] = { PLAYER4_RIGHT, PLAYER4_TOP,PLAYER4_LEFT,PLAYER4_BOTTOM };
 
 
-
-
 // declare and store the 4 possible start position in array 
 // they correspond to each corner of the map 
 static constexpr double start_x_co[4] = { 63.0,651.0,63.0,651.0 };
 static constexpr double  start_y_co[4] = { 63.0,651.0,651.0,63.0 };
-
 
 class player
 {
@@ -49,7 +46,7 @@ private:
 	int* sprite_id;
 
 	// delay bomb drop
-	double bomb_time;
+	double bomb_flag_time;
 	bool bomb_flag;
 	bool removal_flag;
 	int player_number;
@@ -78,8 +75,9 @@ public:
 	void set_removal_flag();
 
 	void initialize_sprites(int player_number);
-
+	// moves player in x direction
 	void move_player_x(double value);
+	// moves player in y direction
 	void move_player_y(double value);
 
 };

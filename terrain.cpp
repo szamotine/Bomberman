@@ -134,9 +134,9 @@ void terrain::initialize_players(int number_of_players)
 	}
 }
 
-void terrain::create_bomb(double x, double y)
+void terrain::construct_bomb(int i, int j)
 {
-	bomb_list.push_back(bomb(x, y, high_resolution_time()));
+	bomb_list.push_back(bomb(i, j, high_resolution_time()));
 }
 
 #pragma endregion
@@ -226,14 +226,14 @@ void terrain::draw_map() {
 
 #pragma region Remove functions
 
-void terrain::remove_bomb(int index) {
+void terrain::erase_bomb(int index) {
 	bomb_list.erase(bomb_list.begin() +index);
 }
 
-void terrain::remove_red_brick(int index) {
+void terrain::erase_red_brick(int index) {
 	red_brick_list.erase(red_brick_list.begin() + index);
 }
-void terrain::remove_player(int index)
+void terrain::erase_player(int index)
 {
 	player_list.erase(player_list.begin() + index);
 }

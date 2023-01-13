@@ -12,7 +12,8 @@ private:
 public:
 
 	~bomb();
-	bomb(double x, double y, double t);
+//	bomb(double x, double y, double t);
+	bomb(int i_index, int j_index, double t);
 
 	void set_x_coordinate(double value);
 	void set_y_coordinate(double value);
