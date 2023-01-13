@@ -5,8 +5,7 @@
 #include <Windows.h>
 #include "2D_graphics.h"
 #include "timer.h"
-#include "ran.h"
-#include "iMatrix.h"
+//#include "ran.h"
 #include "world.h"
 
 using namespace std;
@@ -36,6 +35,7 @@ int main()
 		if (!init) 
 		{
 			initialize();
+			cout << "\nStarting game";
 		}
 
 		clear(); // clear the previous drawing

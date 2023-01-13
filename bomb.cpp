@@ -7,7 +7,7 @@
 bomb::~bomb() {
 	
 }
-
+/*
 bomb::bomb(double x, double y, double t) {
 	x_coordinate = x;
 	y_coordinate = y;
@@ -17,6 +17,18 @@ bomb::bomb(double x, double y, double t) {
 	
 	//std::cout << "\nBomb Constructed at i: " << i_index << ", j: " << j_index;
 	
+}
+*/
+
+bomb::bomb(int i, int j, double t)
+{
+	i_index = i;
+	j_index = j;
+	x_coordinate = calculator::calculate_coordinate(i);
+	y_coordinate = calculator::calculate_coordinate(j);
+	time = t;
+	bomb_removal_flag = false;
+
 }
 
 void bomb::set_x_coordinate(double value) {
@@ -35,7 +47,7 @@ void bomb::set_bomb_removal_flag()
 void bomb::set_bomb_indices(double x, double y)
 {
 	this->i_index = calculator::calculate_index(x);
-	this->j_index = calculator::calculate_index(x);
+	this->j_index = calculator::calculate_index(y);
 }
 double bomb::get_x_coordinate() {
 	return x_coordinate;

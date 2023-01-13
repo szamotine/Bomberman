@@ -5,9 +5,9 @@ player::player(int player_number)
 {
 	x_coordinate = start_x_co[player_number];
 	y_coordinate = start_y_co[player_number];
-	orientation = 360.0;
+	orientation = 270.0;
 	sprite_id = new int[4];
-	bomb_time = 0.0;
+	bomb_flag_time = 0.0;
 	bomb_flag = true;
 	initialize_sprites(player_number);
 	removal_flag = false;
@@ -32,6 +32,7 @@ double player::get_orientation()
 {
 	return orientation;
 }
+
 
 double player::get_angle()
 {
@@ -62,7 +63,7 @@ int player::get_sprite_id() {
 }
 
 double player::get_bomb_time() {
-	return bomb_time;
+	return bomb_flag_time;
 }
 
 bool player::get_bomb_flag() {
@@ -95,7 +96,7 @@ void player::set_scale(double value)
 }
 
 void player::set_bomb_time(double value) {
-	bomb_time = value;
+	bomb_flag_time = value;
 }
 
 void player::set_bomb_flag(bool flag) {
