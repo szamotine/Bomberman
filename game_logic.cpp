@@ -28,104 +28,116 @@ void game_logic::player_input()
 	// movement step size for fluid looking motion
 	int m = 3;
 
-	// pointer to player 1 of terrain player_list
-	player_pointer = &terrain_pointer->player_list[0];
+	// Loop through each player, assign appropriate controls
+	for (int i = 0; (unsigned)i < terrain_pointer->player_list.size(); i++)
+	{
+		if (terrain_pointer->player_list[i].get_player_number() == 0)
+		{
+			player_pointer = &terrain_pointer->player_list[i];
+			validate_bomb_flag_time(player_pointer);
+			player_1_input(player_pointer, m);
+		}
+		if (terrain_pointer->player_list[i].get_player_number() == 1)
+		{
+			player_pointer = &terrain_pointer->player_list[i];
+			validate_bomb_flag_time(player_pointer);
+			player_2_input(player_pointer, m);
+		}
+	}
+}
 
-	//checks if player bomb flag can be reset to allow bomb placement
-	validate_bomb_flag_time(player_pointer);
-
-	//input keys for movement
+void game_logic::player_1_input(player* p, int m)
+{
+	//input keys for movement of player 1
 	if (KEY('D'))
 	{
-		player_pointer->set_orientation(RIGHT);
-		if (!validate_player_movement(player_pointer))
+		p->set_orientation(RIGHT);
+		if (!validate_player_movement(p))
 		{
-			player_pointer->move_player_x(m);
+			p->move_player_x(m);
 		}
 	}
 	if (KEY('A'))
 	{
-		player_pointer->set_orientation(LEFT);
-		if (!validate_player_movement(player_pointer))
+		p->set_orientation(LEFT);
+		if (!validate_player_movement(p))
 		{
-			player_pointer->move_player_x(-m);
+			p->move_player_x(-m);
 		}
 	}
 	if (KEY('W'))
 	{
-		player_pointer->set_orientation(UP);
-		if (!validate_player_movement(player_pointer))
+		p->set_orientation(UP);
+		if (!validate_player_movement(p))
 		{
-			player_pointer->move_player_y(m);
+			p->move_player_y(m);
 		}
 	}
 	if (KEY('S'))
 	{
-		player_pointer->set_orientation(DOWN);
-		if (!validate_player_movement(player_pointer))
+		p->set_orientation(DOWN);
+		if (!validate_player_movement(p))
 		{
-			player_pointer->move_player_y(-m);
+			p->move_player_y(-m);
 		}
 	}
 
 	if (KEY('X'))
 	{
 
-		if (player_pointer->get_bomb_flag() && validate_bomb_collison(player_pointer))
+		if (p->get_bomb_flag() && validate_bomb_collison(p))
 		{
-			new_bomb(player_pointer);
+			new_bomb(p);
 		}
 	}
 
-	// player 2
-	if (terrain_pointer->player_list.size() > 1)
+}
+
+void game_logic::player_2_input(player* p, int m)
+{
+	//input keys for movement of player 2
+	if (KEY('L'))
 	{
-		player_pointer = &terrain_pointer->player_list[1];
-
-		validate_bomb_flag_time(player_pointer);
-
-		if (KEY('L'))
+		p->set_orientation(RIGHT);
+		if (!validate_player_movement(p))
 		{
-			player_pointer->set_orientation(RIGHT);
-			if (!validate_player_movement(player_pointer))
-			{
-				player_pointer->move_player_x(m);
-			}
-		}
-		if (KEY('J'))
-		{
-			player_pointer->set_orientation(LEFT);
-			if (!validate_player_movement(player_pointer))
-			{
-				player_pointer->move_player_x(-m);
-			}
-		}
-		if (KEY('I'))
-		{
-			player_pointer->set_orientation(UP);
-			if (!validate_player_movement(player_pointer))
-			{
-				player_pointer->move_player_y(m);
-			}
-		}
-		if (KEY('K'))
-		{
-			player_pointer->set_orientation(DOWN);
-			if (!validate_player_movement(player_pointer))
-			{
-				player_pointer->move_player_y(-m);
-			}
-		}
-
-		if (KEY('M'))
-		{
-
-			if (player_pointer->get_bomb_flag() && validate_bomb_collison(player_pointer))
-			{
-				new_bomb(player_pointer);
-			}
+			p->move_player_x(m);
 		}
 	}
+	if (KEY('J'))
+	{
+		p->set_orientation(LEFT);
+		if (!validate_player_movement(p))
+		{
+			p->move_player_x(-m);
+		}
+	}
+	if (KEY('I'))
+	{
+		p->set_orientation(UP);
+		if (!validate_player_movement(p))
+		{
+			p->move_player_y(m);
+		}
+	}
+	if (KEY('K'))
+	{
+		p->set_orientation(DOWN);
+		if (!validate_player_movement(p))
+		{
+			p->move_player_y(-m);
+		}
+	}
+
+	if (KEY('M'))
+	{
+
+		if (p->get_bomb_flag() && validate_bomb_collison(p))
+		{
+			new_bomb(p);
+		}
+	}
+
 }
 
 bool game_logic::validate_player_movement(player* p)
@@ -137,8 +149,8 @@ bool game_logic::validate_player_movement(player* p)
 
 	// offset used based on player sprite size
 	int x_shift = 15;
-	int y_shift_down = 22;
-	int y_shift_up = 20;
+	int y_shift_down = 25;
+	int y_shift_up = 25;
 
 	// temporary placeholders for player coordinates
 	double x, y, orientation;
@@ -203,9 +215,6 @@ void game_logic::new_bomb(player* p)
 		j_index--;
 	}
 
-	//calculate coordinates of bomb location
-	//double x = calculator::calculate_coordinate(i_index);
-	//double y = calculator::calculate_coordinate(j_index);
 
 	//create bomb object
 	terrain_pointer->construct_bomb(i_index, j_index);

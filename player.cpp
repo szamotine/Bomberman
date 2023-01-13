@@ -18,6 +18,8 @@ player::~player()
 {
 }
 
+#pragma region Getters
+
 double player::get_x_coordinate()
 {
 	return x_coordinate;
@@ -32,7 +34,6 @@ double player::get_orientation()
 {
 	return orientation;
 }
-
 
 double player::get_angle()
 {
@@ -75,6 +76,12 @@ bool player::get_player_removal_flag()
 	return removal_flag;
 }
 
+int player::get_player_number()
+{
+	return player_number;
+}
+#pragma endregion
+#pragma region Setters
 void player::set_x_coordinate(double value)
 {
 	x_coordinate = value;
@@ -107,7 +114,7 @@ void player::set_removal_flag()
 {
 	removal_flag = true;
 }
-
+#pragma endregion
 
 void player::initialize_sprites(int player_number) {
 
@@ -136,9 +143,3 @@ void player::move_player_x(double value) {
 void player::move_player_y(double value) {
 	y_coordinate += value;
 }
-
-
-
-
-
-
