@@ -49,6 +49,9 @@ public:
 	// Checks for player input from keyboard
 	void player_input();
 
+	void player_1_input(player* p, int movement_step_size);
+	void player_2_input(player* p, int movement_step_size);
+
 	// Checks if player can move in commanded direction
 	bool validate_player_movement(player* player);
 
