@@ -52,17 +52,22 @@ public:
 	void player_1_input(player* p, int movement_step_size);
 	void player_2_input(player* p, int movement_step_size);
 
-	// Checks if player can move in commanded direction
+	// Logic to allow player to move in commanded direction
 	bool validate_player_movement(player* player);
+
+	// Checks player surroundings for obstacles
+	bool check_player_offset(double x, double y);
 
 	// Creates new bomb in front of player
 	void new_bomb(player* p);
 
-	// Checks if bomb can be placed in front of player
+	// Logic to allow bomb to be placed in front of player
 	bool validate_bomb_collison(player* p);
 
 	// Delays bomb placement input
 	void validate_bomb_flag_time(player* p);
+
+	void print_player_coordinates(player* p);
 
 #pragma endregion
 
@@ -128,23 +133,6 @@ public:
 	void remove_flagged_players();
 
 #pragma endregion
-	
-
-
-
-	
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
 
 };
 

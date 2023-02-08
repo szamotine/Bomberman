@@ -52,7 +52,7 @@ void game_logic::player_1_input(player* p, int m)
 	if (KEY('D'))
 	{
 		p->set_orientation(RIGHT);
-		if (!validate_player_movement(p))
+		if (validate_player_movement(p))
 		{
 			p->move_player_x(m);
 		}
@@ -60,7 +60,7 @@ void game_logic::player_1_input(player* p, int m)
 	if (KEY('A'))
 	{
 		p->set_orientation(LEFT);
-		if (!validate_player_movement(p))
+		if (validate_player_movement(p))
 		{
 			p->move_player_x(-m);
 		}
@@ -68,7 +68,7 @@ void game_logic::player_1_input(player* p, int m)
 	if (KEY('W'))
 	{
 		p->set_orientation(UP);
-		if (!validate_player_movement(p))
+		if (validate_player_movement(p))
 		{
 			p->move_player_y(m);
 		}
@@ -76,7 +76,7 @@ void game_logic::player_1_input(player* p, int m)
 	if (KEY('S'))
 	{
 		p->set_orientation(DOWN);
-		if (!validate_player_movement(p))
+		if (validate_player_movement(p))
 		{
 			p->move_player_y(-m);
 		}
@@ -91,6 +91,13 @@ void game_logic::player_1_input(player* p, int m)
 		}
 	}
 
+	if (KEY('Z'))
+	{
+
+		//print_player_coordinates(p);
+
+	}
+
 }
 
 void game_logic::player_2_input(player* p, int m)
@@ -99,7 +106,7 @@ void game_logic::player_2_input(player* p, int m)
 	if (KEY('L'))
 	{
 		p->set_orientation(RIGHT);
-		if (!validate_player_movement(p))
+		if (validate_player_movement(p))
 		{
 			p->move_player_x(m);
 		}
@@ -107,7 +114,7 @@ void game_logic::player_2_input(player* p, int m)
 	if (KEY('J'))
 	{
 		p->set_orientation(LEFT);
-		if (!validate_player_movement(p))
+		if (validate_player_movement(p))
 		{
 			p->move_player_x(-m);
 		}
@@ -115,7 +122,7 @@ void game_logic::player_2_input(player* p, int m)
 	if (KEY('I'))
 	{
 		p->set_orientation(UP);
-		if (!validate_player_movement(p))
+		if (validate_player_movement(p))
 		{
 			p->move_player_y(m);
 		}
@@ -123,7 +130,7 @@ void game_logic::player_2_input(player* p, int m)
 	if (KEY('K'))
 	{
 		p->set_orientation(DOWN);
-		if (!validate_player_movement(p))
+		if (validate_player_movement(p))
 		{
 			p->move_player_y(-m);
 		}
@@ -138,19 +145,25 @@ void game_logic::player_2_input(player* p, int m)
 		}
 	}
 
+	if (KEY('N'))
+	{
+
+		//print_player_coordinates(p);
+		
+	}
+
 }
 
 bool game_logic::validate_player_movement(player* p)
 {
-
-	// index used to check collision matrix
-	int i_index;
-	int j_index;
-
 	// offset used based on player sprite size
 	int x_shift = 15;
-	int y_shift_down = 25;
-	int y_shift_up = 25;
+
+	int x_shift2 = 15;
+
+	int y_shift = 25;
+	
+	int y_shift2 = 13;
 
 	// temporary placeholders for player coordinates
 	double x, y, orientation;
@@ -159,33 +172,58 @@ bool game_logic::validate_player_movement(player* p)
 	y = p->get_y_coordinate();
 	orientation = p->get_orientation();
 
+	
 	if (orientation == RIGHT)
 	{
 		x += x_shift;
+		if (!check_player_offset(x, y)) return false;
+		y += y_shift2;
+		if (!check_player_offset(x, y)) return false;
+		y -= y_shift2*2;
+		if (!check_player_offset(x, y)) return false;
 	}
 	if (orientation == UP)
 	{
-		y += y_shift_up;
+		y += y_shift;
+		if (!check_player_offset(x, y)) return false;
 	}
 	if (orientation == LEFT)
 	{
 		x -= x_shift;
+		if (!check_player_offset(x, y)) return false;
+		y += y_shift2;
+		if (!check_player_offset(x, y)) return false;
+		y -= y_shift2 * 2;
+		if (!check_player_offset(x, y)) return false;
 	}
 	if (orientation == DOWN)
 	{
-		y -= y_shift_down;
-	}
-
-	i_index = calculator::calculate_index(x);
-	j_index = calculator::calculate_index(y);
-
-	if (validate_matrix_for_empty_space(i_index, j_index))
-	{
-		return false;
+		y -= y_shift;
+		if (!check_player_offset(x, y)) return false;
 	}
 
 	return true;
 }
+
+bool game_logic::check_player_offset(double x, double y)
+{
+	// index used to check collision matrix
+	int i_index = calculator::calculate_index(x);
+	int j_index = calculator::calculate_index(y);
+
+
+	if (!validate_matrix_for_empty_space(i_index, j_index))
+	{
+		cout << "\nCannot move to i: " << i_index << ", j: " << j_index;
+		return false;
+	}
+
+
+	cout << "\nCan move to i: " << i_index << ", j: " << j_index;
+	return true;
+
+}
+
 
 void game_logic::new_bomb(player* p)
 {
@@ -265,6 +303,16 @@ void game_logic::validate_bomb_flag_time(player* p)
 	{
 		p->set_bomb_flag(true);
 	}
+}
+
+void game_logic::print_player_coordinates(player* p)
+{
+	double x = p->get_x_coordinate();
+	double y = p->get_y_coordinate();
+	int i_index = calculator::calculate_index(x);
+	int j_index = calculator::calculate_index(y);
+	cout << "\nPlayer coordinates: x= " << x << ", y= " <<y;
+	cout << "\nPlayer index: i= " << i_index << ", j= " << j_index;
 }
 
 #pragma endregion
@@ -517,9 +565,7 @@ bool game_logic::validate_matrix_for_empty_space(int i, int j)
 	if (i < 0 || j < 0 || i > 16 || j > 16) return false;
 
 	// Check Collision Matrix for Empty Space value
-	if (collision_pointer->e(i, j) == Collision_Type::None) return true;
-
-	return false;
+	return collision_pointer->e(i, j) == Collision_Type::None;
 }
 
 void game_logic::set_matrix_to_empty_space(int i, int j)
