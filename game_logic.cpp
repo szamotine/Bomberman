@@ -209,12 +209,12 @@ bool game_logic::check_player_offset(double x, double y) {
 
 	if (!validate_matrix_for_empty_space(i_index, j_index))
 	{
-		cout << "\nCannot move to i: " << i_index << ", j: " << j_index;
+		//cout << "\nCannot move to i: " << i_index << ", j: " << j_index;
 		return false;
 	}
 
 
-	cout << "\nCan move to i: " << i_index << ", j: " << j_index;
+	//cout << "\nCan move to i: " << i_index << ", j: " << j_index;
 	return true;
 
 }
