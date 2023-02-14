@@ -5,6 +5,7 @@
 #include "player.h"
 #include "bomb.h"
 #include "terrain_constants.h"
+#include <vector>
 
 class terrain
 {
@@ -63,7 +64,7 @@ public:
 	void draw_bombs() const;
 	void draw_map() const;
 #pragma endregion
-	
+
 #pragma region Remove functions
 	// Erases bomb from bomb list
 	void erase_bomb(int index);

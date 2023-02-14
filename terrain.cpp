@@ -6,6 +6,7 @@
 #pragma region Constructors
 terrain::~terrain() = default;
 
+
 terrain::terrain() = default;
 #pragma endregion
 
@@ -140,8 +141,10 @@ void terrain::construct_bomb(int i, int j) {
 
 #pragma region Draw functions
 
+
 void terrain::draw_grey_bricks() const {
-	
+
+
 	if (!grey_brick_list.empty())
 	{
 		for (grey_brick gb : grey_brick_list)
@@ -158,7 +161,9 @@ void terrain::draw_grey_bricks() const {
 	}
 }
 
+
 void terrain::draw_red_bricks() const {
+
 	if (!red_brick_list.empty())
 	{
 		for (red_brick rb : red_brick_list)
@@ -172,6 +177,7 @@ void terrain::draw_red_bricks() const {
 				terrain_constants_pointer.get_scale()
 			);
 		}
+
 	}
 }
 
@@ -180,7 +186,6 @@ void terrain::draw_terrain() const {
 }
 
 void terrain::draw_players() const {
-
 	if (!player_list.empty())
 	{
 		for (player p : player_list)
