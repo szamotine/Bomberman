@@ -1,14 +1,10 @@
 
 // windows time measurement functions
-
+#pragma once
 #include <iostream>
 #include <cmath>
-
-#include <windows.h>
-
 #include "timer.h"
-
-using namespace std;
+#include <Windows.h>
 
 double high_resolution_time()
 // windows high resolution time function
