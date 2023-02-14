@@ -16,11 +16,9 @@ private:
 	int red_brick_sprite_id = {};
 	int bomb_sprite_id = {};
 
-	
 	int number_of_players = {};
 	terrain_constants terrain_constants_pointer;
 
-public:
 	// List of grey bricks
 	vector<grey_brick> grey_brick_list;
 	// List of red bricks
@@ -31,9 +29,11 @@ public:
 	vector<bomb> bomb_list;
 
 
-	terrain();
 
+public:
+	terrain();
 	~terrain();
+
 #pragma region Initialization/Creation Functions
 	// Creates sprites, sets number of players, initializes lists and game objects
 	void initialize_terrain(int number);
@@ -53,17 +53,16 @@ public:
 	void construct_bomb(int i, int j);
 
 
-#pragma region
+#pragma endregion
 
 #pragma region Draw functions
-	void draw_grey_bricks();
-	void draw_red_bricks();
-	void draw_terrain();
-	void draw_players();
-	void draw_bombs();
-	void draw_map();
+	void draw_grey_bricks() const;
+	void draw_red_bricks() const;
+	void draw_terrain() const;
+	void draw_players() const;
+	void draw_bombs() const;
+	void draw_map() const;
 #pragma endregion
-	
 	
 #pragma region Remove functions
 	// Erases bomb from bomb list

@@ -68,7 +68,7 @@ void terrain::initialize_red_bricks_horizontal_lines() {
 		{
 			x = (105 + k * 42);
 			y = (147 + i * 84);
-			red_brick_list.push_back(red_brick(x, y));
+			red_brick_list.emplace_back(x, y);
 		}
 	}
 }
@@ -142,7 +142,7 @@ void terrain::construct_bomb(int i, int j) {
 
 #pragma region Draw functions
 
-void terrain::draw_grey_bricks(){
+void terrain::draw_grey_bricks() const {
 	
 	if (!grey_brick_list.empty())
 	{
@@ -160,7 +160,7 @@ void terrain::draw_grey_bricks(){
 	}
 }
 
-void terrain::draw_red_bricks()
+void terrain::draw_red_bricks() const {
 	if (!red_brick_list.empty())
 {
 	if (red_brick_list.size() > 0) {
@@ -178,11 +178,11 @@ void terrain::draw_red_bricks()
 	}
 }
 
-void terrain::draw_terrain(){
+void terrain::draw_terrain() const {
 	draw_sprite(background_sprite_id, terrain_constants_pointer.get_background_coordinates(), terrain_constants_pointer.get_background_coordinates(), terrain_constants_pointer.get_background_coordinates(), terrain_constants_pointer.get_background_scale());
 }
 
-void terrain::draw_players(){
+void terrain::draw_players() const {
 
 	if (!player_list.empty())
 	{
@@ -200,7 +200,7 @@ void terrain::draw_players(){
 	}
 }
 
-void terrain::draw_bombs() {
+void terrain::draw_bombs() const {
 	if (!bomb_list.empty())
 	{
 		for (bomb b : bomb_list)
@@ -217,7 +217,7 @@ void terrain::draw_bombs() {
 	}
 }
 
-void terrain::draw_map() {
+void terrain::draw_map() const {
 
 	draw_terrain();
 	draw_grey_bricks();
