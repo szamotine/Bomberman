@@ -5,6 +5,7 @@
 #include "player.h"
 #include "bomb.h"
 #include "terrain_constants.h"
+#include <vector>
 
 class terrain
 {
@@ -20,13 +21,13 @@ private:
 	terrain_constants terrain_constants_pointer;
 
 	// List of grey bricks
-	vector<grey_brick> grey_brick_list;
+	std::vector<grey_brick> grey_brick_list;
 	// List of red bricks
-	vector<red_brick> red_brick_list;
+	std::vector<red_brick> red_brick_list;
 	// List of players
-	vector<player> player_list;
+	std::vector<player> player_list;
 	// List of bombs
-	vector<bomb> bomb_list;
+	std::vector<bomb> bomb_list;
 
 
 
@@ -63,7 +64,7 @@ public:
 	void draw_bombs() const;
 	void draw_map() const;
 #pragma endregion
-	
+
 #pragma region Remove functions
 	// Erases bomb from bomb list
 	void erase_bomb(int index);

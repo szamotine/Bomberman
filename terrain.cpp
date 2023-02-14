@@ -5,7 +5,7 @@
 
 #pragma region Constructors
 terrain::~terrain() = default;
-{
+
 
 terrain::terrain() = default;
 #pragma endregion
@@ -30,7 +30,7 @@ void terrain::initialize_terrain(int number) {
 }
 
 void terrain::initialize_red_bricks() {
-	
+
 	// create red brick pattern
 	initialize_red_bricks_outer_perimeter();
 	initialize_red_bricks_horizontal_lines();
@@ -99,11 +99,11 @@ void terrain::initialize_grey_bricks() {
 	{
 
 		x_coordinate = ((i * 42) - 21);
-		
+
 		grey_brick_list.emplace_back(x_coordinate, 21);
 		grey_brick_list.emplace_back(x_coordinate, 693);
 	}
-	
+
 	// create the side walls of the enclosed terrrain
 	for (int i = 1; i <= n + 1; i++)
 	{
@@ -112,7 +112,7 @@ void terrain::initialize_grey_bricks() {
 		grey_brick_list.emplace_back(21, y_coordinate);
 		grey_brick_list.emplace_back(693, y_coordinate);
 	}
-		
+
 	// create the checkerboard pattern 
 	for (int i = 3; i < 16; i = i + 2)
 	{
@@ -125,10 +125,9 @@ void terrain::initialize_grey_bricks() {
 	}
 }
 
-void terrain::initialize_players(int number_of_players)
-{
-	for (int i = 0; i < number_of_players; i++) 
-	{	
+void terrain::initialize_players(int number_of_players) {
+	for (int i = 0; i < number_of_players; i++)
+	{
 		player_list.emplace_back(i);
 	}
 }
@@ -142,11 +141,13 @@ void terrain::construct_bomb(int i, int j) {
 
 #pragma region Draw functions
 
+
 void terrain::draw_grey_bricks() const {
 	
+
 	if (!grey_brick_list.empty())
 	{
-		for (grey_brick gb : grey_brick_list) 
+		for (grey_brick gb : grey_brick_list)
 		{
 			draw_sprite
 			(
@@ -160,11 +161,13 @@ void terrain::draw_grey_bricks() const {
 	}
 }
 
+
 void terrain::draw_red_bricks() const {
+
 	if (!red_brick_list.empty())
-{
-	if (red_brick_list.size() > 0) {
-		for (red_brick rb : red_brick_list) 
+	{
+
+		for (red_brick rb : red_brick_list)
 		{
 			draw_sprite
 			(
@@ -175,6 +178,7 @@ void terrain::draw_red_bricks() const {
 				terrain_constants_pointer.get_scale()
 			);
 		}
+
 	}
 }
 
@@ -183,10 +187,9 @@ void terrain::draw_terrain() const {
 }
 
 void terrain::draw_players() const {
-
 	if (!player_list.empty())
 	{
-		for (player p : player_list) 
+		for (player p : player_list)
 		{
 			draw_sprite
 			(
