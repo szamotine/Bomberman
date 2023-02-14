@@ -2,24 +2,22 @@
 // int version of dMatrix class with extra row and col for 
 // optional i=0 and j=0
 
-class iMatrix
-{
+class iMatrix {
 
 private:
 
 	int N;
 	int M;
-	int* p;
 
 public:
 
+	
+	int *p;
 
 
-
-
-	iMatrix(int N, int M);
-
-	int& e(int i, int j);
+	iMatrix(int N, int M); 
+	
+	int & e(int i, int j);
 
 	void print();
 
