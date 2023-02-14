@@ -26,7 +26,7 @@ void terrain::initialize_terrain(int number) {
 	bomb_list = std::vector<bomb>();
 	initialize_grey_bricks();
 	initialize_red_bricks();
-	initialize_players(number);
+	initialize_players();
 }
 
 void terrain::initialize_red_bricks() {
@@ -125,7 +125,7 @@ void terrain::initialize_grey_bricks() {
 	}
 }
 
-void terrain::initialize_players(int number_of_players) {
+void terrain::initialize_players() {
 	for (int i = 0; i < number_of_players; i++)
 	{
 		player_list.emplace_back(i);
@@ -143,7 +143,7 @@ void terrain::construct_bomb(int i, int j) {
 
 
 void terrain::draw_grey_bricks() const {
-	
+
 
 	if (!grey_brick_list.empty())
 	{
@@ -166,7 +166,6 @@ void terrain::draw_red_bricks() const {
 
 	if (!red_brick_list.empty())
 	{
-
 		for (red_brick rb : red_brick_list)
 		{
 			draw_sprite
@@ -242,6 +241,42 @@ void terrain::erase_red_brick(int index) {
 }
 void terrain::erase_player(int index) {
 	player_list.erase(player_list.begin() + index);
+}
+
+
+#pragma endregion
+
+#pragma region Get Lists
+std::vector<grey_brick> terrain::get_grey_brick_list() const {
+	return grey_brick_list;
+}
+
+grey_brick terrain::get_grey_brick(int index) const {
+	return grey_brick_list[index];
+}
+
+std::vector<red_brick> terrain::get_red_brick_list() const {
+	return red_brick_list;
+}
+
+red_brick terrain::get_red_brick(int index) const {
+	return red_brick_list[index];
+}
+
+std::vector<player> terrain::get_player_list() const {
+	return player_list;
+}
+
+player terrain::get_player(int index) const {
+	return player_list[index];
+}
+
+std::vector<bomb> terrain::get_bomb_list() const {
+	return bomb_list;
+}
+
+bomb terrain::get_bomb(int index) const {
+	return bomb_list[index];
 }
 
 #pragma endregion
