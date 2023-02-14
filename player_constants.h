@@ -1,16 +1,15 @@
 #pragma once
 #include <vector>
-#include "player_constants_filenames.h"
-#include <memory>
+
 
 class player_constants
 {
 private:
-	std::shared_ptr< player_constants_filenames> pcf = std::make_shared< player_constants_filenames>();
-	const std::vector<char*> PLAYER_1_SPRITE_NAMES = { pcf->PLAYER_RIGHT, pcf->PLAYER_TOP,pcf->PLAYER_LEFT,pcf->PLAYER_BOTTOM };
-	const std::vector<char*> PLAYER_2_SPRITE_NAMES = { pcf->PLAYER2_RIGHT, pcf->PLAYER2_TOP,pcf->PLAYER2_LEFT,pcf->PLAYER2_BOTTOM };
-	const std::vector<char*> PLAYER_3_SPRITE_NAMES = { pcf->PLAYER3_RIGHT, pcf->PLAYER3_TOP,pcf->PLAYER3_LEFT,pcf->PLAYER3_BOTTOM };
-	const std::vector<char*> PLAYER_4_SPRITE_NAMES = { pcf->PLAYER4_RIGHT, pcf->PLAYER4_TOP,pcf->PLAYER4_LEFT,pcf->PLAYER4_BOTTOM };
+
+	const std::vector<char*> PLAYER_1_SPRITE_NAMES = { "player_right.png","player_top.png","player_left.png","player_bottom.png" };
+	const std::vector<char*> PLAYER_2_SPRITE_NAMES = { "player_right_2.png","player_top_2.png","player_left_2.png","player_bottom_2.png" };
+	const std::vector<char*> PLAYER_3_SPRITE_NAMES = { "player_right_3.png","player_top_3.png","player_left_3.png","player_bottom_3.png" };
+	const std::vector<char*> PLAYER_4_SPRITE_NAMES = { "player_right_4.png","player_top_4.png","player_left_4.png","player_bottom_4.png" };
 
 	const std::vector<double> start_x_co = { 63.0,651.0,63.0,651.0 };
 	const std::vector<double> start_y_co = { 63.0,651.0,651.0,63.0 };

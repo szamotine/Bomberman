@@ -76,16 +76,18 @@ public:
 
 #pragma region Get Lists
 	std::vector <grey_brick> get_grey_brick_list() const;
-	grey_brick get_grey_brick(int index) const;
+
+	grey_brick* get_grey_brick(int index);
 
 	std::vector <red_brick> get_red_brick_list() const;
-	red_brick get_red_brick(int index) const;
+
+	red_brick* get_red_brick(int index);
 
 	std::vector <player> get_player_list() const;
-	player get_player(int index) const;
+	player* get_player(int index);
 
 	std::vector <bomb> get_bomb_list() const;
-	bomb get_bomb(int index) const;
+	bomb* get_bomb(int index);
 
 #pragma endregion
 };

@@ -251,32 +251,36 @@ std::vector<grey_brick> terrain::get_grey_brick_list() const {
 	return grey_brick_list;
 }
 
-grey_brick terrain::get_grey_brick(int index) const {
-	return grey_brick_list[index];
+grey_brick* terrain::get_grey_brick(int index) {
+	grey_brick* temp = &grey_brick_list[index];
+	return temp;
 }
 
 std::vector<red_brick> terrain::get_red_brick_list() const {
 	return red_brick_list;
 }
 
-red_brick terrain::get_red_brick(int index) const {
-	return red_brick_list[index];
+red_brick* terrain::get_red_brick(int index) {
+	red_brick* temp = &red_brick_list[index];
+	return temp;
 }
 
 std::vector<player> terrain::get_player_list() const {
 	return player_list;
 }
 
-player terrain::get_player(int index) const {
-	return player_list[index];
+player* terrain::get_player(int index) {
+	player* temp = &player_list[index];
+	return temp;
 }
 
 std::vector<bomb> terrain::get_bomb_list() const {
 	return bomb_list;
 }
 
-bomb terrain::get_bomb(int index) const {
-	return bomb_list[index];
+bomb* terrain::get_bomb(int index) {
+	bomb* temp = &bomb_list[index];
+	return temp;
 }
 
 #pragma endregion
