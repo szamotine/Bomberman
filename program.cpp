@@ -7,7 +7,8 @@
 #include "timer.h"
 //#include "ran.h"
 #include "world.h"
-#include <memory>
+
+using namespace std;
 
 static int init = 0; // initialization flag
 static double t; // clock time from start of program
@@ -16,8 +17,7 @@ static double t0; // initial clock time
 // the previous function call.
 // we want tp static so it's remembered between function calls
 static double tp;
-double T;
-double fps;
+double T, fps;
 
 
 void FPS();
@@ -26,33 +26,36 @@ void initialize();
 
 world W1 = world();
 
-
-int main() {
-
+int main()
+{
+		
 	// graphics drawing / animation loop
-	while (true)
-	{
-
-		if (!init)
+	while(1) {
+		
+		if (!init) 
 		{
 			initialize();
-			std::cout << "\nStarting game";
+			cout << "\nStarting game";
 		}
 
 		clear(); // clear the previous drawing
+
+		
 
 		W1.run();
 		grid_overlay();
 		FPS();
 		update(); // update the drawing
 
+
 	}
-
-
+	
+	
 	return 0;
 }
 
-void FPS() {
+void FPS() 
+{
 	// read clock time (resolution is 0.1 microseconds)
 	t = high_resolution_time() - t0; // time since the program started (s)
 
@@ -80,7 +83,8 @@ void FPS() {
 
 }
 
-void grid_overlay() {
+void grid_overlay() 
+{
 	int x = 42;
 	int y = 21;
 
@@ -108,6 +112,8 @@ void initialize() {
 
 	tp = t; // initialize the previous clock time
 
+	
+
 	// initialize and setup the 2D graphics library
 	initialize_graphics();
 
@@ -116,6 +122,6 @@ void initialize() {
 	W1.initialize_world();
 	init = 1;
 
-	std::cout << "\nInitialization section complete";
+	cout << "\nInitialization section complete";
 
 }
