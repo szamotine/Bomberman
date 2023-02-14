@@ -302,8 +302,8 @@ void game_logic::print_player_coordinates(player* p) {
 	double y = p->get_y_coordinate();
 	int i_index = calculator::calculate_index(x);
 	int j_index = calculator::calculate_index(y);
-	cout << "\nPlayer coordinates: x= " << x << ", y= " << y;
-	cout << "\nPlayer index: i= " << i_index << ", j= " << j_index;
+	std::cout << "\nPlayer coordinates: x= " << x << ", y= " << y;
+	std::cout << "\nPlayer index: i= " << i_index << ", j= " << j_index;
 }
 
 #pragma endregion
@@ -342,7 +342,7 @@ void game_logic::bomb_flag_red_bricks(int bomb_i_index, int bomb_j_index) {
 	//i_index, j_index of bomb explosion area
 	int x;
 	int y;
-	for (vector<red_brick>::iterator i = terrain_pointer->red_brick_list.begin(); i != terrain_pointer->red_brick_list.end(); ++i)
+	for (std::vector<red_brick>::iterator i = terrain_pointer->red_brick_list.begin(); i != terrain_pointer->red_brick_list.end(); ++i)
 	{
 
 		x = i->get_i_index();
@@ -448,7 +448,7 @@ void game_logic::validate_player_bomb_interaction(bomb* b) {
 			// Check if player is in the bomb explosion area
 			if (validate_player_bomb_proximity(player_i, player_j))
 			{
-				cout << "\nPlayer " << i << " at i: " << player_i << ", j: " << player_j << " hit by a bomb";
+				std::cout << "\nPlayer " << i << " at i: " << player_i << ", j: " << player_j << " hit by a bomb";
 				player_pointer->set_removal_flag();
 			}
 		}
