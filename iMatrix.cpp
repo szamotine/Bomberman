@@ -7,51 +7,56 @@
 using namespace std;
 
 
-iMatrix::iMatrix(int Nvalue, int Mvalue) : N(Nvalue), M(Mvalue) {
+iMatrix::iMatrix(int Nvalue, int Mvalue)
+{
+	int i, j;
+
+	this->N = Nvalue;
+	this->M = Mvalue;
+
 
 	// add an extra row and col for optional i=0 and j=0
-	p = new int[(N + 1) * (M + 1)];
+	p = new int [(N+1)*(M+1)];
 
-	if (p == nullptr)
-	{
+	if( p == NULL ) {
 		cout << "\nmemory allocation error in iMatrix::iMatrix(...)";
 		return;
 	}
 
-	for (int i = 0; i <= N; i++)
-	{
-		for (int j = 0; j <= M; j++)
-		{
-			e(i, j) = 0;
+	for(i=0;i<=N;i++) {
+		for(j=0;j<=M;j++) {
+			e(i,j) = 0;
 		}
 	}
+
 }
 
 
-int& iMatrix::e(int i, int j) {
+int & iMatrix::e(int i, int j)
+{
 	int k;
 	static int ans = 0;
 
-	if (i<0 || i>N || j<0 || j>M)
-	{
+	if( i<0 || i>N || j<0 || j>M ) {
 		cout << "\nerror in iMatrix::e(): out of bounds";
 		return ans;
-	}
+	} 
 
 	// add an extra row and col for optional i=0 and j=0
-	k = (M + 1) * i + j;
+	k = (M+1)*i + j;
 
 	return p[k];
 }
 
 
-void iMatrix::print() {
-	for (int i = 1; i <= N; i++)
-	{
+void iMatrix::print()
+{
+	int i, j;
+
+	for(i=1;i<=N;i++) {
 		cout << "\n" << i << ":\t";
-		for (int j = 1; j <= M; j++)
-		{
-			cout << e(i, j) << " ";
+		for(j=1;j<=M;j++) {
+			cout << e(i,j) << " ";
 		}
 		//cout << "\n";
 	}
@@ -59,20 +64,18 @@ void iMatrix::print() {
 }
 
 
-void iMatrix::print0() {
-
+void iMatrix::print0()
+{
+	int i, j;
 	cout << "\n \t";
-	for (int i = 0; i <= N; i++)
-	{
+	for (i = 0; i <= N; i++) {
 		cout << i << " ";
 	}
 
-	for (int i = N; i >= 0; i--)
-	{
+	for(i=N;i>=0;i--) {
 		cout << "\n" << i << ":\t";
-		for (int j = 0; j <= M; j++)
-		{
-			cout << e(i, j) << " ";
+		for(j=0;j<=M;j++) {
+			cout << e(i,j) << " ";
 		}
 		//cout << "\n";
 	}

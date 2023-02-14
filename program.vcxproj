@@ -135,14 +135,11 @@
     <ClCompile Include="grey_brick.cpp" />
     <ClCompile Include="iMatrix.cpp" />
     <ClCompile Include="player.cpp" />
-    <ClCompile Include="player_constants.cpp" />
-    <ClCompile Include="player_constants_filenames.cpp" />
     <ClCompile Include="program.cpp" />
     <ClCompile Include="ran.cpp" />
     <ClCompile Include="red_brick.cpp" />
     <ClCompile Include="game_logic.cpp" />
     <ClCompile Include="terrain.cpp" />
-    <ClCompile Include="terrain_constants.cpp" />
     <ClCompile Include="timer.cpp" />
     <ClCompile Include="world.cpp" />
   </ItemGroup>
@@ -156,13 +153,9 @@
     <ClInclude Include="grey_brick.h" />
     <ClInclude Include="iMatrix.h" />
     <ClInclude Include="player.h" />
-    <ClInclude Include="player_constants.h" />
-    <ClInclude Include="player_constants_filenames.h" />
-    <ClInclude Include="ran.h" />
     <ClInclude Include="red_brick.h" />
     <ClInclude Include="game_logic.h" />
     <ClInclude Include="terrain.h" />
-    <ClInclude Include="terrain_constants.h" />
     <ClInclude Include="timer.h" />
     <ClInclude Include="world.h" />
   </ItemGroup>
