@@ -4,41 +4,11 @@
 #include "red_brick.h"
 #include "player.h"
 #include "bomb.h"
-using namespace std;
+#include "terrain_constants.h"
 
 class terrain
 {
 private:
-
-	// store the background image name for ease of use 
-	char* background = "background.png";
-
-	// store the grey bricks image name for ease of use
-	char* grey_bricks = "grey_bricks.png";
-
-	// store the red bricks image name for ease of use 
-	char* red_bricks = "red_bricks.png";
-
-	// store the red bricks image name for ease of use 
-	char* bomb_file = "bomb.png";
-
-	// bricks angle 
-	double brick_angle = 0.0;
-
-	// bricks_scale
-	double brick_scale = 1.0;
-
-	// bomb angle 
-	double bomb_angle = 0.0;
-
-	// bomb scale
-	double bomb_scale = 1.0;
-
-	// background coordinates to have a background image
-	double x_background = 0;
-	double y_background = 0;
-	double q_background = 0;
-	double scale_background = -1.0;
 
 	// stores the images sprite ids
 	int background_sprite_id = {};
@@ -48,6 +18,7 @@ private:
 
 	
 	int number_of_players = {};
+	terrain_constants terrain_constants_pointer;
 
 public:
 	// List of grey bricks
