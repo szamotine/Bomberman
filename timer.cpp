@@ -16,11 +16,17 @@ double high_resolution_time()
 // but not very accurate over long periods
 {
 	static int init = 0;
-	static double pow32, count_low0, count_high0, timer_frequency;
-	double t, count_low, count_high;
+	static double pow32;
+	static double count_low0;
+	static double count_high0;
+	static double timer_frequency;
+	double t;
+	double count_low;
+	double count_high;
 	LARGE_INTEGER count;
 
-	if (init == 0) {
+	if (init == 0)
+	{
 		pow32 = pow(2.0, 32); // calculate a constant, 2^32
 
 		QueryPerformanceCounter(&count); // get initial count
@@ -49,8 +55,7 @@ double high_resolution_time()
 
 // returns the integer count of the high resolution clock
 // 1 count typically = 0.1 us
-unsigned int high_resolution_count()
-{
+unsigned int high_resolution_count() {
 	LARGE_INTEGER count;
 	unsigned int ans;
 
