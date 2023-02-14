@@ -1,8 +1,9 @@
 #pragma once
 #include "iMatrix.h"
 #include "terrain.h"
+#include<memory>
 
-class game_logic 
+class game_logic
 {
 #pragma region Private Fields and Members
 private:
@@ -28,7 +29,6 @@ private:
 		Bomb
 	};
 
-
 	// used to store current time
 	double current_time{};
 
@@ -37,6 +37,9 @@ private:
 	static constexpr double UP = 90.0;
 	static constexpr double LEFT = 180.0;
 	static constexpr double DOWN = 270.0;
+
+	// player step movement size for smooth gameplay
+	int movement_size = 3;
 #pragma endregion
 
 public:
@@ -49,11 +52,11 @@ public:
 	// Checks for player input from keyboard
 	void player_input();
 
-	void player_1_input(player* p, int movement_step_size);
-	void player_2_input(player* p, int movement_step_size);
+	void player_1_input(player* p);
+	void player_2_input(player* p);
 
 	// Logic to allow player to move in commanded direction
-	bool validate_player_movement(player* player);
+	bool validate_player_movement(player* p);
 
 	// Checks player surroundings for obstacles
 	bool check_player_offset(double x, double y);
@@ -67,26 +70,28 @@ public:
 	// Delays bomb placement input
 	void validate_bomb_flag_time(player* p);
 
-	void print_player_coordinates(player* p);
+	void print_player_coordinates(const player* p) const;
+
+
 
 #pragma endregion
 
 #pragma region Bomb Explosion
 
 	// Sets off bomb explosion
-	void explode_bomb(bomb* bomb);
+	void explode_bomb(bomb* b);
 
 	// Marks red bricks to be destructed due to bomb
 	void bomb_flag_red_bricks(int bomb_i_index, int bomb_j_index);
 
 	// Checks for other bombs in proximity to the exploding bomb
-	void validate_exploding_bomb_proximity(bomb* b);
+	void validate_exploding_bomb_proximity(const bomb* b);
 
 	// Marks bombs for removal
 	void flag_chain_bomb(int i_index, int j_index);
 
 	// Flags players that are in proximity of exploding bombs for removal
-	void validate_player_bomb_interaction(bomb* b);
+	void validate_player_bomb_interaction();
 
 	// Checks if player is in proximity of an exploding bomb
 	bool validate_player_bomb_proximity(int i, int j);
@@ -97,7 +102,7 @@ public:
 
 	// Initializes collision matrix
 	void collision_matrix_init();
-	
+
 	// Adds each existing red brick to the collision matrix 
 	void collision_matrix_init_red_bricks();
 
