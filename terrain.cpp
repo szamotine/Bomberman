@@ -5,7 +5,6 @@
 
 #pragma region Constructors
 terrain::~terrain() = default;
-{
 
 terrain::terrain() = default;
 #pragma endregion
@@ -26,11 +25,11 @@ void terrain::initialize_terrain(int number) {
 	bomb_list = std::vector<bomb>();
 	initialize_grey_bricks();
 	initialize_red_bricks();
-	initialize_players(number);
+	initialize_players();
 }
 
 void terrain::initialize_red_bricks() {
-	
+
 	// create red brick pattern
 	initialize_red_bricks_outer_perimeter();
 	initialize_red_bricks_horizontal_lines();
@@ -99,11 +98,11 @@ void terrain::initialize_grey_bricks() {
 	{
 
 		x_coordinate = ((i * 42) - 21);
-		
+
 		grey_brick_list.emplace_back(x_coordinate, 21);
 		grey_brick_list.emplace_back(x_coordinate, 693);
 	}
-	
+
 	// create the side walls of the enclosed terrrain
 	for (int i = 1; i <= n + 1; i++)
 	{
@@ -112,7 +111,7 @@ void terrain::initialize_grey_bricks() {
 		grey_brick_list.emplace_back(21, y_coordinate);
 		grey_brick_list.emplace_back(693, y_coordinate);
 	}
-		
+
 	// create the checkerboard pattern 
 	for (int i = 3; i < 16; i = i + 2)
 	{
@@ -125,10 +124,9 @@ void terrain::initialize_grey_bricks() {
 	}
 }
 
-void terrain::initialize_players(int number_of_players)
-{
-	for (int i = 0; i < number_of_players; i++) 
-	{	
+void terrain::initialize_players() {
+	for (int i = 0; i < number_of_players; i++)
+	{
 		player_list.emplace_back(i);
 	}
 }
@@ -146,7 +144,7 @@ void terrain::draw_grey_bricks() const {
 	
 	if (!grey_brick_list.empty())
 	{
-		for (grey_brick gb : grey_brick_list) 
+		for (grey_brick gb : grey_brick_list)
 		{
 			draw_sprite
 			(
@@ -162,9 +160,8 @@ void terrain::draw_grey_bricks() const {
 
 void terrain::draw_red_bricks() const {
 	if (!red_brick_list.empty())
-{
-	if (red_brick_list.size() > 0) {
-		for (red_brick rb : red_brick_list) 
+	{
+		for (red_brick rb : red_brick_list)
 		{
 			draw_sprite
 			(
@@ -186,7 +183,7 @@ void terrain::draw_players() const {
 
 	if (!player_list.empty())
 	{
-		for (player p : player_list) 
+		for (player p : player_list)
 		{
 			draw_sprite
 			(
@@ -239,6 +236,42 @@ void terrain::erase_red_brick(int index) {
 }
 void terrain::erase_player(int index) {
 	player_list.erase(player_list.begin() + index);
+}
+
+
+#pragma endregion
+
+#pragma region Get Lists
+std::vector<grey_brick> terrain::get_grey_brick_list() const {
+	return grey_brick_list;
+}
+
+grey_brick terrain::get_grey_brick(int index) const {
+	return grey_brick_list[index];
+}
+
+std::vector<red_brick> terrain::get_red_brick_list() const {
+	return red_brick_list;
+}
+
+red_brick terrain::get_red_brick(int index) const {
+	return red_brick_list[index];
+}
+
+std::vector<player> terrain::get_player_list() const {
+	return player_list;
+}
+
+player terrain::get_player(int index) const {
+	return player_list[index];
+}
+
+std::vector<bomb> terrain::get_bomb_list() const {
+	return bomb_list;
+}
+
+bomb terrain::get_bomb(int index) const {
+	return bomb_list[index];
 }
 
 #pragma endregion

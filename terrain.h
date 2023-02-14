@@ -20,13 +20,13 @@ private:
 	terrain_constants terrain_constants_pointer;
 
 	// List of grey bricks
-	vector<grey_brick> grey_brick_list;
+	std::vector<grey_brick> grey_brick_list;
 	// List of red bricks
-	vector<red_brick> red_brick_list;
+	std::vector<red_brick> red_brick_list;
 	// List of players
-	vector<player> player_list;
+	std::vector<player> player_list;
 	// List of bombs
-	vector<bomb> bomb_list;
+	std::vector<bomb> bomb_list;
 
 
 
@@ -48,7 +48,7 @@ public:
 	// Creates grid of grey bricks
 	void initialize_grey_bricks();
 	// Creates player objects
-	void initialize_players(int number_of_players);
+	void initialize_players();
 	// Constructs bomb at given location and adds to bomb list
 	void construct_bomb(int i, int j);
 
@@ -71,6 +71,21 @@ public:
 	void erase_red_brick(int index);
 	// Erases player from player list
 	void erase_player(int index);
+#pragma endregion
+
+#pragma region Get Lists
+	std::vector <grey_brick> get_grey_brick_list() const;
+	grey_brick get_grey_brick(int index) const;
+
+	std::vector <red_brick> get_red_brick_list() const;
+	red_brick get_red_brick(int index) const;
+
+	std::vector <player> get_player_list() const;
+	player get_player(int index) const;
+
+	std::vector <bomb> get_bomb_list() const;
+	bomb get_bomb(int index) const;
+
 #pragma endregion
 };
 
