@@ -11,8 +11,13 @@ private:
 	// store the red bricks image name for ease of use 
 	char* red_bricks_filename = "red_bricks.png";
 
-	// store the red bricks image name for ease of use 
+	// store the bomb image name for ease of use 
 	char* bomb_filename = "bomb.png";
+
+	// store the bomb explosion image name for ease of use
+	char* bomb_explosion = "bomb_explosion.png";
+
+	double bomb_explosion_scale = 2.3;
 
 	// angle for bricks and bomb
 	double angle = 0.0;
@@ -30,12 +35,14 @@ public:
 	char* get_background_filename() const;
 	char* get_grey_bricks_filename() const;
 	char* get_red_bricks_filename() const;
-
 	char* get_bomb_filename() const;
+	char* get_bomb_explosion_filename() const;
+
 	double get_angle() const;
 	double get_scale() const;
 	double get_background_coordinates() const;
 	double get_background_scale() const;
+	double get_bomb_explosion_scale() const;
 
 	terrain_constants();
 

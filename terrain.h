@@ -19,6 +19,7 @@ private:
 	int grey_brick_sprite_id = {};
 	int red_brick_sprite_id = {};
 	int bomb_sprite_id = {};
+	int bomb_explosion_sprite_id = {};
 
 	int number_of_players = {};
 
@@ -76,6 +77,8 @@ public:
 	void draw_players() const;
 	void draw_bombs() const;
 	void draw_map() const;
+
+	void set_bomb_explosion_flag(bomb* b) const;
 
 #pragma endregion
 

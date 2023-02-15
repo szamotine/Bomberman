@@ -50,8 +50,6 @@ public:
 
 #pragma endregion
 
-
-
 #pragma region Player Movement and Actions
 	// Checks for player input from keyboard
 	void player_input();

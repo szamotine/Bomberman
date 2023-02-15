@@ -304,6 +304,7 @@ void game_logic::explode_bomb(const bomb* b) {
 
 	validate_red_brick_bomb_interactions(bomb_i_index, bomb_j_index);
 
+	//TODO refactor chain bomb
 	// bomb chain interactions
 	//if (terrain_pointer->get_bomb_list().size() > 1)
 	//{
@@ -459,9 +460,7 @@ void game_logic::validate_red_brick_bomb_interactions(int bomb_i_index, int bomb
 		matrix_value = calculator::matrix_value(bomb_i_index, bomb_j_index - offset2);
 		terrain_pointer->destroy_red_brick(matrix_value);
 	}
-
 }
-
 
 #pragma endregion
 
@@ -536,7 +535,6 @@ void game_logic::set_matrix_to_bomb(int i, int j) {
 void game_logic::validate_bomb_timer() {
 	if (!terrain_pointer->get_bomb_list().empty())
 	{
-
 		double duration;
 		for (int i = 0; unsigned(i) < terrain_pointer->get_bomb_list().size(); i++)
 		{
@@ -544,10 +542,11 @@ void game_logic::validate_bomb_timer() {
 			current_time = high_resolution_time();
 			duration = current_time - bomb_pointer->get_time();
 
+			if (duration > 2.7)
+				terrain_pointer->set_bomb_explosion_flag(bomb_pointer);
+
 			if (duration > 3)
-			{
 				bomb_pointer->set_bomb_removal_flag();
-			}
 		}
 	}
 }
