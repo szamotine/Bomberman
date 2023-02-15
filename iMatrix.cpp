@@ -4,9 +4,6 @@
 #include <fstream>
 #include "iMatrix.h"
 
-using namespace std;
-
-
 iMatrix::iMatrix(int Nvalue, int Mvalue) : N(Nvalue), M(Mvalue) {
 
 	// add an extra row and col for optional i=0 and j=0
@@ -14,7 +11,7 @@ iMatrix::iMatrix(int Nvalue, int Mvalue) : N(Nvalue), M(Mvalue) {
 
 	if (p == nullptr)
 	{
-		cout << "\nmemory allocation error in iMatrix::iMatrix(...)";
+		std::cout << "\nmemory allocation error in iMatrix::iMatrix(...)";
 		return;
 	}
 
@@ -27,14 +24,13 @@ iMatrix::iMatrix(int Nvalue, int Mvalue) : N(Nvalue), M(Mvalue) {
 	}
 }
 
-
 int& iMatrix::e(int i, int j) {
 	int k;
 	static int ans = 0;
 
 	if (i<0 || i>N || j<0 || j>M)
 	{
-		cout << "\nerror in iMatrix::e(): out of bounds";
+		std::cout << "\nerror in iMatrix::e(): out of bounds";
 		return ans;
 	}
 
@@ -44,38 +40,46 @@ int& iMatrix::e(int i, int j) {
 	return p[k];
 }
 
-
 void iMatrix::print() {
 	for (int i = 1; i <= N; i++)
 	{
-		cout << "\n" << i << ":\t";
+		std::cout << "\n" << i << ":\t";
 		for (int j = 1; j <= M; j++)
 		{
-			cout << e(i, j) << " ";
+			std::cout << e(i, j) << " ";
 		}
 		//cout << "\n";
 	}
 
 }
 
-
 void iMatrix::print0() {
 
-	cout << "\n \t";
+	std::cout << "\n \t";
 	for (int i = 0; i <= N; i++)
 	{
-		cout << i << " ";
+		std::cout << i << " ";
 	}
 
 	for (int i = N; i >= 0; i--)
 	{
-		cout << "\n" << i << ":\t";
+		std::cout << "\n" << i << ":\t";
 		for (int j = 0; j <= M; j++)
 		{
-			cout << e(i, j) << " ";
+			std::cout << e(i, j) << " ";
 		}
 		//cout << "\n";
 	}
 
+}
+
+int& iMatrix::get_matrix_value(int input) {
+
+	if (input > (N + 1) * (M + 1))
+	{
+		throw std::out_of_range("Index error in get_matrix_value: input= " + input);
+	}
+
+	return p[input];
 }
 

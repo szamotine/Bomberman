@@ -13,10 +13,6 @@ private:
 
 public:
 
-
-
-
-
 	iMatrix(int N, int M);
 
 	int& e(int i, int j);
@@ -25,6 +21,8 @@ public:
 
 	// print elements including row i=0 and col j=0
 	void print0();
+
+	int& get_matrix_value(int input);
 
 };
 

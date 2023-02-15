@@ -14,6 +14,7 @@ red_brick::red_brick(double x, double y) : x_coordinate(x), y_coordinate(y) {
 	{
 		throw std::out_of_range("Index error in red brick construction: j_index= " + j_index);
 	}
+	matrix_value = calculator::matrix_value(i_index, j_index);
 }
 
 red_brick::~red_brick() = default;

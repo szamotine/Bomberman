@@ -46,11 +46,11 @@ public:
 #pragma region Constructors
 	~game_logic();
 
-	//game_logic(terrain* pointer_terrain, iMatrix* collision_matrix);
-
 	game_logic(std::shared_ptr<terrain> pointer_terrain, std::shared_ptr<iMatrix>  collision_matrix);
 
 #pragma endregion
+
+
 
 #pragma region Player Movement and Actions
 	// Checks for player input from keyboard
@@ -76,17 +76,12 @@ public:
 
 	void print_player_coordinates(const player* p) const;
 
-
-
 #pragma endregion
 
 #pragma region Bomb Explosion
 
 	// Sets off bomb explosion
-	void explode_bomb(bomb* bomb);
-
-	// Marks red bricks to be destructed due to bomb
-	void bomb_flag_red_bricks(int bomb_i_index, int bomb_j_index);
+	void explode_bomb(const bomb* bomb);
 
 	// Checks for other bombs in proximity to the exploding bomb
 	void validate_exploding_bomb_proximity(const bomb* b);
@@ -100,15 +95,16 @@ public:
 	// Checks if player is in proximity of an exploding bomb
 	bool validate_player_bomb_proximity(int i, int j);
 
+	// Destroys red bricks that are in bomb proximity
+	void validate_red_brick_bomb_interactions(int bomb_i_index, int bomb_j_index);
+
+
 #pragma endregion
 
 #pragma region Matrix Operations
 
 	// Initializes collision matrix
 	void collision_matrix_init();
-
-	// Adds each existing red brick to the collision matrix 
-	void collision_matrix_init_red_bricks();
 
 	// Adds each existing grey brick to the collision matrix
 	void collision_matrix_init_grey_bricks();
@@ -119,11 +115,16 @@ public:
 	// Checks if given matrix space is unoccupied
 	bool validate_matrix_for_empty_space(int i, int j);
 
+	// Checks if given matrix space is occupied by a grey brick
+	bool validate_matrix_for_grey_brick(int i, int j);
+
 	// Marks given matrix space as unoccupied
 	void set_matrix_to_empty_space(int i, int j);
 
 	// Marks given matrix space as occupied by bomb
 	void set_matrix_to_bomb(int i, int j);
+
+
 
 #pragma endregion
 
@@ -131,9 +132,6 @@ public:
 
 	// Checks bomb timer to flag for explosion
 	void validate_bomb_timer();
-
-	// Erases flagged red bricks from list
-	void remove_flagged_bricks();
 
 	// Erases flagged bombs from list
 	void remove_flagged_bombs();

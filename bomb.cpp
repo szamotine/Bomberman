@@ -45,10 +45,10 @@ bool bomb::get_bomb_removal_flag() const {
 double bomb::get_time() const {
 	return time;
 }
-int bomb::get_bomb_i_index() const {
+int bomb::get_i_index() const {
 	return i_index;
 }
-int bomb::get_bomb_j_index() const {
+int bomb::get_j_index() const {
 	return j_index;
 }
 
