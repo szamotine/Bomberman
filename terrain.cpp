@@ -26,6 +26,7 @@ void terrain::initialize_terrain(int number) {
 	create_sprite(terrain_constants_pointer.get_grey_bricks_filename(), grey_brick_sprite_id);
 	create_sprite(terrain_constants_pointer.get_red_bricks_filename(), red_brick_sprite_id);
 	create_sprite(terrain_constants_pointer.get_bomb_filename(), bomb_sprite_id);
+	create_sprite(terrain_constants_pointer.get_bomb_explosion_filename(), bomb_explosion_sprite_id);
 
 	grey_brick_list = std::vector<grey_brick>();
 
@@ -174,7 +175,6 @@ void terrain::initialize_players() {
 	}
 }
 
-
 void terrain::construct_bomb(int i, int j) {
 	bomb_list.emplace_back(i, j, high_resolution_time());
 }
@@ -202,7 +202,6 @@ void terrain::draw_grey_bricks() const {
 		}
 	}
 }
-
 
 void terrain::draw_red_bricks() const {
 
@@ -251,16 +250,35 @@ void terrain::draw_bombs() const {
 	{
 		for (bomb b : bomb_list)
 		{
-			draw_sprite
-			(
-				bomb_sprite_id,
-				b.get_x_coordinate(),
-				b.get_y_coordinate(),
-				terrain_constants_pointer.get_angle(),
-				terrain_constants_pointer.get_scale()
-			);
+			if (b.get_bomb_exploding_flag())
+			{
+				draw_sprite
+				(
+					//bomb_sprite_id,
+					bomb_explosion_sprite_id,
+					b.get_x_coordinate(),
+					b.get_y_coordinate(),
+					terrain_constants_pointer.get_angle(),
+					//terrain_constants_pointer.get_scale()
+					terrain_constants_pointer.get_bomb_explosion_scale()
+				);
+			}
+			else
+
+				draw_sprite
+				(
+					bomb_sprite_id,
+					b.get_x_coordinate(),
+					b.get_y_coordinate(),
+					terrain_constants_pointer.get_angle(),
+					terrain_constants_pointer.get_scale()
+				);
 		}
 	}
+}
+
+void terrain::set_bomb_explosion_flag(bomb* b) const {
+	b->set_bomb_exploding_flag();
 }
 
 void terrain::draw_map() const {

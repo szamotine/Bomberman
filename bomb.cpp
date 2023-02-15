@@ -29,6 +29,10 @@ void bomb::set_bomb_removal_flag() {
 	bomb_removal_flag = true;
 }
 
+void bomb::set_bomb_exploding_flag() {
+	bomb_exploding_flag = true;
+}
+
 #pragma endregion
 
 #pragma region Getters
@@ -50,6 +54,10 @@ int bomb::get_i_index() const {
 }
 int bomb::get_j_index() const {
 	return j_index;
+}
+
+bool bomb::get_bomb_exploding_flag() {
+	return bomb_exploding_flag;
 }
 
 #pragma endregion
