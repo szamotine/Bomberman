@@ -2,15 +2,22 @@
 #include "terrain.h"
 #include <iostream>
 #include "2D_graphics.h"
+#include "iMatrix.h"
 
 #pragma region Constructors
 terrain::~terrain() = default;
 
 
-terrain::terrain() = default;
+terrain::terrain(std::shared_ptr<iMatrix> collision_matrix) : collision_matrix(collision_matrix) {}
 #pragma endregion
 
 #pragma region Initialization/Creation functions
+
+void terrain::create_red_brick(int matrix_value, double x, double y) {
+
+	red_brick_map.emplace(matrix_value, red_brick(x, y));
+	collision_matrix->get_matrix_value(matrix_value) = 2;
+}
 
 void terrain::initialize_terrain(int number) {
 
@@ -21,7 +28,7 @@ void terrain::initialize_terrain(int number) {
 	create_sprite(terrain_constants_pointer.get_bomb_filename(), bomb_sprite_id);
 
 	grey_brick_list = std::vector<grey_brick>();
-	red_brick_list = std::vector<red_brick>();
+
 	player_list = std::vector<player>();
 	bomb_list = std::vector<bomb>();
 	initialize_grey_bricks();
@@ -35,13 +42,20 @@ void terrain::initialize_red_bricks() {
 	initialize_red_bricks_outer_perimeter();
 	initialize_red_bricks_horizontal_lines();
 	initialize_red_bricks_horizontal_lines_between_grey_bricks();
-
 }
 
 void terrain::initialize_red_bricks_outer_perimeter() {
 	// coordinates for red bricks
 	double x;
 	double y;
+	int i_index;
+	int j_index;
+	int matrix_value;
+
+	int first = 63;
+	int last = 651;
+	int first_index = calculator::calculate_index(first);
+	int last_index = calculator::calculate_index(last);
 
 	//creates pattern on outer perimeter to confine players to corners
 	for (int i = 1; i <= 9; i++)
@@ -49,11 +63,24 @@ void terrain::initialize_red_bricks_outer_perimeter() {
 		x = (147 + (i * 42));
 		y = x;
 
-		red_brick_list.emplace_back(x, 63);
-		red_brick_list.emplace_back(x, 651);
+		i_index = calculator::calculate_index(x);
 
-		red_brick_list.emplace_back(63, y);
-		red_brick_list.emplace_back(651, y);
+		matrix_value = calculator::matrix_value(i_index, first_index);
+		create_red_brick(matrix_value, x, first);
+		//red_brick_map.emplace(matrix_value, red_brick(x, first));
+
+		matrix_value = calculator::matrix_value(i_index, last_index);
+		create_red_brick(matrix_value, x, last);
+		//red_brick_map.emplace(matrix_value, red_brick(x, last));
+
+		j_index = calculator::calculate_index(y);
+		matrix_value = calculator::matrix_value(first_index, j_index);
+		create_red_brick(matrix_value, first, y);
+		//red_brick_map.emplace(matrix_value, red_brick(first, y));
+
+		matrix_value = calculator::matrix_value(last_index, j_index);
+		create_red_brick(matrix_value, last, y);
+		red_brick_map.emplace(matrix_value, red_brick(last, y));
 	}
 }
 
@@ -61,6 +88,9 @@ void terrain::initialize_red_bricks_horizontal_lines() {
 	// coordinates for red bricks
 	double x;
 	double y;
+	int i_index;
+	int j_index;
+	int matrix_value;
 
 	for (int i = 0; i < 6; i++)
 	{
@@ -68,7 +98,12 @@ void terrain::initialize_red_bricks_horizontal_lines() {
 		{
 			x = (105 + k * 42);
 			y = (147 + i * 84);
-			red_brick_list.emplace_back(x, y);
+			i_index = calculator::calculate_index(x);
+			j_index = calculator::calculate_index(y);
+			matrix_value = calculator::matrix_value(i_index, j_index);
+			create_red_brick(matrix_value, x, y);
+			//red_brick_map.emplace(matrix_value, red_brick(x, y));
+
 		}
 	}
 }
@@ -77,6 +112,9 @@ void terrain::initialize_red_bricks_horizontal_lines_between_grey_bricks() {
 	// coordinates for red bricks
 	double x;
 	double y;
+	int i_index;
+	int j_index;
+	int matrix_value;
 
 	for (int i = 0; i < 7; i++)
 	{
@@ -84,7 +122,11 @@ void terrain::initialize_red_bricks_horizontal_lines_between_grey_bricks() {
 		{
 			x = (147 + k * 84);
 			y = (105 + i * 84);
-			red_brick_list.emplace_back(x, y);
+			i_index = calculator::calculate_index(x);
+			j_index = calculator::calculate_index(y);
+			matrix_value = calculator::matrix_value(i_index, j_index);
+			red_brick_map.emplace(matrix_value, red_brick(x, y));
+
 		}
 	}
 }
@@ -164,20 +206,22 @@ void terrain::draw_grey_bricks() const {
 
 void terrain::draw_red_bricks() const {
 
-	if (!red_brick_list.empty())
+	if (!red_brick_map.empty())
 	{
-		for (red_brick rb : red_brick_list)
+		auto it = red_brick_map.begin();
+
+		while (it != red_brick_map.end())
 		{
 			draw_sprite
 			(
 				red_brick_sprite_id,
-				rb.get_x_coordinate(),
-				rb.get_y_coordinate(),
+				it->second.get_x_coordinate(),
+				it->second.get_y_coordinate(),
 				terrain_constants_pointer.get_angle(),
 				terrain_constants_pointer.get_scale()
 			);
+			it++;
 		}
-
 	}
 }
 
@@ -236,11 +280,16 @@ void terrain::erase_bomb(int index) {
 	bomb_list.erase(bomb_list.begin() + index);
 }
 
-void terrain::erase_red_brick(int index) {
-	red_brick_list.erase(red_brick_list.begin() + index);
-}
 void terrain::erase_player(int index) {
 	player_list.erase(player_list.begin() + index);
+}
+
+void terrain::destroy_red_brick(int matrix_value) {
+
+	if (red_brick_map.erase(matrix_value))
+	{
+		collision_matrix->get_matrix_value(matrix_value) = 0;
+	}
 }
 
 
@@ -253,15 +302,6 @@ std::vector<grey_brick> terrain::get_grey_brick_list() const {
 
 grey_brick* terrain::get_grey_brick(int index) {
 	grey_brick* temp = &grey_brick_list[index];
-	return temp;
-}
-
-std::vector<red_brick> terrain::get_red_brick_list() const {
-	return red_brick_list;
-}
-
-red_brick* terrain::get_red_brick(int index) {
-	red_brick* temp = &red_brick_list[index];
 	return temp;
 }
 

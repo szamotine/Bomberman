@@ -30,7 +30,7 @@ public:
 	double get_y_coordinate() const;
 	double get_time() const;
 	bool get_bomb_removal_flag() const;
-	int get_bomb_i_index() const;
-	int get_bomb_j_index() const;
+	int get_i_index() const;
+	int get_j_index() const;
 #pragma endregion
 };

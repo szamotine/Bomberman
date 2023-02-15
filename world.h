@@ -19,7 +19,7 @@ private:
 	std::shared_ptr<iMatrix> collision_matrix = std::make_shared<iMatrix>(area, area);
 
 	// pointer to terrain
-	std::shared_ptr<terrain> pointer_terrain = std::make_shared<terrain>();
+	std::shared_ptr<terrain> pointer_terrain = std::make_shared<terrain>(collision_matrix);
 
 	// Pointer to game logic class
 	std::shared_ptr<game_logic> pointer_game_logic = std::make_shared<game_logic>(pointer_terrain, collision_matrix);

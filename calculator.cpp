@@ -20,3 +20,8 @@ double calculator::calculate_coordinate(int index) {
 	coordinate = (int)(index * dx + xmin);
 	return coordinate;
 }
+
+int calculator::matrix_value(int i, int j) {
+	int matrix_value = (17 + 1) * i + j;
+	return matrix_value;
+}

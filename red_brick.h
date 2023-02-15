@@ -6,6 +6,7 @@ private:
 	double y_coordinate;
 	int i_index;
 	int j_index;
+	int matrix_value;
 
 	bool flag_delete = false;
 

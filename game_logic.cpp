@@ -11,11 +11,7 @@
 
 game_logic::~game_logic() = default;
 
-//game_logic::game_logic(terrain* pointer_terrain, iMatrix* collision_matrix) : terrain_pointer(pointer_terrain), collision_pointer(collision_matrix) {}
-
 game_logic::game_logic(std::shared_ptr<terrain> pointer_terrain, std::shared_ptr<iMatrix> collision_matrix) : terrain_pointer(pointer_terrain), collision_pointer(collision_matrix) {}
-
-
 
 #pragma endregion
 
@@ -195,10 +191,8 @@ bool game_logic::check_player_offset(double x, double y) {
 
 	if (!validate_matrix_for_empty_space(i_index, j_index))
 	{
-		//std::cout << "\nCannot move to i: " << i_index << ", j: " << j_index;
 		return false;
 	}
-	//std::cout << "\nCan move to i: " << i_index << ", j: " << j_index;
 	return true;
 }
 
@@ -294,7 +288,7 @@ void game_logic::print_player_coordinates(const player* p) const {
 
 #pragma region Bomb Explosion
 
-void game_logic::explode_bomb(bomb* b) {
+void game_logic::explode_bomb(const bomb* b) {
 	/*
 	* High level function that coordinates all bomb explosion interactions:
 	*	bomb - red brick
@@ -303,17 +297,18 @@ void game_logic::explode_bomb(bomb* b) {
 	*/
 
 	// bomb coordinate index
-	int bomb_i_index = b->get_bomb_i_index();
-	int bomb_j_index = b->get_bomb_j_index();
+	int bomb_i_index = b->get_i_index();
+	int bomb_j_index = b->get_j_index();
 
 	// bomb - red brick interactions
-	bomb_flag_red_bricks(bomb_i_index, bomb_j_index);
+
+	validate_red_brick_bomb_interactions(bomb_i_index, bomb_j_index);
 
 	// bomb chain interactions
-	if (terrain_pointer->get_bomb_list().size() > 1)
-	{
-		validate_exploding_bomb_proximity(b);
-	}
+	//if (terrain_pointer->get_bomb_list().size() > 1)
+	//{
+	//	validate_exploding_bomb_proximity(b);
+	//}
 
 	// bomb - player interactions
 	validate_player_bomb_interaction();
@@ -322,60 +317,10 @@ void game_logic::explode_bomb(bomb* b) {
 	set_matrix_to_empty_space(bomb_i_index, bomb_j_index);
 }
 
-void game_logic::bomb_flag_red_bricks(int bomb_i_index, int bomb_j_index) {
-	//i_index, j_index of bomb explosion area
-	int x;
-	int y;
-
-
-	for (int i = 0; (unsigned)i < terrain_pointer->get_red_brick_list().size(); i++)
-	{
-		rb_pointer = terrain_pointer->get_red_brick(i);
-		x = rb_pointer->get_i_index();
-		y = rb_pointer->get_j_index();
-
-		// mark red brick for removal: 1 square left and right of the bomb
-		if ((x == bomb_i_index + 1 || x == bomb_i_index - 1) && bomb_j_index == y)
-		{
-			rb_pointer->set_flag_false();
-		}
-
-		// mark red brick for removal: 1 square above and below of the bomb
-		if ((y == bomb_j_index + 1 || y == bomb_j_index - 1) && bomb_i_index == x)
-		{
-			rb_pointer->set_flag_false();
-		}
-
-		// mark red brick for removal: 2 squares above the bomb if there are no indestructibles in the way
-		if (x == bomb_i_index && (y == bomb_j_index + 2) && collision_pointer->e(bomb_i_index, bomb_j_index + 1) != Collision_Type::Indestructible)
-		{
-			rb_pointer->set_flag_false();
-		}
-
-		// mark red brick for removal: 2 squares below the bomb if there are no indestructibles in the way
-		if (x == bomb_i_index && (y == bomb_j_index - 2) && collision_pointer->e(bomb_i_index, bomb_j_index - 1) != Collision_Type::Indestructible)
-		{
-			rb_pointer->set_flag_false();
-		}
-
-		// mark red brick for removal: 2 squares to the right of the bomb if there are no indestructibles in the way
-		if (x == bomb_i_index + 2 && y == bomb_j_index && collision_pointer->e(bomb_i_index + 1, bomb_j_index) != Collision_Type::Indestructible)
-		{
-			rb_pointer->set_flag_false();
-		}
-
-		// mark red brick for removal: 2 squares to the left of the bomb if there are no indestructibles in the way
-		if (x == bomb_i_index - 2 && y == bomb_j_index && collision_pointer->e(bomb_i_index - 1, bomb_j_index) != Collision_Type::Indestructible)
-		{
-			rb_pointer->set_flag_false();
-		}
-	}
-}
-
 void game_logic::validate_exploding_bomb_proximity(const bomb* b) {
 	//existing bomb location
-	int bomb_i = b->get_bomb_i_index();
-	int bomb_j = b->get_bomb_j_index();
+	int bomb_i = b->get_i_index();
+	int bomb_j = b->get_j_index();
 
 	// placeholder to check collision matrix for bombs
 	int i;
@@ -413,7 +358,7 @@ void game_logic::flag_chain_bomb(int i_index, int j_index) {
 		{
 			bomb_pointer = terrain_pointer->get_bomb(i);
 
-			if (bomb_pointer->get_bomb_i_index() == i_index && bomb_pointer->get_bomb_j_index() == j_index)
+			if (bomb_pointer->get_i_index() == i_index && bomb_pointer->get_j_index() == j_index)
 			{
 				bomb_pointer->set_bomb_removal_flag();
 			}
@@ -448,28 +393,75 @@ void game_logic::validate_player_bomb_interaction() {
 }
 
 bool game_logic::validate_player_bomb_proximity(int player_i, int player_j) {
+
 	// Number of squares affected by Bomb explosion
-	int L = 2;
+	int offset = 1;
+	int offset2 = 2;
 
-	//Check left/right of player
-	for (int i = player_i - L; i <= player_i + L; i++)
-	{
-		if (validate_matrix_for_bomb(i, player_j))
-		{
-			return true;
-		}
-	}
+	// Check left/right of player
+	if (validate_matrix_for_bomb(player_i - offset, player_j) || validate_matrix_for_bomb(player_i + offset, player_j)) return true;
 
-	//Check above/below player
-	for (int j = player_j - L; j <= player_j + L; j++)
-	{
-		if (validate_matrix_for_bomb(player_i, j))
-		{
-			return true;
-		}
-	}
+	// Check above/below player
+	if (validate_matrix_for_bomb(player_i, player_j + offset) || validate_matrix_for_bomb(player_i, player_j - offset)) return true;
+
+	// Check 2 left of player if not obstructed
+	if (!validate_matrix_for_grey_brick(player_i - offset, player_j) && validate_matrix_for_bomb(player_i - offset2, player_j)) return true;
+	// Check 2 right of player if not obstructed
+	if (!validate_matrix_for_grey_brick(player_i + offset, player_j) && validate_matrix_for_bomb(player_i + offset2, player_j)) return true;
+	// Check 2 above of player if not obstructed
+	if (!validate_matrix_for_grey_brick(player_i, player_j + offset) && validate_matrix_for_bomb(player_i, player_j + offset2)) return true;
+	// Check 2 below of player if not obstructed
+	if (!validate_matrix_for_grey_brick(player_i, player_j - offset) && validate_matrix_for_bomb(player_i, player_j - offset2)) return true;
+
 	return false;
 }
+
+void game_logic::validate_red_brick_bomb_interactions(int bomb_i_index, int bomb_j_index) {
+
+	int matrix_value;
+	int offset = 1;
+	int offset2 = 2;
+
+	// Removes red brick to the right of the bomb
+	matrix_value = calculator::matrix_value(bomb_i_index + offset, bomb_j_index);
+	terrain_pointer->destroy_red_brick(matrix_value);
+	// Removes red brick to the left of the bomb
+	matrix_value = calculator::matrix_value(bomb_i_index - offset, bomb_j_index);
+	terrain_pointer->destroy_red_brick(matrix_value);
+	// Removes red brick above the bomb
+	matrix_value = calculator::matrix_value(bomb_i_index, bomb_j_index + offset);
+	terrain_pointer->destroy_red_brick(matrix_value);
+	// Removes red brick below the bomb
+	matrix_value = calculator::matrix_value(bomb_i_index, bomb_j_index - offset);
+	terrain_pointer->destroy_red_brick(matrix_value);
+
+	//Removes red brick 2 to the right of the bomb if not obstructed
+	if (!validate_matrix_for_grey_brick(bomb_i_index + offset, bomb_j_index))
+	{
+		matrix_value = calculator::matrix_value(bomb_i_index + offset2, bomb_j_index);
+		terrain_pointer->destroy_red_brick(matrix_value);
+	}
+	//Removes red brick 2 to the left of the bomb if not obstructed
+	if (!validate_matrix_for_grey_brick(bomb_i_index - offset, bomb_j_index))
+	{
+		matrix_value = calculator::matrix_value(bomb_i_index - offset2, bomb_j_index);
+		terrain_pointer->destroy_red_brick(matrix_value);
+	}
+	// Removes red brick 2 above the bomb if not obstructed
+	if (!validate_matrix_for_grey_brick(bomb_i_index, bomb_j_index + offset))
+	{
+		matrix_value = calculator::matrix_value(bomb_i_index, bomb_j_index + offset2);
+		terrain_pointer->destroy_red_brick(matrix_value);
+	}
+	// Removes red brick 2 below the bomb if not obstructed
+	if (!validate_matrix_for_grey_brick(bomb_i_index, bomb_j_index - offset))
+	{
+		matrix_value = calculator::matrix_value(bomb_i_index, bomb_j_index - offset2);
+		terrain_pointer->destroy_red_brick(matrix_value);
+	}
+
+}
+
 
 #pragma endregion
 
@@ -478,31 +470,11 @@ bool game_logic::validate_player_bomb_proximity(int player_i, int player_j) {
 void game_logic::collision_matrix_init() {
 	//To be run once at initialization
 
-	collision_matrix_init_red_bricks();
+
 	collision_matrix_init_grey_bricks();
 	//collision_pointer->print0();
 }
 
-
-void game_logic::collision_matrix_init_red_bricks() {
-	// holders for index values of object locations
-	int i_index;
-	int j_index;
-
-
-	//sets values in collision matrix for each red brick
-	for (int i = 0; (unsigned)i < terrain_pointer->get_red_brick_list().size(); i++)
-	{
-		rb_pointer = terrain_pointer->get_red_brick(i);
-
-		// set collision matrix to contain red brick location
-		i_index = rb_pointer->get_i_index();
-		j_index = rb_pointer->get_j_index();
-		collision_pointer->e(i_index, j_index) = Collision_Type::Destructible;
-	}
-
-
-}
 void game_logic::collision_matrix_init_grey_bricks() {
 	// holders for index values of object locations
 	int i_index;
@@ -541,6 +513,14 @@ bool game_logic::validate_matrix_for_empty_space(int i, int j) {
 	return collision_pointer->e(i, j) == Collision_Type::None;
 }
 
+bool game_logic::validate_matrix_for_grey_brick(int i, int j) {
+	// Edge case: index out of bounds
+	if (i < 0 || j < 0 || i > 16 || j > 16) return false;
+
+	// Check Collision Matrix for Empty Space value
+	return collision_pointer->e(i, j) == Collision_Type::Indestructible;
+}
+
 void game_logic::set_matrix_to_empty_space(int i, int j) {
 	collision_pointer->e(i, j) = Collision_Type::None;
 }
@@ -568,21 +548,6 @@ void game_logic::validate_bomb_timer() {
 			{
 				bomb_pointer->set_bomb_removal_flag();
 			}
-		}
-	}
-}
-
-void game_logic::remove_flagged_bricks() {
-
-	for (int i = 0; unsigned(i) < terrain_pointer->get_red_brick_list().size(); i++)
-	{
-		rb_pointer = terrain_pointer->get_red_brick(i);
-		if (rb_pointer->get_flag())
-		{
-			int i_index = rb_pointer->get_i_index();
-			int j_index = rb_pointer->get_j_index();
-			collision_pointer->e(i_index, j_index) = 0;
-			terrain_pointer->erase_red_brick(i);
 		}
 	}
 }
