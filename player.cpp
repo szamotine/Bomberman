@@ -23,10 +23,6 @@ double player::get_y_coordinate() const {
 	return y_coordinate;
 }
 
-double player::get_orientation() const {
-	return orientation;
-}
-
 double player::get_angle() const {
 	return player_angle;
 }
@@ -38,15 +34,15 @@ double player::get_scale() const {
 int player::get_sprite_id() const {
 
 	//sprite ids array -> {right, top, left, bottom}
-	if (orientation == 0.0)
+	if (orientation == RIGHT)
 	{
 		return sprite_id[0];
 	}
-	else if (orientation == 90.0)
+	else if (orientation == UP)
 	{
 		return sprite_id[1];
 	}
-	else if (orientation == 180.0)
+	else if (orientation == LEFT)
 	{
 		return sprite_id[2];
 	}
@@ -72,12 +68,12 @@ bool player::get_player_removal_flag() const {
 int player::get_player_number() const {
 	return player_number;
 }
+
+player::player_orientation player::get_player_orientation() const {
+	return orientation;
+}
 #pragma endregion
 #pragma region Setters
-
-void player::set_orientation(double value) {
-	orientation = value;
-}
 
 void player::set_scale(double value) {
 	player_sprite_scale = value;
@@ -93,6 +89,9 @@ void player::set_bomb_flag(bool flag) {
 
 void player::set_removal_flag() {
 	removal_flag = true;
+}
+void player::set_player_orientation(int p_o) {
+	orientation = (player_orientation)p_o;
 }
 #pragma endregion
 
@@ -127,12 +126,8 @@ void player::initialize_sprites() {
 }
 
 void player::move_player_x(double value) {
-	//std::cout << "\nPlayer# " << player_number << " coordinate is " << x_coordinate;
 	x_coordinate += value;
-	//std::cout << "\nMoving player to " << x_coordinate;
 }
 void player::move_player_y(double value) {
-	//std::cout << "\nPlayer# " << player_number << " coordinate is " << y_coordinate;
 	y_coordinate += value;
-	//std::cout << "\nMoving player to " << y_coordinate;
 }

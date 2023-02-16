@@ -42,7 +42,7 @@ void game_logic::player_1_input(player* p) {
 	//input keys for movement of player 1
 	if (KEY('D'))
 	{
-		p->set_orientation(RIGHT);
+		p->set_player_orientation(0);
 		if (validate_player_movement(p))
 		{
 			p->move_player_x(movement_size);
@@ -50,7 +50,7 @@ void game_logic::player_1_input(player* p) {
 	}
 	if (KEY('A'))
 	{
-		p->set_orientation(LEFT);
+		p->set_player_orientation(2);
 		if (validate_player_movement(p))
 		{
 			p->move_player_x(-movement_size);
@@ -58,7 +58,7 @@ void game_logic::player_1_input(player* p) {
 	}
 	if (KEY('W'))
 	{
-		p->set_orientation(UP);
+		p->set_player_orientation(1);
 		if (validate_player_movement(p))
 		{
 			p->move_player_y(movement_size);
@@ -66,7 +66,7 @@ void game_logic::player_1_input(player* p) {
 	}
 	if (KEY('S'))
 	{
-		p->set_orientation(DOWN);
+		p->set_player_orientation(3);
 		if (validate_player_movement(p))
 		{
 			p->move_player_y(-movement_size);
@@ -81,6 +81,7 @@ void game_logic::player_1_input(player* p) {
 	if (KEY('Z'))
 	{
 		//print_player_coordinates(p);
+		collision_pointer->print0();
 	}
 
 }
@@ -89,7 +90,7 @@ void game_logic::player_2_input(player* p) {
 	//input keys for movement of player 2
 	if (KEY('L'))
 	{
-		p->set_orientation(RIGHT);
+		p->set_player_orientation(0);
 		if (validate_player_movement(p))
 		{
 			p->move_player_x(movement_size);
@@ -97,7 +98,7 @@ void game_logic::player_2_input(player* p) {
 	}
 	if (KEY('J'))
 	{
-		p->set_orientation(LEFT);
+		p->set_player_orientation(2);
 		if (validate_player_movement(p))
 		{
 			p->move_player_x(-movement_size);
@@ -105,7 +106,7 @@ void game_logic::player_2_input(player* p) {
 	}
 	if (KEY('I'))
 	{
-		p->set_orientation(UP);
+		p->set_player_orientation(1);
 		if (validate_player_movement(p))
 		{
 			p->move_player_y(movement_size);
@@ -113,7 +114,7 @@ void game_logic::player_2_input(player* p) {
 	}
 	if (KEY('K'))
 	{
-		p->set_orientation(DOWN);
+		p->set_player_orientation(3);
 		if (validate_player_movement(p))
 		{
 			p->move_player_y(-movement_size);
@@ -134,55 +135,91 @@ void game_logic::player_2_input(player* p) {
 
 }
 
+
 bool game_logic::validate_player_movement(const player* p) {
 	// offset used based on player sprite size
 	int x_shift = 15;
-
 	int y_shift = 25;
-
-	int y_shift2 = 13;
+	int x_shift_2 = 10;
+	int y_shift_2 = 13;
 
 	// temporary placeholders for player coordinates
-	double x;
-	double y;
-	double orientation;
+	double x = p->get_x_coordinate();
+	double y = p->get_y_coordinate();
 
-	x = p->get_x_coordinate();
-	y = p->get_y_coordinate();
-	orientation = p->get_orientation();
+	int p_o = p->get_player_orientation();
 
+	bool result = false;
 
-	if (orientation == RIGHT)
+	switch (p_o)
 	{
-		x += x_shift;
-		if (!check_player_offset(x, y)) return false;
-		y += y_shift2;
-		if (!check_player_offset(x, y)) return false;
-		y -= y_shift2 * 2;
-		if (!check_player_offset(x, y)) return false;
-	}
-	if (orientation == UP)
-	{
-		y += y_shift;
-		if (!check_player_offset(x, y)) return false;
-	}
-	if (orientation == LEFT)
-	{
-		x -= x_shift;
-		if (!check_player_offset(x, y)) return false;
-		y += y_shift2;
-		if (!check_player_offset(x, y)) return false;
-		y -= y_shift2 * 2;
-		if (!check_player_offset(x, y)) return false;
-	}
-	if (orientation == DOWN)
-	{
-		y -= y_shift;
-		if (!check_player_offset(x, y)) return false;
+		case 0:
+			x += x_shift;
+			y += y_shift_2;
+			result = check_player_offset(x, y);
+			if (result)
+			{
+				y -= y_shift_2 * 2;
+				result = check_player_offset(x, y);
+			}
+			if (result)
+			{
+				x -= x_shift;
+				result = check_player_offset(x, y);
+			}
+			break;
+		case 1:
+			y += y_shift;
+			x += x_shift_2;
+			result = check_player_offset(x, y);
+			if (result)
+			{
+				x -= x_shift_2 * 2;
+				result = check_player_offset(x, y);
+			}
+			if (result)
+			{
+				y -= y_shift;
+				result = check_player_offset(x, y);
+			}
+			break;
+		case 2:
+			x -= x_shift;
+			y += y_shift_2;
+			result = check_player_offset(x, y);
+			if (result)
+			{
+				y -= y_shift_2 * 2;
+				result = check_player_offset(x, y);
+			}
+			if (result)
+			{
+				x += x_shift;
+				result = check_player_offset(x, y);
+			}
+			break;
+		case 3:
+			y -= y_shift;
+			x += x_shift_2;
+			result = check_player_offset(x, y);
+			if (result)
+			{
+				x -= x_shift_2 * 2;
+				result = check_player_offset(x, y);
+			}
+			if (result)
+			{
+				y += y_shift;
+				result = check_player_offset(x, y);
+			}
+			break;
+		default:
+			break;
 	}
 
-	return true;
+	return result;
 }
+
 
 bool game_logic::check_player_offset(double x, double y) {
 	// index used to check collision matrix
@@ -205,21 +242,21 @@ void game_logic::new_bomb(player* p) {
 
 	// adjust bomb drop location for direction that player is facing
 
-	double orientation = p->get_orientation();
+	int orientation = p->get_player_orientation();
 
-	if (orientation == RIGHT)
+	if (orientation == 0)
 	{
 		i_index++;
 	}
-	if (orientation == UP)
+	if (orientation == 1)
 	{
 		j_index++;
 	}
-	if (orientation == LEFT)
+	if (orientation == 2)
 	{
 		i_index--;
 	}
-	if (orientation == DOWN)
+	if (orientation == 3)
 	{
 		j_index--;
 	}
@@ -241,21 +278,21 @@ bool game_logic::validate_bomb_collison(const player* p) {
 	int i_index = calculator::calculate_index(p->get_x_coordinate());
 	int j_index = calculator::calculate_index(p->get_y_coordinate());
 
-	double orientation = p->get_orientation();
+	int orientation = p->get_player_orientation();
 
-	if (orientation == RIGHT)
+	if (orientation == 0)
 	{
 		i_index++;
 	}
-	else if (orientation == UP)
+	else if (orientation == 1)
 	{
 		j_index++;
 	}
-	else if (orientation == LEFT)
+	else if (orientation == 2)
 	{
 		i_index--;
 	}
-	else if (orientation == DOWN)
+	else if (orientation == 3)
 	{
 		j_index--;
 	}
@@ -400,19 +437,25 @@ bool game_logic::validate_player_bomb_proximity(int player_i, int player_j) {
 	int offset2 = 2;
 
 	// Check left/right of player
-	if (validate_matrix_for_bomb(player_i - offset, player_j) || validate_matrix_for_bomb(player_i + offset, player_j)) return true;
+	if (validate_matrix_for_bomb(player_i - offset, player_j) || validate_matrix_for_bomb(player_i + offset, player_j))
+		return true;
 
 	// Check above/below player
-	if (validate_matrix_for_bomb(player_i, player_j + offset) || validate_matrix_for_bomb(player_i, player_j - offset)) return true;
+	if (validate_matrix_for_bomb(player_i, player_j + offset) || validate_matrix_for_bomb(player_i, player_j - offset))
+		return true;
 
 	// Check 2 left of player if not obstructed
-	if (!validate_matrix_for_grey_brick(player_i - offset, player_j) && validate_matrix_for_bomb(player_i - offset2, player_j)) return true;
+	if (!validate_matrix_for_grey_brick(player_i - offset, player_j) && validate_matrix_for_bomb(player_i - offset2, player_j))
+		return true;
 	// Check 2 right of player if not obstructed
-	if (!validate_matrix_for_grey_brick(player_i + offset, player_j) && validate_matrix_for_bomb(player_i + offset2, player_j)) return true;
+	if (!validate_matrix_for_grey_brick(player_i + offset, player_j) && validate_matrix_for_bomb(player_i + offset2, player_j))
+		return true;
 	// Check 2 above of player if not obstructed
-	if (!validate_matrix_for_grey_brick(player_i, player_j + offset) && validate_matrix_for_bomb(player_i, player_j + offset2)) return true;
+	if (!validate_matrix_for_grey_brick(player_i, player_j + offset) && validate_matrix_for_bomb(player_i, player_j + offset2))
+		return true;
 	// Check 2 below of player if not obstructed
-	if (!validate_matrix_for_grey_brick(player_i, player_j - offset) && validate_matrix_for_bomb(player_i, player_j - offset2)) return true;
+	if (!validate_matrix_for_grey_brick(player_i, player_j - offset) && validate_matrix_for_bomb(player_i, player_j - offset2))
+		return true;
 
 	return false;
 }

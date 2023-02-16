@@ -68,21 +68,18 @@ void terrain::initialize_red_bricks_outer_perimeter() {
 
 		matrix_value = calculator::matrix_value(i_index, first_index);
 		create_red_brick(matrix_value, x, first);
-		//red_brick_map.emplace(matrix_value, red_brick(x, first));
 
 		matrix_value = calculator::matrix_value(i_index, last_index);
 		create_red_brick(matrix_value, x, last);
-		//red_brick_map.emplace(matrix_value, red_brick(x, last));
 
 		j_index = calculator::calculate_index(y);
 		matrix_value = calculator::matrix_value(first_index, j_index);
 		create_red_brick(matrix_value, first, y);
-		//red_brick_map.emplace(matrix_value, red_brick(first, y));
 
 		matrix_value = calculator::matrix_value(last_index, j_index);
 		create_red_brick(matrix_value, last, y);
-		red_brick_map.emplace(matrix_value, red_brick(last, y));
 	}
+
 }
 
 void terrain::initialize_red_bricks_horizontal_lines() {
@@ -103,8 +100,6 @@ void terrain::initialize_red_bricks_horizontal_lines() {
 			j_index = calculator::calculate_index(y);
 			matrix_value = calculator::matrix_value(i_index, j_index);
 			create_red_brick(matrix_value, x, y);
-			//red_brick_map.emplace(matrix_value, red_brick(x, y));
-
 		}
 	}
 }
@@ -126,8 +121,7 @@ void terrain::initialize_red_bricks_horizontal_lines_between_grey_bricks() {
 			i_index = calculator::calculate_index(x);
 			j_index = calculator::calculate_index(y);
 			matrix_value = calculator::matrix_value(i_index, j_index);
-			red_brick_map.emplace(matrix_value, red_brick(x, y));
-
+			create_red_brick(matrix_value, x, y);
 		}
 	}
 }
