@@ -7,10 +7,18 @@
 class player
 {
 private:
+	enum player_orientation
+	{
+		RIGHT,
+		UP,
+		LEFT,
+		DOWN
+	};
 	std::shared_ptr<player_constants> player_constant_pointer = std::make_shared<player_constants>();
 	double x_coordinate;
 	double y_coordinate;
 	double orientation = 270.0;
+	player_orientation p_orientation = DOWN;
 
 	double player_angle = 0;
 	double player_sprite_scale = 0.67;
@@ -26,7 +34,11 @@ private:
 	bool removal_flag = false;
 	int player_number;
 
+
+
 public:
+
+
 
 	explicit player(int player_number);
 	~player();
@@ -41,6 +53,7 @@ public:
 	bool get_player_removal_flag() const;
 	double get_bomb_time() const;
 	int get_player_number() const;
+	player_orientation get_player_orientation() const;
 #pragma endregion
 #pragma region Setters
 	void set_orientation(double value);
@@ -48,6 +61,7 @@ public:
 	void set_bomb_time(double value);
 	void set_bomb_flag(bool flag);
 	void set_removal_flag();
+	void set_player_orientation(int orientation);
 #pragma endregion
 
 	void initialize_sprites();

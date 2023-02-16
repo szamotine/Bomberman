@@ -43,6 +43,7 @@ void game_logic::player_1_input(player* p) {
 	if (KEY('D'))
 	{
 		p->set_orientation(RIGHT);
+		p->set_player_orientation(0);
 		if (validate_player_movement(p))
 		{
 			p->move_player_x(movement_size);
@@ -51,6 +52,7 @@ void game_logic::player_1_input(player* p) {
 	if (KEY('A'))
 	{
 		p->set_orientation(LEFT);
+		p->set_player_orientation(2);
 		if (validate_player_movement(p))
 		{
 			p->move_player_x(-movement_size);
@@ -59,6 +61,7 @@ void game_logic::player_1_input(player* p) {
 	if (KEY('W'))
 	{
 		p->set_orientation(UP);
+		p->set_player_orientation(1);
 		if (validate_player_movement(p))
 		{
 			p->move_player_y(movement_size);
@@ -67,6 +70,7 @@ void game_logic::player_1_input(player* p) {
 	if (KEY('S'))
 	{
 		p->set_orientation(DOWN);
+		p->set_player_orientation(3);
 		if (validate_player_movement(p))
 		{
 			p->move_player_y(-movement_size);
@@ -81,6 +85,7 @@ void game_logic::player_1_input(player* p) {
 	if (KEY('Z'))
 	{
 		//print_player_coordinates(p);
+		collision_pointer->print0();
 	}
 
 }
@@ -90,6 +95,7 @@ void game_logic::player_2_input(player* p) {
 	if (KEY('L'))
 	{
 		p->set_orientation(RIGHT);
+		p->set_player_orientation(0);
 		if (validate_player_movement(p))
 		{
 			p->move_player_x(movement_size);
@@ -98,6 +104,7 @@ void game_logic::player_2_input(player* p) {
 	if (KEY('J'))
 	{
 		p->set_orientation(LEFT);
+		p->set_player_orientation(2);
 		if (validate_player_movement(p))
 		{
 			p->move_player_x(-movement_size);
@@ -105,6 +112,7 @@ void game_logic::player_2_input(player* p) {
 	}
 	if (KEY('I'))
 	{
+		p->set_player_orientation(1);
 		p->set_orientation(UP);
 		if (validate_player_movement(p))
 		{
@@ -113,6 +121,7 @@ void game_logic::player_2_input(player* p) {
 	}
 	if (KEY('K'))
 	{
+		p->set_player_orientation(3);
 		p->set_orientation(DOWN);
 		if (validate_player_movement(p))
 		{
@@ -134,55 +143,91 @@ void game_logic::player_2_input(player* p) {
 
 }
 
+
 bool game_logic::validate_player_movement(const player* p) {
 	// offset used based on player sprite size
 	int x_shift = 15;
-
 	int y_shift = 25;
-
-	int y_shift2 = 13;
+	int x_shift_2 = 10;
+	int y_shift_2 = 13;
 
 	// temporary placeholders for player coordinates
-	double x;
-	double y;
-	double orientation;
+	double x = p->get_x_coordinate();
+	double y = p->get_y_coordinate();
 
-	x = p->get_x_coordinate();
-	y = p->get_y_coordinate();
-	orientation = p->get_orientation();
+	int p_o = p->get_player_orientation();
 
+	bool result = false;
 
-	if (orientation == RIGHT)
+	switch (p_o)
 	{
-		x += x_shift;
-		if (!check_player_offset(x, y)) return false;
-		y += y_shift2;
-		if (!check_player_offset(x, y)) return false;
-		y -= y_shift2 * 2;
-		if (!check_player_offset(x, y)) return false;
-	}
-	if (orientation == UP)
-	{
-		y += y_shift;
-		if (!check_player_offset(x, y)) return false;
-	}
-	if (orientation == LEFT)
-	{
-		x -= x_shift;
-		if (!check_player_offset(x, y)) return false;
-		y += y_shift2;
-		if (!check_player_offset(x, y)) return false;
-		y -= y_shift2 * 2;
-		if (!check_player_offset(x, y)) return false;
-	}
-	if (orientation == DOWN)
-	{
-		y -= y_shift;
-		if (!check_player_offset(x, y)) return false;
+		case 0:
+			x += x_shift;
+			y += y_shift_2;
+			result = check_player_offset(x, y);
+			if (result)
+			{
+				y -= y_shift_2 * 2;
+				result = check_player_offset(x, y);
+			}
+			if (result)
+			{
+				x -= x_shift;
+				result = check_player_offset(x, y);
+			}
+			break;
+		case 1:
+			y += y_shift;
+			x += x_shift_2;
+			result = check_player_offset(x, y);
+			if (result)
+			{
+				x -= x_shift_2 * 2;
+				result = check_player_offset(x, y);
+			}
+			if (result)
+			{
+				y -= y_shift;
+				result = check_player_offset(x, y);
+			}
+			break;
+		case 2:
+			x -= x_shift;
+			y += y_shift_2;
+			result = check_player_offset(x, y);
+			if (result)
+			{
+				y -= y_shift_2 * 2;
+				result = check_player_offset(x, y);
+			}
+			if (result)
+			{
+				x += x_shift;
+				result = check_player_offset(x, y);
+			}
+			break;
+		case 3:
+			y -= y_shift;
+			x += x_shift_2;
+			result = check_player_offset(x, y);
+			if (result)
+			{
+				x -= x_shift_2 * 2;
+				result = check_player_offset(x, y);
+			}
+			if (result)
+			{
+				y += y_shift;
+				result = check_player_offset(x, y);
+			}
+			break;
+		default:
+			break;
 	}
 
-	return true;
+	return result;
 }
+
 
 bool game_logic::check_player_offset(double x, double y) {
 	// index used to check collision matrix

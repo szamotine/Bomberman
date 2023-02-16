@@ -72,6 +72,10 @@ bool player::get_player_removal_flag() const {
 int player::get_player_number() const {
 	return player_number;
 }
+
+player::player_orientation player::get_player_orientation() const {
+	return p_orientation;
+}
 #pragma endregion
 #pragma region Setters
 
@@ -93,6 +97,9 @@ void player::set_bomb_flag(bool flag) {
 
 void player::set_removal_flag() {
 	removal_flag = true;
+}
+void player::set_player_orientation(int p_o) {
+	p_orientation = (player_orientation)p_o;
 }
 #pragma endregion
 
