@@ -42,7 +42,6 @@ void game_logic::player_1_input(player* p) {
 	//input keys for movement of player 1
 	if (KEY('D'))
 	{
-		p->set_orientation(RIGHT);
 		p->set_player_orientation(0);
 		if (validate_player_movement(p))
 		{
@@ -51,7 +50,6 @@ void game_logic::player_1_input(player* p) {
 	}
 	if (KEY('A'))
 	{
-		p->set_orientation(LEFT);
 		p->set_player_orientation(2);
 		if (validate_player_movement(p))
 		{
@@ -60,7 +58,6 @@ void game_logic::player_1_input(player* p) {
 	}
 	if (KEY('W'))
 	{
-		p->set_orientation(UP);
 		p->set_player_orientation(1);
 		if (validate_player_movement(p))
 		{
@@ -69,7 +66,6 @@ void game_logic::player_1_input(player* p) {
 	}
 	if (KEY('S'))
 	{
-		p->set_orientation(DOWN);
 		p->set_player_orientation(3);
 		if (validate_player_movement(p))
 		{
@@ -94,7 +90,6 @@ void game_logic::player_2_input(player* p) {
 	//input keys for movement of player 2
 	if (KEY('L'))
 	{
-		p->set_orientation(RIGHT);
 		p->set_player_orientation(0);
 		if (validate_player_movement(p))
 		{
@@ -103,7 +98,6 @@ void game_logic::player_2_input(player* p) {
 	}
 	if (KEY('J'))
 	{
-		p->set_orientation(LEFT);
 		p->set_player_orientation(2);
 		if (validate_player_movement(p))
 		{
@@ -113,7 +107,6 @@ void game_logic::player_2_input(player* p) {
 	if (KEY('I'))
 	{
 		p->set_player_orientation(1);
-		p->set_orientation(UP);
 		if (validate_player_movement(p))
 		{
 			p->move_player_y(movement_size);
@@ -122,7 +115,6 @@ void game_logic::player_2_input(player* p) {
 	if (KEY('K'))
 	{
 		p->set_player_orientation(3);
-		p->set_orientation(DOWN);
 		if (validate_player_movement(p))
 		{
 			p->move_player_y(-movement_size);
@@ -250,21 +242,21 @@ void game_logic::new_bomb(player* p) {
 
 	// adjust bomb drop location for direction that player is facing
 
-	double orientation = p->get_orientation();
+	int orientation = p->get_player_orientation();
 
-	if (orientation == RIGHT)
+	if (orientation == 0)
 	{
 		i_index++;
 	}
-	if (orientation == UP)
+	if (orientation == 1)
 	{
 		j_index++;
 	}
-	if (orientation == LEFT)
+	if (orientation == 2)
 	{
 		i_index--;
 	}
-	if (orientation == DOWN)
+	if (orientation == 3)
 	{
 		j_index--;
 	}
@@ -286,21 +278,21 @@ bool game_logic::validate_bomb_collison(const player* p) {
 	int i_index = calculator::calculate_index(p->get_x_coordinate());
 	int j_index = calculator::calculate_index(p->get_y_coordinate());
 
-	double orientation = p->get_orientation();
+	int orientation = p->get_player_orientation();
 
-	if (orientation == RIGHT)
+	if (orientation == 0)
 	{
 		i_index++;
 	}
-	else if (orientation == UP)
+	else if (orientation == 1)
 	{
 		j_index++;
 	}
-	else if (orientation == LEFT)
+	else if (orientation == 2)
 	{
 		i_index--;
 	}
-	else if (orientation == DOWN)
+	else if (orientation == 3)
 	{
 		j_index--;
 	}
@@ -445,19 +437,25 @@ bool game_logic::validate_player_bomb_proximity(int player_i, int player_j) {
 	int offset2 = 2;
 
 	// Check left/right of player
-	if (validate_matrix_for_bomb(player_i - offset, player_j) || validate_matrix_for_bomb(player_i + offset, player_j)) return true;
+	if (validate_matrix_for_bomb(player_i - offset, player_j) || validate_matrix_for_bomb(player_i + offset, player_j))
+		return true;
 
 	// Check above/below player
-	if (validate_matrix_for_bomb(player_i, player_j + offset) || validate_matrix_for_bomb(player_i, player_j - offset)) return true;
+	if (validate_matrix_for_bomb(player_i, player_j + offset) || validate_matrix_for_bomb(player_i, player_j - offset))
+		return true;
 
 	// Check 2 left of player if not obstructed
-	if (!validate_matrix_for_grey_brick(player_i - offset, player_j) && validate_matrix_for_bomb(player_i - offset2, player_j)) return true;
+	if (!validate_matrix_for_grey_brick(player_i - offset, player_j) && validate_matrix_for_bomb(player_i - offset2, player_j))
+		return true;
 	// Check 2 right of player if not obstructed
-	if (!validate_matrix_for_grey_brick(player_i + offset, player_j) && validate_matrix_for_bomb(player_i + offset2, player_j)) return true;
+	if (!validate_matrix_for_grey_brick(player_i + offset, player_j) && validate_matrix_for_bomb(player_i + offset2, player_j))
+		return true;
 	// Check 2 above of player if not obstructed
-	if (!validate_matrix_for_grey_brick(player_i, player_j + offset) && validate_matrix_for_bomb(player_i, player_j + offset2)) return true;
+	if (!validate_matrix_for_grey_brick(player_i, player_j + offset) && validate_matrix_for_bomb(player_i, player_j + offset2))
+		return true;
 	// Check 2 below of player if not obstructed
-	if (!validate_matrix_for_grey_brick(player_i, player_j - offset) && validate_matrix_for_bomb(player_i, player_j - offset2)) return true;
+	if (!validate_matrix_for_grey_brick(player_i, player_j - offset) && validate_matrix_for_bomb(player_i, player_j - offset2))
+		return true;
 
 	return false;
 }

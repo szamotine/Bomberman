@@ -17,7 +17,7 @@ private:
 	// store the bomb explosion image name for ease of use
 	char* bomb_explosion = "bomb_explosion.png";
 
-	double bomb_explosion_scale = 2.3;
+	double bomb_explosion_scale = 2.7;
 
 	// angle for bricks and bomb
 	double angle = 0.0;
