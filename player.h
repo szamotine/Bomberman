@@ -50,6 +50,7 @@ public:
 	double get_bomb_time() const;
 	int get_player_number() const;
 	player_orientation get_player_orientation() const;
+
 #pragma endregion
 #pragma region Setters
 	void set_scale(double value);

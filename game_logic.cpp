@@ -349,7 +349,7 @@ void game_logic::explode_bomb(const bomb* b) {
 	//}
 
 	// bomb - player interactions
-	validate_player_bomb_interaction();
+	validate_player_bomb_interaction(b);
 
 	// remove bomb index from collision matrix
 	set_matrix_to_empty_space(bomb_i_index, bomb_j_index);
@@ -404,58 +404,69 @@ void game_logic::flag_chain_bomb(int i_index, int j_index) {
 	}
 }
 
-void game_logic::validate_player_bomb_interaction() {
+void game_logic::validate_player_bomb_interaction(const bomb* b) {
+
+	// TODO -> add specific check for bomb
 	int i_index;
 	int j_index;
-
+	int player_number;
 
 	if (!terrain_pointer->get_player_list().empty())
 	{
 		// Iterate through player list
 		for (int i = 0; (unsigned)i < terrain_pointer->get_player_list().size(); i++)
 		{
-			// Determine player coordinates
-
 			player_pointer = terrain_pointer->get_player(i);
-			i_index = calculator::calculate_index(player_pointer->get_x_coordinate());
-			j_index = calculator::calculate_index(player_pointer->get_y_coordinate());
 
-			// Check if player is in the bomb explosion area
-			if (validate_player_bomb_proximity(i_index, j_index))
+			if (validate_player_bomb_proximity(player_pointer, b))
 			{
-				std::cout << "\nPlayer " << i << " at i: " << i_index << ", j: " << j_index << " hit by a bomb";
+				player_number = player_pointer->get_player_number();
+				i_index = calculator::calculate_index(player_pointer->get_x_coordinate());
+				j_index = calculator::calculate_index(player_pointer->get_y_coordinate());
+				std::cout << "\nPlayer " << player_number << " at i: " << i_index << ", j: " << j_index << " hit by a bomb";
 				player_pointer->set_removal_flag();
 			}
 		}
 	}
 }
 
-bool game_logic::validate_player_bomb_proximity(int player_i, int player_j) {
+bool game_logic::validate_player_bomb_proximity(const player* p, const bomb* b) {
+
+	int player_i = calculator::calculate_index(p->get_x_coordinate());
+	int player_j = calculator::calculate_index(p->get_y_coordinate());
+
+	int bomb_i = b->get_i_index();
+	int bomb_j = b->get_j_index();
 
 	// Number of squares affected by Bomb explosion
 	int offset = 1;
 	int offset2 = 2;
 
-	// Check left/right of player
-	if (validate_matrix_for_bomb(player_i - offset, player_j) || validate_matrix_for_bomb(player_i + offset, player_j))
-		return true;
+	// check if bomb is on same j_index as player
+	if (player_j == bomb_j)
+	{
+		// check left/right of bomb for player
+		if (player_i == bomb_i - offset || player_i == bomb_i + offset) return true;
 
-	// Check above/below player
-	if (validate_matrix_for_bomb(player_i, player_j + offset) || validate_matrix_for_bomb(player_i, player_j - offset))
-		return true;
+		// check 2 left of bomb if grey brick is not obstructing
+		if (!validate_matrix_for_grey_brick(bomb_i - offset, bomb_j) && bomb_i - offset2 == player_i) return true;
 
-	// Check 2 left of player if not obstructed
-	if (!validate_matrix_for_grey_brick(player_i - offset, player_j) && validate_matrix_for_bomb(player_i - offset2, player_j))
-		return true;
-	// Check 2 right of player if not obstructed
-	if (!validate_matrix_for_grey_brick(player_i + offset, player_j) && validate_matrix_for_bomb(player_i + offset2, player_j))
-		return true;
-	// Check 2 above of player if not obstructed
-	if (!validate_matrix_for_grey_brick(player_i, player_j + offset) && validate_matrix_for_bomb(player_i, player_j + offset2))
-		return true;
-	// Check 2 below of player if not obstructed
-	if (!validate_matrix_for_grey_brick(player_i, player_j - offset) && validate_matrix_for_bomb(player_i, player_j - offset2))
-		return true;
+		// check 2 right of bomb if grey brick is not obstructing
+		if (!validate_matrix_for_grey_brick(bomb_i + offset, bomb_j) && bomb_i + offset2 == player_i) return true;
+	}
+
+	// Check if bomb is one same i_index as player
+	if (player_i == bomb_i)
+	{
+		// check above/below of bomb for player
+		if (player_j == bomb_j - offset || player_j == bomb_j + offset) return true;
+
+		// check 2 above bomb if grey brick is not obstructing
+		if (!validate_matrix_for_grey_brick(bomb_i, bomb_j + offset) && bomb_j + offset2 == player_j) return true;
+
+		// check 2 below bomb if grey brick is not obstructing
+		if (!validate_matrix_for_grey_brick(bomb_i, bomb_j - offset) && bomb_j - offset2 == player_j) return true;
+	}
 
 	return false;
 }

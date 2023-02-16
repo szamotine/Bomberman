@@ -88,10 +88,10 @@ public:
 	void flag_chain_bomb(int i_index, int j_index);
 
 	// Flags players that are in proximity of exploding bombs for removal
-	void validate_player_bomb_interaction();
+	void validate_player_bomb_interaction(const bomb* b);
 
 	// Checks if player is in proximity of an exploding bomb
-	bool validate_player_bomb_proximity(int i, int j);
+	bool validate_player_bomb_proximity(const player* p, const bomb* b);
 
 	// Destroys red bricks that are in bomb proximity
 	void validate_red_brick_bomb_interactions(int bomb_i_index, int bomb_j_index);
