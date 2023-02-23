@@ -19,6 +19,7 @@ public:
 #pragma endregion
 
 #pragma region Setters
+
 	void set_x_coordinate(double value);
 	void set_y_coordinate(double value);
 	void set_time(double value);
@@ -35,7 +36,7 @@ public:
 	bool get_bomb_removal_flag() const;
 	int get_i_index() const;
 	int get_j_index() const;
-	bool get_bomb_exploding_flag();
+	bool get_bomb_exploding_flag() const;
 
 
 #pragma endregion

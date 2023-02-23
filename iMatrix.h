@@ -1,9 +1,10 @@
 #pragma once
-// int version of dMatrix class with extra row and col for 
-// optional i=0 and j=0
+
 
 class iMatrix
 {
+	// int version of dMatrix class with extra row and col for 
+	// optional i=0 and j=0
 
 private:
 

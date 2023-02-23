@@ -54,7 +54,7 @@ public:
 #pragma endregion
 #pragma region Setters
 	void set_scale(double value);
-	void set_bomb_time(double value);
+	void set_bomb_flag_time(double value);
 	void set_bomb_flag(bool flag);
 	void set_removal_flag();
 	void set_player_orientation(int orientation);

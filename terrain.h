@@ -32,10 +32,13 @@ private:
 	// List of players
 	std::vector<player> player_list;
 	// List of bombs
-	std::vector<bomb> bomb_list;
+//	std::vector<bomb> bomb_list;
 
 	// Hash map for red bricks
 	std::map<int, red_brick> red_brick_map;
+
+	// Hash map for bomb
+	std::map<int, bomb> bomb_map;
 
 	// Pointer to collision matrix
 	std::shared_ptr<iMatrix> collision_matrix;
@@ -62,9 +65,11 @@ public:
 	// Creates player objects
 	void initialize_players();
 	// Constructs bomb at given location and adds to bomb list
-	void construct_bomb(int i, int j);
-	// Creates red brick at given location and adds to red brick map
+	void construct_bomb(int matrix_value, int i_index, int j_index);
+	// Creates red brick at given location and adds to red brick map and collision matrix
 	void create_red_brick(int matrix_value, double x, double y);
+	// Creates red brick at given location and adds to grey brick list and collision matrix
+	void create_grey_brick(double x, double y);
 
 
 #pragma endregion
@@ -78,20 +83,18 @@ public:
 	void draw_bombs() const;
 	void draw_map() const;
 
-	void set_bomb_explosion_flag(bomb* b) const;
-
 #pragma endregion
 
 #pragma region Remove functions
 
-	// Erases bomb from bomb list
-	void erase_bomb(int index);
-
 	// Erases player from player list
 	void erase_player(int index);
 
-	// Destroy red brick
+	// Removes red brick from map
 	void destroy_red_brick(int matrix_value);
+
+	// Removes bomb from map
+	void destroy_bomb(int matrix_value);
 
 #pragma endregion
 
@@ -102,11 +105,16 @@ public:
 	grey_brick* get_grey_brick(int index);
 
 	std::vector <player> get_player_list() const;
+
 	player* get_player(int index);
 
-	std::vector <bomb> get_bomb_list() const;
+	std::map<int, bomb> get_bomb_map() const;
 
-	bomb* get_bomb(int index);
+	std::map<int, bomb>* get_bomb_map_pointer();
+
+	bomb* get_bomb_pointer(int matrix_value);
+
+	std::map<int, bomb>::iterator get_bomb_iterator(int value);
 
 #pragma endregion
 };
