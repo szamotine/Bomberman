@@ -19,6 +19,17 @@ void terrain::create_red_brick(int matrix_value, double x, double y) {
 	collision_matrix->get_matrix_value(matrix_value) = 2;
 }
 
+void terrain::create_grey_brick(double x, double y) {
+	int i_index = calculator::calculate_index(x);
+	int j_index = calculator::calculate_index(y);
+
+	int matrix_value = calculator::matrix_value(i_index, j_index);
+	collision_matrix->get_matrix_value(matrix_value) = 1;
+
+	grey_brick_list.emplace_back(x, y);
+
+}
+
 void terrain::initialize_terrain(int number) {
 
 	number_of_players = number;
@@ -29,9 +40,8 @@ void terrain::initialize_terrain(int number) {
 	create_sprite(terrain_constants_pointer.get_bomb_explosion_filename(), bomb_explosion_sprite_id);
 
 	grey_brick_list = std::vector<grey_brick>();
-
 	player_list = std::vector<player>();
-	bomb_list = std::vector<bomb>();
+
 	initialize_grey_bricks();
 	initialize_red_bricks();
 	initialize_players();
@@ -137,8 +147,8 @@ void terrain::initialize_grey_bricks() {
 
 		x_coordinate = ((i * 42) - 21);
 
-		grey_brick_list.emplace_back(x_coordinate, 21);
-		grey_brick_list.emplace_back(x_coordinate, 693);
+		create_grey_brick(x_coordinate, 21);
+		create_grey_brick(x_coordinate, 693);
 	}
 
 	// create the side walls of the enclosed terrrain
@@ -146,18 +156,18 @@ void terrain::initialize_grey_bricks() {
 	{
 		y_coordinate = ((i * 42) - 21);
 
-		grey_brick_list.emplace_back(21, y_coordinate);
-		grey_brick_list.emplace_back(693, y_coordinate);
+		create_grey_brick(21, y_coordinate);
+		create_grey_brick(693, y_coordinate);
 	}
 
 	// create the checkerboard pattern 
-	for (int i = 3; i < 16; i = i + 2)
+	for (int i = 3; i < n; i = i + 2)
 	{
 		for (int j = 0; j < 7; j++)
 		{
 			x_coordinate = ((i * 42) - 21);
 			y_coordinate = ((j * 84.0) + 105.0);
-			grey_brick_list.emplace_back(x_coordinate, y_coordinate);
+			create_grey_brick(x_coordinate, y_coordinate);
 		}
 	}
 }
@@ -169,8 +179,9 @@ void terrain::initialize_players() {
 	}
 }
 
-void terrain::construct_bomb(int i, int j) {
-	bomb_list.emplace_back(i, j, high_resolution_time());
+void terrain::construct_bomb(int matrix_value, int i_index, int j_index) {
+	bomb_map.emplace(matrix_value, bomb(i_index, j_index, high_resolution_time()));
+	collision_matrix->get_matrix_value(matrix_value) = 3;
 }
 
 #pragma endregion
@@ -179,7 +190,6 @@ void terrain::construct_bomb(int i, int j) {
 
 
 void terrain::draw_grey_bricks() const {
-
 
 	if (!grey_brick_list.empty())
 	{
@@ -240,25 +250,27 @@ void terrain::draw_players() const {
 }
 
 void terrain::draw_bombs() const {
-	if (!bomb_list.empty())
+	if (!bomb_map.empty())
 	{
-		for (bomb b : bomb_list)
+		auto it = bomb_map.begin();
+
+		while (it != bomb_map.end())
 		{
+			bomb b = it->second;
+
 			if (b.get_bomb_exploding_flag())
 			{
 				draw_sprite
 				(
-					//bomb_sprite_id,
 					bomb_explosion_sprite_id,
 					b.get_x_coordinate(),
 					b.get_y_coordinate(),
 					terrain_constants_pointer.get_angle(),
-					//terrain_constants_pointer.get_scale()
 					terrain_constants_pointer.get_bomb_explosion_scale()
 				);
 			}
 			else
-
+			{
 				draw_sprite
 				(
 					bomb_sprite_id,
@@ -267,12 +279,11 @@ void terrain::draw_bombs() const {
 					terrain_constants_pointer.get_angle(),
 					terrain_constants_pointer.get_scale()
 				);
+			}
+
+			it++;
 		}
 	}
-}
-
-void terrain::set_bomb_explosion_flag(bomb* b) const {
-	b->set_bomb_exploding_flag();
 }
 
 void terrain::draw_map() const {
@@ -288,9 +299,6 @@ void terrain::draw_map() const {
 
 #pragma region Remove functions
 
-void terrain::erase_bomb(int index) {
-	bomb_list.erase(bomb_list.begin() + index);
-}
 
 void terrain::erase_player(int index) {
 	player_list.erase(player_list.begin() + index);
@@ -299,6 +307,14 @@ void terrain::erase_player(int index) {
 void terrain::destroy_red_brick(int matrix_value) {
 
 	if (red_brick_map.erase(matrix_value))
+	{
+		collision_matrix->get_matrix_value(matrix_value) = 0;
+	}
+}
+
+void terrain::destroy_bomb(int matrix_value) {
+
+	if (bomb_map.erase(matrix_value))
 	{
 		collision_matrix->get_matrix_value(matrix_value) = 0;
 	}
@@ -322,17 +338,15 @@ std::vector<player> terrain::get_player_list() const {
 }
 
 player* terrain::get_player(int index) {
-	player* temp = &player_list[index];
-	return temp;
+	return &player_list[index];
 }
 
-std::vector<bomb> terrain::get_bomb_list() const {
-	return bomb_list;
+std::map<int, bomb> terrain::get_bomb_map() const {
+	return bomb_map;
 }
 
-bomb* terrain::get_bomb(int index) {
-	bomb* temp = &bomb_list[index];
-	return temp;
+bomb* terrain::get_bomb_pointer(int matrix_value) {
+	return &bomb_map.at(matrix_value);
 }
 
 #pragma endregion

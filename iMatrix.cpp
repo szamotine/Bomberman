@@ -9,6 +9,7 @@ iMatrix::iMatrix(int Nvalue, int Mvalue) : N(Nvalue), M(Mvalue) {
 	// add an extra row and col for optional i=0 and j=0
 	p = new int[(N + 1) * (M + 1)];
 
+
 	if (p == nullptr)
 	{
 		std::cout << "\nmemory allocation error in iMatrix::iMatrix(...)";
@@ -48,7 +49,6 @@ void iMatrix::print() {
 		{
 			std::cout << e(i, j) << " ";
 		}
-		//cout << "\n";
 	}
 
 }
@@ -68,7 +68,6 @@ void iMatrix::print0() {
 		{
 			std::cout << e(i, j) << " ";
 		}
-		//cout << "\n";
 	}
 
 }
@@ -79,7 +78,6 @@ int& iMatrix::get_matrix_value(int input) {
 	{
 		throw std::out_of_range("Index error in get_matrix_value: input= " + input);
 	}
-
 	return p[input];
 }
 

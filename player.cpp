@@ -79,7 +79,7 @@ void player::set_scale(double value) {
 	player_sprite_scale = value;
 }
 
-void player::set_bomb_time(double value) {
+void player::set_bomb_flag_time(double value) {
 	bomb_flag_time = value;
 }
 

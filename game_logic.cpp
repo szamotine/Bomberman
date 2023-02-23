@@ -78,12 +78,6 @@ void game_logic::player_1_input(player* p) {
 		new_bomb(p);
 	}
 
-	if (KEY('Z'))
-	{
-		//print_player_coordinates(p);
-		collision_pointer->print0();
-	}
-
 }
 
 void game_logic::player_2_input(player* p) {
@@ -124,13 +118,6 @@ void game_logic::player_2_input(player* p) {
 	if (KEY('M') && p->get_bomb_flag() && validate_bomb_collison(p))
 	{
 		new_bomb(p);
-	}
-
-	if (KEY('N'))
-	{
-
-		//print_player_coordinates(p);
-
 	}
 
 }
@@ -239,7 +226,7 @@ void game_logic::new_bomb(player* p) {
 	//get player index
 	int i_index = calculator::calculate_index(p->get_x_coordinate());
 	int j_index = calculator::calculate_index(p->get_y_coordinate());
-
+	int matrix_value;
 	// adjust bomb drop location for direction that player is facing
 
 	int orientation = p->get_player_orientation();
@@ -263,11 +250,12 @@ void game_logic::new_bomb(player* p) {
 
 
 	//create bomb object
-	terrain_pointer->construct_bomb(i_index, j_index);
+	matrix_value = calculator::matrix_value(i_index, j_index);
+	terrain_pointer->construct_bomb(matrix_value, i_index, j_index);
 
 	//configure player to ensure 1 bomb placement per time delay
 	p->set_bomb_flag(false);
-	p->set_bomb_time(high_resolution_time());
+	p->set_bomb_flag_time(high_resolution_time());
 
 	// Update collision matrix
 	set_matrix_to_bomb(i_index, j_index);
@@ -341,12 +329,12 @@ void game_logic::explode_bomb(const bomb* b) {
 
 	validate_red_brick_bomb_interactions(bomb_i_index, bomb_j_index);
 
-	//TODO refactor chain bomb
+
 	// bomb chain interactions
-	//if (terrain_pointer->get_bomb_list().size() > 1)
-	//{
-	//	validate_exploding_bomb_proximity(b);
-	//}
+	if (terrain_pointer->get_bomb_map().size() > 1)
+	{
+		validate_bomb_map_for_chain_explosions(b);
+	}
 
 	// bomb - player interactions
 	validate_player_bomb_interaction(b);
@@ -355,61 +343,50 @@ void game_logic::explode_bomb(const bomb* b) {
 	set_matrix_to_empty_space(bomb_i_index, bomb_j_index);
 }
 
-void game_logic::validate_exploding_bomb_proximity(const bomb* b) {
-	//existing bomb location
-	int bomb_i = b->get_i_index();
-	int bomb_j = b->get_j_index();
+void game_logic::validate_bomb_map_for_chain_explosions(const bomb* b) {
 
-	// placeholder to check collision matrix for bombs
-	int i;
-	int j;
-
-	//check for bomb to the right
-	i = bomb_i + 1;
-	j = bomb_j;
-
-	if (validate_matrix_for_bomb(i, j)) flag_chain_bomb(i, j);
-
-	//check for bomb to the left
-	i = bomb_i - 1;
-	j = bomb_j;
-
-	if (validate_matrix_for_bomb(i, j)) flag_chain_bomb(i, j);
-
-	//check for bomb above
-	i = bomb_i;
-	j = bomb_j + 1;
-	if (validate_matrix_for_bomb(i, j)) flag_chain_bomb(i, j);
-
-	//check for bomb below
-	i = bomb_i;
-	j = bomb_j - 1;
-	if (validate_matrix_for_bomb(i, j)) flag_chain_bomb(i, j);
-
-}
-
-void game_logic::flag_chain_bomb(int i_index, int j_index) {
-
-	if (!terrain_pointer->get_bomb_list().empty())
+	auto temp = terrain_pointer->get_bomb_map();
+	auto it = temp.begin();
+	auto it2 = temp.end();
+	while (it != it2)
 	{
-		for (int i = 0; (unsigned)i < terrain_pointer->get_bomb_list().size(); i++)
+		if (validate_chain_bomb_sequence(b, &it->second))
 		{
-			bomb_pointer = terrain_pointer->get_bomb(i);
-
-			if (bomb_pointer->get_i_index() == i_index && bomb_pointer->get_j_index() == j_index)
-			{
-				bomb_pointer->set_bomb_removal_flag();
-			}
+			flag_chain_bomb(it->second.get_i_index(), it->second.get_j_index());
 		}
+		it++;
 	}
 }
 
-void game_logic::validate_player_bomb_interaction(const bomb* b) {
+bool game_logic::validate_chain_bomb_sequence(const bomb* b, const bomb* b2) const {
 
-	// TODO -> add specific check for bomb
-	int i_index;
-	int j_index;
-	int player_number;
+	if (b2->get_bomb_removal_flag()) return false;
+
+	int b_i_index = b->get_i_index();
+	int b_j_index = b->get_j_index();
+
+	int b2_i_index = b2->get_i_index();
+	int b2_j_index = b2->get_j_index();
+
+	int abs_difference_i = abs(b_i_index - b2_i_index);
+	int abs_difference_j = abs(b_j_index - b2_j_index);
+
+	int range = 3;
+
+	if (b_i_index == b2_i_index && abs_difference_j < range) return true;
+
+	if (b_j_index == b2_j_index && abs_difference_i < range) return true;
+
+	return false;
+}
+
+void game_logic::flag_chain_bomb(int i_index, int j_index) {
+	int matrix_value = calculator::matrix_value(i_index, j_index);
+	terrain_pointer->get_bomb_pointer(matrix_value)->set_bomb_exploding_flag();
+	terrain_pointer->get_bomb_pointer(matrix_value)->set_bomb_removal_flag();
+}
+
+void game_logic::validate_player_bomb_interaction(const bomb* b) {
 
 	if (!terrain_pointer->get_player_list().empty())
 	{
@@ -419,13 +396,7 @@ void game_logic::validate_player_bomb_interaction(const bomb* b) {
 			player_pointer = terrain_pointer->get_player(i);
 
 			if (validate_player_bomb_proximity(player_pointer, b))
-			{
-				player_number = player_pointer->get_player_number();
-				i_index = calculator::calculate_index(player_pointer->get_x_coordinate());
-				j_index = calculator::calculate_index(player_pointer->get_y_coordinate());
-				std::cout << "\nPlayer " << player_number << " at i: " << i_index << ", j: " << j_index << " hit by a bomb";
 				player_pointer->set_removal_flag();
-			}
 		}
 	}
 }
@@ -520,34 +491,6 @@ void game_logic::validate_red_brick_bomb_interactions(int bomb_i_index, int bomb
 
 #pragma region Matrix Operations
 
-void game_logic::collision_matrix_init() {
-	//To be run once at initialization
-
-
-	collision_matrix_init_grey_bricks();
-	//collision_pointer->print0();
-}
-
-void game_logic::collision_matrix_init_grey_bricks() {
-	// holders for index values of object locations
-	int i_index;
-	int j_index;
-
-
-	// sets values in collision matrix for each grey brick
-	for (int i = 0; (unsigned)i < terrain_pointer->get_grey_brick_list().size(); i++)
-	{
-		gb_pointer = terrain_pointer->get_grey_brick(i);
-
-		// calculate matrix indices from coordinates
-		i_index = gb_pointer->get_i_index();
-		j_index = gb_pointer->get_j_index();
-
-		// set collision matrix to contain grey brick location
-		collision_pointer->e(i_index, j_index) = Collision_Type::Indestructible;
-	}
-}
-
 bool game_logic::validate_matrix_for_bomb(int i, int j) {
 	// Edge case: index out of bounds
 	if (i < 0 || j < 0 || i > 16 || j > 16) return false;
@@ -587,41 +530,63 @@ void game_logic::set_matrix_to_bomb(int i, int j) {
 #pragma region Flag operations
 
 void game_logic::validate_bomb_timer() {
-	if (!terrain_pointer->get_bomb_list().empty())
+
+	if (!terrain_pointer->get_bomb_map().empty())
 	{
+		// Length of time before a bomb explodes (seconds)
+		double bomb_duration = 3;
+
+		// Length of time to show explosion
+		double explosion_duration = 0.3;
+
 		double duration;
-		for (int i = 0; unsigned(i) < terrain_pointer->get_bomb_list().size(); i++)
+
+		auto temp = terrain_pointer->get_bomb_map();
+		auto it = temp.begin();
+		auto it2 = temp.end();
+
+		while (it != it2)
 		{
-			bomb_pointer = terrain_pointer->get_bomb(i);
 			current_time = high_resolution_time();
-			duration = current_time - bomb_pointer->get_time();
+			duration = current_time - it->second.get_time();
 
-			if (duration > 2.7)
-				terrain_pointer->set_bomb_explosion_flag(bomb_pointer);
-
-			if (duration > 3)
-				bomb_pointer->set_bomb_removal_flag();
+			if (duration > bomb_duration - explosion_duration)
+			{
+				int matrix_value = calculator::matrix_value(it->second.get_i_index(), it->second.get_j_index());
+				bomb_pointer = terrain_pointer->get_bomb_pointer(matrix_value);
+				bomb_pointer->set_bomb_exploding_flag();
+				duration > bomb_duration ? bomb_pointer->set_bomb_removal_flag() : NULL;
+			}
+			it++;
 		}
 	}
 }
 
 void game_logic::remove_flagged_bombs() {
-	if (!terrain_pointer->get_bomb_list().empty())
+
+	if (!terrain_pointer->get_bomb_map().empty())
 	{
-		for (int i = 0; (unsigned)i < terrain_pointer->get_bomb_list().size(); i++)
+		auto temp = terrain_pointer->get_bomb_map();
+		auto it = temp.begin();
+		auto it2 = temp.end();
+
+		while (it != it2)
 		{
-			bomb_pointer = terrain_pointer->get_bomb(i);
-			if (bomb_pointer->get_bomb_removal_flag())
+
+			if (it->second.get_bomb_removal_flag())
 			{
+				int matrix_value = calculator::matrix_value(it->second.get_i_index(), it->second.get_j_index());
+				bomb_pointer = terrain_pointer->get_bomb_pointer(matrix_value);
 				explode_bomb(bomb_pointer);
-				terrain_pointer->erase_bomb(i);
+				terrain_pointer->destroy_bomb(matrix_value);
 			}
+			it++;
 		}
 	}
 }
 
 void game_logic::remove_flagged_players() {
-	if (!terrain_pointer->get_player_list().empty())
+	if (terrain_pointer->get_player_list().size() > 1)
 	{
 		for (int i = 0; (unsigned)i < terrain_pointer->get_player_list().size(); i++)
 		{

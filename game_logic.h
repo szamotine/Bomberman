@@ -81,8 +81,11 @@ public:
 	// Sets off bomb explosion
 	void explode_bomb(const bomb* bomb);
 
+	// Checks exploding bomb proximity for other bombs
+	void validate_bomb_map_for_chain_explosions(const bomb* b);
+
 	// Checks for other bombs in proximity to the exploding bomb
-	void validate_exploding_bomb_proximity(const bomb* b);
+	bool validate_chain_bomb_sequence(const bomb* b, const bomb* b2) const;
 
 	// Marks bombs for removal
 	void flag_chain_bomb(int i_index, int j_index);
@@ -100,12 +103,6 @@ public:
 #pragma endregion
 
 #pragma region Matrix Operations
-
-	// Initializes collision matrix
-	void collision_matrix_init();
-
-	// Adds each existing grey brick to the collision matrix
-	void collision_matrix_init_grey_bricks();
 
 	// Checks if given matrix space is occupied by a bomb
 	bool validate_matrix_for_bomb(int i_index, int j_index);

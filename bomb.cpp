@@ -56,7 +56,7 @@ int bomb::get_j_index() const {
 	return j_index;
 }
 
-bool bomb::get_bomb_exploding_flag() {
+bool bomb::get_bomb_exploding_flag() const {
 	return bomb_exploding_flag;
 }
 
